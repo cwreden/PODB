@@ -1,12 +1,22 @@
 {
-    "name": "zendframework/skeleton-application",
-    "description": "Skeleton Application for ZF2",
-    "license": "BSD-3-Clause",
-    "keywords": [
-        "framework",
-        "zf2"
+    "name": "opencoders/podb",
+    "description": "an open source po webeditor",
+    "license": "AGPL",
+    "authors": [
+        {
+            "name": "André Meyerjürgens",
+            "email": "ameyerjuergens@gmail.com"
+        },
+        {
+            "name": "Christian Wreden",
+            "email": "christian@wreden.eu"
+        }
     ],
-    "homepage": "http://framework.zend.com/",
+    "keywords": [
+        "po",
+        "editor"
+    ],
+    "homepage": "",
     "require": {
         "php": ">=5.3.3",
         "zendframework/zendframework": "2.2.*",
