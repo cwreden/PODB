@@ -25,6 +25,10 @@ class Project {
      */
     protected $name;
 
+    /**
+     * @var
+     * @ORM\OneToMany(targetEntity="Language", mappedBy="id")
+     */
     protected $default_language;
 
     protected $createdBy;
