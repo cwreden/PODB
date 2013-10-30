@@ -31,10 +31,18 @@ class Language {
      */
     protected $locale;
 
+    /**
+     * @var
+     * @ORM\ManyToOne(targetEntity="User")
+     */
     protected $createdBy;
 
     protected $createDate;
 
+    /**
+     * @var
+     * @ORM\ManyToOne(targetEntity="User")
+     */
     protected $lastUpdateBy;
 
     protected $lastUpdateDate;
