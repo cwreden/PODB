@@ -23,7 +23,7 @@ class Language {
      * @var
      * @ORM\Column(type="string")
      */
-    protected $Name;
+    protected $name;
 
     /**
      * @var
