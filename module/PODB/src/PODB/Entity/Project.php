@@ -27,9 +27,15 @@ class Project {
 
     /**
      * @var
-     * @ORM\OneToMany(targetEntity="Language", mappedBy="id")
+     * @ORM\ManyToOne(targetEntity="Language")
      */
     protected $default_language;
+
+    /**
+     * @var
+     * @ORM\ManyToMany(targetEntity="User", mappedBy="projects")
+     */
+    protected $users;
 
     protected $createdBy;
 

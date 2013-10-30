@@ -36,4 +36,11 @@ class User
      * @ORM\Column(type="string")
      */
     protected $password;
+
+    /**
+     * @var
+     * @ORM\ManyToMany(targetEntity="Project", inversedBy="users")
+     * @ORM\JoinTable(name="users_projects")
+     */
+    protected $projects;
 } 
