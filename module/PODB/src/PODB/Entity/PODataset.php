@@ -8,8 +8,6 @@ use Doctrine\ORM\Mapping as ORM;
  * Class PODataSet
  * @package PODB\Entity
  * @ORM\Entity
- *
- * ID, DomainID, msgID, ..., createdBy, createDate, lastUpdateBy, lastUpdateDate
  */
 class PODataSet {
 
