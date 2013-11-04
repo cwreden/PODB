@@ -10,7 +10,7 @@ return array(
         'PODB',
         'ZfcBase',
         'ZfcUser',
-        'ZfcUserDoctrineORM',
+//        'ZfcUserDoctrineORM',
     ),
 
     // These are various options for the listeners attached to the ModuleManager
