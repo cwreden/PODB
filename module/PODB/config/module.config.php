@@ -1,7 +1,5 @@
 <?php
-/**
- *
- */
+
 return array(
     'router' => array(
         'routes' => array(
@@ -52,7 +50,7 @@ return array(
             )
         )
     ),
-    'view_manager' => array( //Add this config
+    'view_manager' => array(
         'strategies' => array(
             'ViewJsonStrategy',
         ),

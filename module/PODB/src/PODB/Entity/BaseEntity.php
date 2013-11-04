@@ -3,7 +3,7 @@
 namespace PODB\Entity;
 
 
-class Entity {
+class BaseEntity {
 
     /**
      * @return integer

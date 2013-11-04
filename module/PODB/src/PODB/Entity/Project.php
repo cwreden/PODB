@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @package PODB\Entity
  * @ORM\Entity
  */
-class Project extends Entity
+class Project extends BaseEntity
 {
 
     /**

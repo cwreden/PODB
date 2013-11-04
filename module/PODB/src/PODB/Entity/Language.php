@@ -9,11 +9,11 @@ use Doctrine\ORM\Mapping as ORM;
  * @package PODB\Entity
  * @ORM\Entity
  */
-class Language extends Entity
+class Language extends BaseEntity
 {
 
     /**
-     * TODO ID ins Entity => Entity braucht spezielle Annotation, damit Doctrine die Entity nicht anlegt
+     * TODO ID ins BaseEntity => Entity braucht spezielle Annotation, damit Doctrine die Entity nicht anlegt
      *
      * @var
      * @ORM\Id

@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @package PODB\Entity
  * @ORM\Entity
  */
-class Translation extends Entity
+class Translation extends BaseEntity
 {
 
     /**
