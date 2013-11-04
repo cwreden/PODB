@@ -5,21 +5,28 @@
 return array(
     'router' => array(
         'routes' => array(
-            'user' => array(
-                'type' => 'Segment',
+            'api_v1_event' => array(
+                'type'    => 'Segment',
                 'options' => array(
-                    'route' => '/user[/:id]',
+                    'route'    => '/api/v1/user[/:id]',
+                    'constraints' => array(
+                        'id'     => '[0-9]+',
+                    ),
                     'defaults' => array(
                         'controller' => 'PODB\Controller\User',
-                        'action' => 'getList',
                     ),
                 ),
             ),
         ),
     ),
+    'service_manager' => array(
+        'invokables' => array(
+            'PODB\Repository\User' => 'PODB\Repository\UserRepository',
+        )
+    ),
     'controllers' => array(
         'invokables' => array(
-            'PODB\Controller\User' => 'PODB\Controller\UserController'
+            'PODB\Controller\User' => 'PODB\Controller\UserController',
         ),
     ),
     'doctrine' => array(

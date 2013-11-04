@@ -8,7 +8,6 @@ class UserController extends AbstractRestfulController
 {
     public function getList()
     {
-
     }
 
     public function get($id)

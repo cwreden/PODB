@@ -9,7 +9,8 @@ use Doctrine\ORM\Mapping as ORM;
  * @package PODB\Entity
  * @ORM\Entity
  */
-class PODataSet {
+class PODataSet extends Entity
+{
 
     /**
      * @var
@@ -30,7 +31,6 @@ class PODataSet {
      * @ORM\Column(type="string")
      */
     protected $msgId;
-
 
     /**
      * @var

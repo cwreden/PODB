@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @package PODB\Entity
  * @ORM\Entity
  */
-class User
+class User extends Entity
 {
     /**
      * @var
@@ -43,4 +43,4 @@ class User
      * @ORM\JoinTable(name="users_projects")
      */
     protected $projects;
-} 
+}

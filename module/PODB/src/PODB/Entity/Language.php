@@ -9,9 +9,12 @@ use Doctrine\ORM\Mapping as ORM;
  * @package PODB\Entity
  * @ORM\Entity
  */
-class Language {
+class Language extends Entity
+{
 
     /**
+     * TODO ID ins Entity => Entity braucht spezielle Annotation, damit Doctrine die Entity nicht anlegt
+     *
      * @var
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")

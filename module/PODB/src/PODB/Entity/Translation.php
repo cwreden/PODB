@@ -9,7 +9,8 @@ use Doctrine\ORM\Mapping as ORM;
  * @package PODB\Entity
  * @ORM\Entity
  */
-class Translation {
+class Translation extends Entity
+{
 
     /**
      * @var
@@ -70,4 +71,5 @@ class Translation {
     protected $lastUpdateBy;
 
     protected $lastUpdateDate;
+
 } 
