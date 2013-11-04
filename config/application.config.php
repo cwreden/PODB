@@ -8,6 +8,9 @@ return array(
         'Application',
         'OSWAssetHelper',
         'PODB',
+        'ZfcBase',
+        'ZfcUser',
+        'ZfcUserDoctrineORM',
     ),
 
     // These are various options for the listeners attached to the ModuleManager
