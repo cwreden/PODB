@@ -3,7 +3,7 @@
 return array(
     'router' => array(
         'routes' => array(
-            'api_v1_event' => array(
+            'api_v1_user' => array(
                 'type' => 'Segment',
                 'options' => array(
                     'route' => '/api/v1/user[/:id]',
@@ -15,11 +15,24 @@ return array(
                     ),
                 ),
             ),
+            'api_v1_language' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/api/v1/language[/:id]',
+                    'constraints' => array(
+                        'id' => '[0-9]+',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'PODB\Controller\Language',
+                    ),
+                ),
+            ),
         ),
     ),
     'service_manager' => array(
         'invokables' => array(
             'PODB\Repository\User' => 'PODB\Repository\UserRepository',
+            'PODB\Repository\Language' => 'PODB\Repository\LanguageRepository',
         ),
 //
 //      Alternative zum Invokable:
@@ -34,6 +47,7 @@ return array(
     'controllers' => array(
         'invokables' => array(
             'PODB\Controller\User' => 'PODB\Controller\UserController',
+            'PODB\Controller\Language' => 'PODB\Controller\LanguageController',
         ),
     ),
     'doctrine' => array(

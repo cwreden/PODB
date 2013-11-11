@@ -40,6 +40,9 @@ class Language extends BaseEntity
      */
     protected $createdBy;
 
+    /**
+     * @var
+     */
     protected $createDate;
 
     /**
@@ -48,5 +51,64 @@ class Language extends BaseEntity
      */
     protected $lastUpdateBy;
 
+    /**
+     * @var
+     */
     protected $lastUpdateDate;
+
+    /**
+     * @return array
+     */
+    public function asArray()
+    {
+        return array(
+            'id' => $this->getId(),
+            'name' => $this->getName(),
+            'locale' => $this->getLocale(),
+            'createdBy' => $this->getCreatedBy(),
+            'createDate' => $this->getCreateDate(),
+            'lastUpdatedBy' => $this->getLastUpdatedBy(),
+            'lastUpdateDate' => $this->getLastUpdateDate(),
+        );
+    }
+
+    private function getName()
+    {
+        return $this->name;
+    }
+
+    private function getLocale()
+    {
+        return $this->locale;
+    }
+
+    private function getCreatedBy()
+    {
+        return $this->createdBy;
+    }
+
+    private function getCreateDate()
+    {
+        return $this->createDate;
+    }
+
+    private function getLastUpdatedBy()
+    {
+        return $this->lastUpdateBy;
+    }
+
+    private function getLastUpdateDate()
+    {
+        return $this->lastUpdateDate;
+    }
+
+    public function setName($name)
+    {
+        $this->name = $name;
+    }
+
+    public function setLocale($locale)
+    {
+        $this->locale = $locale;
+    }
 } 

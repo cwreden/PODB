@@ -33,11 +33,16 @@ class BaseRestfulController extends AbstractRestfulController {
 
     public function get($id)
     {
-        # code...
+        return new JsonModel($this->getRepository()->get($id)->asArray());
     }
 
     public function delete($id)
     {
-        # code...
+        try {
+            $this->getRepository()->delete($id);
+            return new JsonModel(array('successful' => 'true'));
+        } catch (Exception $e) {
+            return $this->getErrorModel($e);
+        }
     }
 }
