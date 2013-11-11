@@ -12,6 +12,8 @@ abstract class Repository implements ServiceLocatorAwareInterface {
 
     protected $entityClass = "";
 
+    const DOCTRINE_ORM_ENTITY_MANAGER = 'Doctrine\ORM\EntityManager';
+
     /**
      * @var EntityRepository
      */
@@ -39,7 +41,7 @@ abstract class Repository implements ServiceLocatorAwareInterface {
      */
     protected function getEntityManager()
     {
-        return $this->getServiceLocator()->get('Doctrine\ORM\EntityManager');
+        return $this->getServiceLocator()->get(self::DOCTRINE_ORM_ENTITY_MANAGER);
     }
 
     /**
@@ -60,6 +62,16 @@ abstract class Repository implements ServiceLocatorAwareInterface {
     public function setServiceLocator(ServiceLocatorInterface $serviceLocator)
     {
         $this->serviceLocator = $serviceLocator;
+    }
+
+    /**
+     * @param $id
+     */
+    public function delete($id)
+    {
+        $entity = $this->getRepository()->find($id);
+        $this->getEntityManager()->remove($entity);
+        $this->getEntityManager()->flush();
     }
 
 }
