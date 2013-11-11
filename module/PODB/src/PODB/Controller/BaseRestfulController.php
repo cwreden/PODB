@@ -3,46 +3,19 @@
 namespace PODB\Controller;
 
 
-use PODB\Repository\Repository;
+use Exception;
 use Zend\Mvc\Controller\AbstractRestfulController;
 use Zend\View\Model\JsonModel;
 
 class BaseRestfulController extends AbstractRestfulController {
 
-    protected $repositoryName;
-
-    public function getList()
-    {
-        $users = $this->getRepository()->getAll();
-
-        $output = array();
-        foreach ($users as $user) {
-            $output[] = $user->asArray();
-        }
-
-        return new JsonModel($output);
-    }
-
     /**
-     * @return Repository
+     * @param $e
+     * @return JsonModel
      */
-    protected function getRepository()
+    public function getErrorModel(Exception $e)
     {
-        return $this->getServiceLocator()->get($this->repositoryName);
-    }
-
-    public function get($id)
-    {
-        return new JsonModel($this->getRepository()->get($id)->asArray());
-    }
-
-    public function delete($id)
-    {
-        try {
-            $this->getRepository()->delete($id);
-            return new JsonModel(array('successful' => 'true'));
-        } catch (Exception $e) {
-            return $this->getErrorModel($e);
-        }
+        $this->response->setStatusCode(500);
+        return new JsonModel(array('error' => 'true', 'code' => $e->getCode(), 'message' => $e->getMessage()));
     }
 }
