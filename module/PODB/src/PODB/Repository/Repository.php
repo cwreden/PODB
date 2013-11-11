@@ -55,7 +55,7 @@ abstract class Repository implements ServiceLocatorAwareInterface {
     /**
      * Set service locator
      *
-     * @param \Zend\ServiceManager\ServiceLocatorInterface $serviceLocator
+     * @param ServiceLocatorInterface $serviceLocator
      */
     public function setServiceLocator(ServiceLocatorInterface $serviceLocator)
     {

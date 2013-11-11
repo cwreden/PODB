@@ -12,85 +12,7 @@ use ZfcUser\Entity\UserInterface;
  */
 class User extends BaseEntity implements UserInterface
 {
-    /**
-     * @param mixed $email
-     */
-    public function setEmail($email)
-    {
-        $this->email = $email;
-    }
 
-    /**
-     * @return mixed
-     */
-    public function getEmail()
-    {
-        return $this->email;
-    }
-
-    /**
-     * @param mixed $id
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * @param mixed $name
-     */
-    public function setUsername($username)
-    {
-        $this->username = $username;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getUsername()
-    {
-        return $this->username;
-    }
-
-    /**
-     * @param mixed $password
-     */
-    public function setPassword($password)
-    {
-        $this->password = $password;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getPassword()
-    {
-        return $this->password;
-    }
-
-    /**
-     * @param mixed $projects
-     */
-    public function setProjects($projects)
-    {
-        $this->projects = $projects;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getProjects()
-    {
-        return $this->projects;
-    }
 
     /**
      * @var
@@ -138,6 +60,91 @@ class User extends BaseEntity implements UserInterface
     private $projects;
 
     /**
+     * @param mixed $email
+     * @return void
+     */
+    public function setEmail($email)
+    {
+        $this->email = $email;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    /**
+     * @param mixed $id
+     * @return void
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param string $username
+     * @return void
+     */
+    public function setUsername($username)
+    {
+        $this->username = $username;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUsername()
+    {
+        return $this->username;
+    }
+
+    /**
+     * @param mixed $password
+     * @return void
+     */
+    public function setPassword($password)
+    {
+        $this->password = $password;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPassword()
+    {
+        return $this->password;
+    }
+
+    /**
+     * @param mixed $projects
+     */
+    public function setProjects($projects)
+    {
+        $this->projects = $projects;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getProjects()
+    {
+        return $this->projects;
+    }
+
+
+    /**
      * Get displayName.
      *
      * @return string
@@ -177,5 +184,19 @@ class User extends BaseEntity implements UserInterface
     public function setState($state)
     {
         $this->state = $state;
+    }
+
+    /**
+     * Returns all user data as an array
+     *
+     * @return array
+     */
+    public function asArray()
+    {
+        return array(
+            'id' => $this->getId(),
+            'username' => $this->getUsername(),
+            'displayname' => $this->getDisplayName()
+        );
     }
 }
