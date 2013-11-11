@@ -67,7 +67,7 @@ class Language extends BaseEntity
             'locale' => $this->getLocale(),
             'createdBy' => $this->getCreatedBy(),
             'createDate' => $this->getCreateDate(),
-            'lastUpdatedBy' => $this->getLastUpdatedBy(),
+            'lastUpdatedBy' => $this->getLastUpdateBy(),
             'lastUpdateDate' => $this->getLastUpdateDate(),
         );
     }
@@ -92,11 +92,6 @@ class Language extends BaseEntity
         return $this->createDate;
     }
 
-    private function getLastUpdatedBy()
-    {
-        return $this->lastUpdateBy;
-    }
-
     private function getLastUpdateDate()
     {
         return $this->lastUpdateDate;
@@ -110,5 +105,39 @@ class Language extends BaseEntity
     public function setLocale($locale)
     {
         $this->locale = $locale;
+    }
+
+    public function setCreateDate($time)
+    {
+        $this->createDate = $time;
+    }
+
+    public function setLastUpdateDate($time)
+    {
+        $this->lastUpdateDate = $time;
+    }
+
+    /**
+     * @param mixed $createdBy
+     */
+    public function setCreatedBy($createdBy)
+    {
+        $this->createdBy = $createdBy;
+    }
+
+    /**
+     * @param mixed $lastUpdateBy
+     */
+    public function setLastUpdateBy($lastUpdateBy)
+    {
+        $this->lastUpdateBy = $lastUpdateBy;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLastUpdateBy()
+    {
+        return $this->lastUpdateBy;
     }
 } 
