@@ -32,7 +32,11 @@ return array(
     'service_manager' => array(
         'invokables' => array(
             'PODB\Repository\User' => 'PODB\Repository\UserRepository',
+            'PODB\Repository\Project' => 'PODB\Repository\ProjectRepository',
             'PODB\Repository\Language' => 'PODB\Repository\LanguageRepository',
+            'PODB\Repository\PODomain' => 'PODB\Repository\PODomainRepository',
+            'PODB\Repository\PODataset' => 'PODB\Repository\PODatasetRepository',
+            'PODB\Repository\Translation' => 'PODB\Repository\TranslationRepository',
         ),
 //
 //      Alternative zum Invokable:
@@ -47,7 +51,11 @@ return array(
     'controllers' => array(
         'invokables' => array(
             'PODB\Controller\User' => 'PODB\Controller\UserController',
+            'PODB\Controller\Project' => 'PODB\Controller\ProjectController',
             'PODB\Controller\Language' => 'PODB\Controller\LanguageController',
+            'PODB\Controller\PODomain' => 'PODB\Controller\PODomainController',
+            'PODB\Controller\PODataset' => 'PODB\Controller\PODatasetController',
+            'PODB\Controller\Translation' => 'PODB\Controller\TranslationController',
         ),
     ),
     'doctrine' => array(
