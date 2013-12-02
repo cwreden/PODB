@@ -14,7 +14,6 @@ use ZfcUser\Entity\UserInterface;
 class User extends BaseEntity implements UserInterface
 {
 
-
     /**
      * @var
      * @ORM\Id
@@ -156,7 +155,6 @@ class User extends BaseEntity implements UserInterface
         return $this->projects;
     }
 
-
     /**
      * Get displayName.
      *
@@ -200,20 +198,6 @@ class User extends BaseEntity implements UserInterface
     }
 
     /**
-     * Returns all user data as an array
-     *
-     * @return array
-     */
-    public function asArray()
-    {
-        return array(
-            'id' => $this->getId(),
-            'username' => $this->getUsername(),
-            'displayname' => $this->getDisplayName()
-        );
-    }
-
-    /**
      * @return DateTime|null
      */
     public function getCreateDate()
@@ -243,5 +227,19 @@ class User extends BaseEntity implements UserInterface
     public function setLastUpdateDate(DateTime $lastUpdateDate = null)
     {
         $this->lastUpdateDate = $lastUpdateDate ? clone $lastUpdateDate : null;
+    }
+
+    /**
+     * Returns all user data as an array
+     *
+     * @return array
+     */
+    public function asArray()
+    {
+        return array(
+            'id' => $this->getId(),
+            'username' => $this->getUsername(),
+            'displayname' => $this->getDisplayName()
+        );
     }
 }
