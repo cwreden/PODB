@@ -2,6 +2,7 @@
 
 namespace PODB\Controller;
 
+use DateTime;
 use Exception;
 use PODB\Entity\Language;
 use PODB\Repository\LanguageRepository;
@@ -9,6 +10,9 @@ use Zend\View\Model\JsonModel;
 
 class LanguageController extends BaseRestfulController
 {
+    /**
+     * @return JsonModel
+     */
     public function getList()
     {
         $users = $this->getRepository()->getAll();
@@ -21,20 +25,37 @@ class LanguageController extends BaseRestfulController
         return new JsonModel($output);
     }
 
+    /**
+     * @param string  $id
+     * @return JsonModel
+     */
     public function get($id)
     {
         return new JsonModel($this->getRepository()->get($id)->asArray());
     }
 
+    /**
+     * @param array $data
+     * @return JsonModel
+     */
     public function create($data)
     {
         $language = new Language();
         $language->setName($data['name']);
         $language->setLocale($data['locale']);
-        $language->setCreateDate(time());
+
+        $now = new DateTime();
+        $language->setCreateDate($now);
+        $language->setLastUpdateDate($now);
+
         return new JsonModel(array('id' => $this->getRepository()->create($language)));
     }
 
+    /**
+     * @param string $id
+     * @param array $data
+     * @return JsonModel
+     */
     public function update($id, $data)
     {
         try {
@@ -49,6 +70,10 @@ class LanguageController extends BaseRestfulController
         }
     }
 
+    /**
+     * @param string $id
+     * @return JsonModel
+     */
     public function delete($id)
     {
         try {

@@ -2,6 +2,7 @@
 
 namespace PODB\Controller;
 
+use DateTime;
 use Exception;
 use PODB\Entity\PODataSet;
 use PODB\Repository\PODatasetRepository;
@@ -21,23 +22,42 @@ class PODatasetController extends BaseRestfulController
         return new JsonModel($output);
     }
 
+    /**
+     * @param mixed $id
+     * @return mixed|JsonModel
+     */
     public function get($id)
     {
         return new JsonModel($this->getRepository()->get($id)->asArray());
     }
 
+    /**
+     * @param array $data
+     * @return JsonModel
+     */
     public function create($data)
     {
         $object = new PODataSet();
-        $object->setCreateDate(time());
+
+        //ToDo: Daten müssen noch gesetzt werden
+
+        $now = new DateTime();
+        $object->setCreateDate($now);
+        $object->setLastUpdateDate($now);
+
         return new JsonModel(array('id' => $this->getRepository()->create($object)));
     }
 
+    /**
+     * @param string $id
+     * @param array $data
+     * @return JsonModel
+     */
     public function update($id, $data)
     {
         try {
             $object = $this->getRepository()->get($id);
-            $object->setLastUpdateDate(time());
+            $object->setLastUpdateDate(new DateTime());
             $this->getRepository()->update($object);
             return new JsonModel(array('successfull' => 'true'));
         } catch (Exception $e) {
@@ -45,6 +65,10 @@ class PODatasetController extends BaseRestfulController
         }
     }
 
+    /**
+     * @param string $id
+     * @return JsonModel
+     */
     public function delete($id)
     {
         try {

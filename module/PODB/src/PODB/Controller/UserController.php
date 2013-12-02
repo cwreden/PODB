@@ -2,6 +2,8 @@
 
 namespace PODB\Controller;
 
+use DateTime;
+use Exception;
 use PODB\Entity\User;
 use PODB\Repository\UserRepository;
 use Zend\View\Model\JsonModel;
@@ -10,6 +12,8 @@ class UserController extends BaseRestfulController
 {
 
     /**
+     * Returns a list of Users
+     *
      * @return JsonModel
      */
     public function getList()
@@ -25,6 +29,8 @@ class UserController extends BaseRestfulController
     }
 
     /**
+     * Returns a User
+     *
      * @param string $id
      * @return JsonModel
      */
@@ -34,21 +40,40 @@ class UserController extends BaseRestfulController
     }
 
     /**
+     * Creates a new User
+     *
      * @param array $data
      * @return JsonModel
      */
     public function create($data)
     {
         $object = new User();
-        $object->setCreateDate(time());
+        $object->setDisplayName($data['displayname']);
+        $object->setUsername($data['username']);
+        $object->setEmail($data['email']);
+        $object->setPassword($data['password']);
+        $object->setState($data['state']);
+//        $object->setProjects($data['projectIds']);
+
+        $now = new DateTime();
+        $object->setLastUpdateDate($now);
+        $object->setCreateDate($now);
+
         return new JsonModel(array('id' => $this->getRepository()->create($object)));
     }
 
+    /**
+     * Updates an User
+     *
+     * @param string $id
+     * @param array $data
+     * @return JsonModel
+     */
     public function update($id, $data)
     {
         try {
             $object = $this->getRepository()->get($id);
-            $object->setLastUpdateDate(time());
+            $object->setLastUpdateDate(new DateTime());
             $this->getRepository()->update($object);
             return new JsonModel(array('successfull' => 'true'));
         } catch (Exception $e) {
@@ -56,6 +81,12 @@ class UserController extends BaseRestfulController
         }
     }
 
+    /**
+     * Removes a User by ID
+     *
+     * @param string $id
+     * @return JsonModel
+     */
     public function delete($id)
     {
         try {
@@ -67,6 +98,8 @@ class UserController extends BaseRestfulController
     }
 
     /**
+     * Returns the UserRepository
+     *
      * @return UserRepository
      */
     protected function getRepository()
