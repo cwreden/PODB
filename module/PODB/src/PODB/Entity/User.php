@@ -2,6 +2,7 @@
 
 namespace PODB\Entity;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use ZfcUser\Entity\UserInterface;
 
@@ -58,6 +59,18 @@ class User extends BaseEntity implements UserInterface
      * @ORM\JoinTable(name="users_projects")
      */
     private $projects;
+
+    /**
+     * @var
+     * @ORM\Column(type="datetime")
+     */
+    protected $createDate;
+
+    /**
+     * @var
+     * @ORM\Column(type="datetime")
+     */
+    protected $lastUpdateDate;
 
     /**
      * @param mixed $email
@@ -198,5 +211,37 @@ class User extends BaseEntity implements UserInterface
             'username' => $this->getUsername(),
             'displayname' => $this->getDisplayName()
         );
+    }
+
+    /**
+     * @return DateTime|null
+     */
+    public function getCreateDate()
+    {
+        return $this->createDate ? clone $this->createDate : null;
+    }
+
+    /**
+     * @param DateTime $createDate
+     */
+    public function setCreateDate(DateTime $createDate = null)
+    {
+        $this->createDate = $createDate ? clone $createDate : null;
+    }
+
+    /**
+     * @return DateTime|null
+     */
+    public function getLastUpdateDate()
+    {
+        return $this->lastUpdateDate ? clone $this->lastUpdateDate : null;
+    }
+
+    /**
+     * @param DateTime $lastUpdateDate
+     */
+    public function setLastUpdateDate(DateTime $lastUpdateDate = null)
+    {
+        $this->lastUpdateDate = $lastUpdateDate ? clone $lastUpdateDate : null;
     }
 }

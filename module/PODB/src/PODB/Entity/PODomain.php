@@ -2,6 +2,7 @@
 
 namespace PODB\Entity;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -38,6 +39,10 @@ class PODomain extends BaseEntity
      */
     protected $createdBy;
 
+    /**
+     * @var
+     * @ORM\Column(type="datetime")
+     */
     protected $createDate;
 
     /**
@@ -46,34 +51,38 @@ class PODomain extends BaseEntity
      */
     protected $lastUpdateBy;
 
+    /**
+     * @var
+     * @ORM\Column(type="datetime")
+     */
     protected $lastUpdateDate;
 
     /**
-     * @param mixed $createDate
+     * @param DateTime $createDate
      */
-    public function setCreateDate($createDate)
+    public function setCreateDate(DateTime $createDate = null)
     {
-        $this->createDate = $createDate;
+        $this->createDate = $createDate ? clone $createDate : null;
     }
 
     /**
-     * @return mixed
+     * @return DateTime|null
      */
     public function getCreateDate()
     {
-        return $this->createDate;
+        return $this->createDate ? clone $this->createDate : null;
     }
 
     /**
-     * @param mixed $createdBy
+     * @param string $userId
      */
-    public function setCreatedBy($createdBy)
+    public function setCreatedBy($userId)
     {
-        $this->createdBy = $createdBy;
+        $this->createdBy = $userId;
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getCreatedBy()
     {
@@ -81,7 +90,7 @@ class PODomain extends BaseEntity
     }
 
     /**
-     * @param mixed $id
+     * @param string $id
      */
     public function setId($id)
     {
@@ -89,7 +98,7 @@ class PODomain extends BaseEntity
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getId()
     {
@@ -97,15 +106,15 @@ class PODomain extends BaseEntity
     }
 
     /**
-     * @param mixed $lastUpdateBy
+     * @param string $userId
      */
-    public function setLastUpdateBy($lastUpdateBy)
+    public function setLastUpdateBy($userId)
     {
-        $this->lastUpdateBy = $lastUpdateBy;
+        $this->lastUpdateBy = $userId;
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getLastUpdateBy()
     {
@@ -113,23 +122,23 @@ class PODomain extends BaseEntity
     }
 
     /**
-     * @param mixed $lastUpdateDate
+     * @param DateTime $lastUpdateDate
      */
-    public function setLastUpdateDate($lastUpdateDate)
+    public function setLastUpdateDate(DateTime $lastUpdateDate = null)
     {
-        $this->lastUpdateDate = $lastUpdateDate;
+        $this->lastUpdateDate = $lastUpdateDate ? clone $lastUpdateDate : null;
     }
 
     /**
-     * @return mixed
+     * @return DateTime|null
      */
     public function getLastUpdateDate()
     {
-        return $this->lastUpdateDate;
+        return $this->lastUpdateDate ? clone $this->lastUpdateDate : null;
     }
 
     /**
-     * @param mixed $name
+     * @param string $name
      */
     public function setName($name)
     {
@@ -137,7 +146,7 @@ class PODomain extends BaseEntity
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getName()
     {
@@ -145,7 +154,7 @@ class PODomain extends BaseEntity
     }
 
     /**
-     * @param mixed $projectId
+     * @param string $projectId
      */
     public function setProjectId($projectId)
     {
@@ -153,13 +162,16 @@ class PODomain extends BaseEntity
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getProjectId()
     {
         return $this->projectId;
     }
 
+    /**
+     * @return array
+     */
     public function asArray()
     {
         return array(

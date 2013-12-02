@@ -2,6 +2,7 @@
 
 namespace PODB\Entity;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -62,6 +63,10 @@ class Translation extends BaseEntity
      */
     protected $createdBy;
 
+    /**
+     * @var
+     * @ORM\Column(type="datetime")
+     */
     protected $createDate;
 
     /**
@@ -70,22 +75,26 @@ class Translation extends BaseEntity
      */
     protected $lastUpdateBy;
 
+    /**
+     * @var
+     * @ORM\Column(type="datetime")
+     */
     protected $lastUpdateDate;
 
     /**
-     * @param mixed $createDate
+     * @param DateTime $createDate
      */
-    public function setCreateDate($createDate)
+    public function setCreateDate(DateTime $createDate)
     {
-        $this->createDate = $createDate;
+        $this->createDate = $createDate ? clone $createDate : null;
     }
 
     /**
-     * @return mixed
+     * @return DateTime|null
      */
     public function getCreateDate()
     {
-        return $this->createDate;
+        return $this->createDate ? clone $this->createDate : null;
     }
 
     /**
@@ -169,19 +178,19 @@ class Translation extends BaseEntity
     }
 
     /**
-     * @param mixed $lastUpdateDate
+     * @param DateTime $lastUpdateDate
      */
-    public function setLastUpdateDate($lastUpdateDate)
+    public function setLastUpdateDate(DateTime $lastUpdateDate)
     {
-        $this->lastUpdateDate = $lastUpdateDate;
+        $this->lastUpdateDate = $lastUpdateDate ? clone $lastUpdateDate : null;
     }
 
     /**
-     * @return mixed
+     * @return DateTime|null
      */
     public function getLastUpdateDate()
     {
-        return $this->lastUpdateDate;
+        return $this->lastUpdateDate ? clone $this->lastUpdateDate : null;
     }
 
     /**

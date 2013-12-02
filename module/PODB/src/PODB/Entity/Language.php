@@ -2,6 +2,7 @@
 
 namespace PODB\Entity;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -13,8 +14,6 @@ class Language extends BaseEntity
 {
 
     /**
-     * TODO ID ins BaseEntity => Entity braucht spezielle Annotation, damit Doctrine die Entity nicht anlegt
-     *
      * @var
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -42,6 +41,7 @@ class Language extends BaseEntity
 
     /**
      * @var
+     * @ORM\Column(type="datetime")
      */
     protected $createDate;
 
@@ -53,8 +53,105 @@ class Language extends BaseEntity
 
     /**
      * @var
+     * @ORM\Column(type="datetime")
      */
     protected $lastUpdateDate;
+
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLocale()
+    {
+        return $this->locale;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCreatedBy()
+    {
+        return $this->createdBy;
+    }
+
+    /**
+     * @return DateTime|null
+     */
+    public function getCreateDate()
+    {
+        return $this->createDate ? clone $this->createDate : null;
+    }
+
+    /**
+     * @return DateTime|null
+     */
+    public function getLastUpdateDate()
+    {
+        return $this->lastUpdateDate ? clone $this->lastUpdateDate : null;
+    }
+
+    /**
+     * @param string $name
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+    }
+
+    /**
+     * @param string $locale
+     */
+    public function setLocale($locale)
+    {
+        $this->locale = $locale;
+    }
+
+    /**
+     * @param DateTime $createDate
+     */
+    public function setCreateDate(DateTime $createDate = null)
+    {
+        $this->createDate = $createDate ? clone $createDate : null;
+    }
+
+    /**
+     * @param DateTime $lastUpdateDate
+     */
+    public function setLastUpdateDate(DateTime $lastUpdateDate = null)
+    {
+        $this->lastUpdateDate = $lastUpdateDate ? clone $lastUpdateDate : null;
+    }
+
+    /**
+     * @param string $createdBy
+     */
+    public function setCreatedBy($createdBy)
+    {
+        $this->createdBy = $createdBy;
+    }
+
+    /**
+     * @param string $lastUpdateBy
+     */
+    public function setLastUpdateBy($lastUpdateBy)
+    {
+        $this->lastUpdateBy = $lastUpdateBy;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLastUpdateBy()
+    {
+        return $this->lastUpdateBy;
+    }
 
     /**
      * @return array
@@ -70,74 +167,5 @@ class Language extends BaseEntity
             'lastUpdatedBy' => $this->getLastUpdateBy(),
             'lastUpdateDate' => $this->getLastUpdateDate(),
         );
-    }
-
-    private function getName()
-    {
-        return $this->name;
-    }
-
-    private function getLocale()
-    {
-        return $this->locale;
-    }
-
-    private function getCreatedBy()
-    {
-        return $this->createdBy;
-    }
-
-    private function getCreateDate()
-    {
-        return $this->createDate;
-    }
-
-    private function getLastUpdateDate()
-    {
-        return $this->lastUpdateDate;
-    }
-
-    public function setName($name)
-    {
-        $this->name = $name;
-    }
-
-    public function setLocale($locale)
-    {
-        $this->locale = $locale;
-    }
-
-    public function setCreateDate($time)
-    {
-        $this->createDate = $time;
-    }
-
-    public function setLastUpdateDate($time)
-    {
-        $this->lastUpdateDate = $time;
-    }
-
-    /**
-     * @param mixed $createdBy
-     */
-    public function setCreatedBy($createdBy)
-    {
-        $this->createdBy = $createdBy;
-    }
-
-    /**
-     * @param mixed $lastUpdateBy
-     */
-    public function setLastUpdateBy($lastUpdateBy)
-    {
-        $this->lastUpdateBy = $lastUpdateBy;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getLastUpdateBy()
-    {
-        return $this->lastUpdateBy;
     }
 } 

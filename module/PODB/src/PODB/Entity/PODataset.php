@@ -2,6 +2,7 @@
 
 namespace PODB\Entity;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -38,6 +39,10 @@ class PODataSet extends BaseEntity
      */
     protected $createdBy;
 
+    /**
+     * @var
+     * @ORM\Column(type="datetime")
+     */
     protected $createDate;
 
     /**
@@ -46,34 +51,38 @@ class PODataSet extends BaseEntity
      */
     protected $lastUpdateBy;
 
+    /**
+     * @var
+     * @ORM\Column(type="datetime")
+     */
     protected $lastUpdateDate;
 
     /**
-     * @param mixed $createDate
+     * @param DateTime $createDate
      */
-    public function setCreateDate($createDate)
+    public function setCreateDate(DateTime $createDate = null)
     {
-        $this->createDate = $createDate;
+        $this->createDate = $createDate ? clone $createDate : null;
     }
 
     /**
-     * @return mixed
+     * @return DateTime|null
      */
     public function getCreateDate()
     {
-        return $this->createDate;
+        return $this->createDate ? clone $this->createDate : null;
     }
 
     /**
-     * @param mixed $createdBy
+     * @param string $userId
      */
-    public function setCreatedBy($createdBy)
+    public function setCreatedBy($userId)
     {
-        $this->createdBy = $createdBy;
+        $this->createdBy = $userId;
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getCreatedBy()
     {
@@ -81,7 +90,7 @@ class PODataSet extends BaseEntity
     }
 
     /**
-     * @param mixed $domainId
+     * @param string $domainId
      */
     public function setDomainId($domainId)
     {
@@ -89,7 +98,7 @@ class PODataSet extends BaseEntity
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getDomainId()
     {
@@ -97,7 +106,7 @@ class PODataSet extends BaseEntity
     }
 
     /**
-     * @param mixed $id
+     * @param string $id
      */
     public function setId($id)
     {
@@ -105,7 +114,7 @@ class PODataSet extends BaseEntity
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getId()
     {
@@ -113,15 +122,15 @@ class PODataSet extends BaseEntity
     }
 
     /**
-     * @param mixed $lastUpdateBy
+     * @param string $userId
      */
-    public function setLastUpdateBy($lastUpdateBy)
+    public function setLastUpdateBy($userId)
     {
-        $this->lastUpdateBy = $lastUpdateBy;
+        $this->lastUpdateBy = $userId;
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getLastUpdateBy()
     {
@@ -129,23 +138,23 @@ class PODataSet extends BaseEntity
     }
 
     /**
-     * @param mixed $lastUpdateDate
+     * @param DateTime $lastUpdateDate
      */
-    public function setLastUpdateDate($lastUpdateDate)
+    public function setLastUpdateDate(DateTime $lastUpdateDate = null)
     {
-        $this->lastUpdateDate = $lastUpdateDate;
+        $this->lastUpdateDate = $lastUpdateDate ? clone $lastUpdateDate : null;
     }
 
     /**
-     * @return mixed
+     * @return DateTime|null
      */
     public function getLastUpdateDate()
     {
-        return $this->lastUpdateDate;
+        return $this->lastUpdateDate ? clone $this->lastUpdateDate : null;
     }
 
     /**
-     * @param mixed $msgId
+     * @param string $msgId
      */
     public function setMsgId($msgId)
     {
@@ -153,13 +162,16 @@ class PODataSet extends BaseEntity
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getMsgId()
     {
         return $this->msgId;
     }
 
+    /**
+     * @return array
+     */
     public function asArray()
     {
         return array(
