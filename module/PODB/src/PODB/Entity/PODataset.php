@@ -23,6 +23,12 @@ class PODataSet extends BaseEntity
 
     /**
      * @var
+     * @ORM\Column(type="string")
+     */
+    protected $name;
+
+    /**
+     * @var
      * @ORM\ManyToOne(targetEntity="PODomain")
      */
     protected $domainId;
@@ -177,7 +183,35 @@ class PODataSet extends BaseEntity
         return array(
             'id' => $this->getId(),
             'domainId' => $this->getDomainId(),
-            'msgId' => $this->getMsgId()
+            'msgId' => $this->getMsgId(),
+            'lastUpdatedDate' => $this->getLastUpdateDate(),
+            'lastUpdatedBy' => $this->getLastUpdateBy(),
+            'createdDate' => $this->getCreateDate(),
+            'createdBy' => $this->getCreatedBy(),
         );
+    }
+
+    public function asShortArray()
+    {
+        return array(
+            'id' => $this->getId(),
+            'name' => $this->getName(),
+        );
+    }
+
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * @param string $name
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
     }
 } 

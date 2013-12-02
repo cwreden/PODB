@@ -19,7 +19,7 @@ class ProjectController extends BaseRestfulController
 
         $output = array();
         foreach ($objects as $object) {
-            $output[] = $object->asArray();
+            $output[] = $object->asShortArray();
         }
 
         return new JsonModel($output);

@@ -98,7 +98,7 @@ class Translation extends BaseEntity
     }
 
     /**
-     * @param mixed $createdBy
+     * @param string $createdBy
      */
     public function setCreatedBy($createdBy)
     {
@@ -106,7 +106,7 @@ class Translation extends BaseEntity
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getCreatedBy()
     {
@@ -114,23 +114,23 @@ class Translation extends BaseEntity
     }
 
     /**
-     * @param mixed $fuzzy
+     * @param boolean $useFuzzy
      */
-    public function setFuzzy($fuzzy)
+    public function setFuzzy($useFuzzy)
     {
-        $this->fuzzy = $fuzzy;
+        $this->fuzzy = (boolean) $useFuzzy;
     }
 
     /**
-     * @return mixed
+     * @return boolean
      */
     public function getFuzzy()
     {
-        return $this->fuzzy;
+        return (boolean) $this->fuzzy;
     }
 
     /**
-     * @param mixed $id
+     * @param string $id
      */
     public function setId($id)
     {
@@ -138,7 +138,7 @@ class Translation extends BaseEntity
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getId()
     {
@@ -146,7 +146,7 @@ class Translation extends BaseEntity
     }
 
     /**
-     * @param mixed $languageId
+     * @param string $languageId
      */
     public function setLanguageId($languageId)
     {
@@ -154,7 +154,7 @@ class Translation extends BaseEntity
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getLanguageId()
     {
@@ -162,7 +162,7 @@ class Translation extends BaseEntity
     }
 
     /**
-     * @param mixed $lastUpdateBy
+     * @param string $lastUpdateBy
      */
     public function setLastUpdateBy($lastUpdateBy)
     {
@@ -170,7 +170,7 @@ class Translation extends BaseEntity
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getLastUpdateBy()
     {
@@ -194,7 +194,7 @@ class Translation extends BaseEntity
     }
 
     /**
-     * @param mixed $msgStr
+     * @param string $msgStr
      */
     public function setMsgStr($msgStr)
     {
@@ -202,7 +202,7 @@ class Translation extends BaseEntity
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getMsgStr()
     {
@@ -210,7 +210,7 @@ class Translation extends BaseEntity
     }
 
     /**
-     * @param mixed $msgStr1
+     * @param string $msgStr1
      */
     public function setMsgStr1($msgStr1)
     {
@@ -218,7 +218,7 @@ class Translation extends BaseEntity
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getMsgStr1()
     {
@@ -226,7 +226,7 @@ class Translation extends BaseEntity
     }
 
     /**
-     * @param mixed $msgStr2
+     * @param string $msgStr2
      */
     public function setMsgStr2($msgStr2)
     {
@@ -234,7 +234,7 @@ class Translation extends BaseEntity
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getMsgStr2()
     {
@@ -242,7 +242,7 @@ class Translation extends BaseEntity
     }
 
     /**
-     * @param mixed $poDataSetId
+     * @param string $poDataSetId
      */
     public function setPoDataSetId($poDataSetId)
     {
@@ -250,13 +250,16 @@ class Translation extends BaseEntity
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getPoDataSetId()
     {
         return $this->poDataSetId;
     }
 
+    /**
+     * @return array
+     */
     public function asArray()
     {
         return array(
@@ -266,7 +269,22 @@ class Translation extends BaseEntity
             'msgStr' => $this->getMsgStr(),
             'msgStr1' => $this->getMsgStr1(),
             'msgStr2' => $this->getMsgStr2(),
-            'fuzzy' => $this->getFuzzy()
+            'fuzzy' => $this->getFuzzy(),
+            'lastUpdatedDate' => $this->getLastUpdateDate(),
+            'lastUpdatedBy' => $this->getLastUpdateBy(),
+            'createdDate' => $this->getCreateDate(),
+            'createdBy' => $this->getCreatedBy(),
+        );
+    }
+
+    /**
+     * @return array
+     */
+    public function asShortArray()
+    {
+        return array(
+            'id' => $this->getId(),
+            'msgStr' => $this->getMsgStr(),
         );
     }
 

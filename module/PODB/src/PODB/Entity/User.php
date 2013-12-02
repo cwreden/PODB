@@ -238,8 +238,23 @@ class User extends BaseEntity implements UserInterface
     {
         return array(
             'id' => $this->getId(),
+            'displayname' => $this->getDisplayName(),
             'username' => $this->getUsername(),
-            'displayname' => $this->getDisplayName()
+            'email' => $this->getEmail(),
+            'state' => $this->getState(),
+            'createDate' => $this->getCreateDate(),
+            'lastUpdateDate' => $this->getLastUpdateDate(),
+        );
+    }
+
+    /**
+     * @return array
+     */
+    public function asShortArray()
+    {
+        return array(
+            'id' => $this->getId(),
+            'displayname' => $this->getDisplayName(),
         );
     }
 }

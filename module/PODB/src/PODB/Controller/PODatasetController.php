@@ -16,7 +16,7 @@ class PODatasetController extends BaseRestfulController
 
         $output = array();
         foreach ($objects as $object) {
-            $output[] = $object->asArray();
+            $output[] = $object->asShortArray();
         }
 
         return new JsonModel($output);
@@ -39,7 +39,8 @@ class PODatasetController extends BaseRestfulController
     {
         $object = new PODataSet();
 
-        //ToDo: Daten müssen noch gesetzt werden
+        $object->setName($data['name']);
+        // @ToDo: Hier fehlen noch die anderen Attribute des PODataSet
 
         $now = new DateTime();
         $object->setCreateDate($now);

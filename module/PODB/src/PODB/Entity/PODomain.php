@@ -176,7 +176,19 @@ class PODomain extends BaseEntity
     {
         return array(
             'id' => $this->getId(),
-            'name' => $this->getName()
+            'name' => $this->getName(),
+            'lastUpdatedDate' => $this->getLastUpdateDate(),
+            'lastUpdatedBy' => $this->getLastUpdateBy(),
+            'createdDate' => $this->getCreateDate(),
+            'createdBy' => $this->getCreatedBy(),
+        );
+    }
+
+    public function asAShortArray()
+    {
+        return array(
+            'id' => $this->getId(),
+            'name' => $this->getName(),
         );
     }
 } 

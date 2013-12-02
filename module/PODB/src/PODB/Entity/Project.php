@@ -200,7 +200,22 @@ class Project extends BaseEntity
             'id' => $this->getId(),
             'name' => $this->getName(),
             'defaultLanguage' => $this->getDefaultLanguage(),
-            'users' => $this->getUsers()
+            'users' => $this->getUsers(),
+            'lastUpdatedDate' => $this->getLastUpdateDate(),
+            'lastUpdatedBy' => $this->getLastUpdateBy(),
+            'createdDate' => $this->getCreateDate(),
+            'createdBy' => $this->getCreatedBy(),
+        );
+    }
+
+    /**
+     * @return array
+     */
+    public function asShortArray()
+    {
+        return array(
+            'id' => $this->getId(),
+            'name' => $this->getName(),
         );
     }
 } 

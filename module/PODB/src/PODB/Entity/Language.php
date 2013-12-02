@@ -168,4 +168,15 @@ class Language extends BaseEntity
             'lastUpdateDate' => $this->getLastUpdateDate(),
         );
     }
+
+    /**
+     * @return array
+     */
+    public function asShortArray()
+    {
+        return array(
+            'id' => $this->getId(),
+            'name' => $this->getName(),
+        );
+    }
 } 

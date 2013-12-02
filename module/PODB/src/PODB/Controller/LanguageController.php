@@ -19,7 +19,7 @@ class LanguageController extends BaseRestfulController
 
         $output = array();
         foreach ($users as $user) {
-            $output[] = $user->asArray();
+            $output[] = $user->asShortArray();
         }
 
         return new JsonModel($output);

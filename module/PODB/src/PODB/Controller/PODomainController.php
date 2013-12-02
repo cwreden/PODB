@@ -19,7 +19,7 @@ class PODomainController extends BaseRestfulController
 
         $output = array();
         foreach ($objects as $object) {
-            $output[] = $object->asArray();
+            $output[] = $object->asAShortArray();
         }
 
         return new JsonModel($output);
