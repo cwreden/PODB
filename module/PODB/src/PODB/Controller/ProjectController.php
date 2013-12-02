@@ -64,7 +64,7 @@ class ProjectController extends BaseRestfulController
             $object->setName($data['name']);
             $object->setDefaultLanguage($data['defaultLanguage']);
             $object->setUsers($data['users']);
-            $object->setLastUpdateDate(time());
+            $object->setLastUpdateDate(new DateTime());
             $this->getRepository()->update($object);
             return new JsonModel(array('successfull' => 'true'));
         } catch (Exception $e) {
