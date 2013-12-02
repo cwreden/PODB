@@ -62,7 +62,7 @@ class LanguageController extends BaseRestfulController
             $language = $this->getRepository()->get($id);
             $language->setName($data['name']);
             $language->setLocale($data['locale']);
-            $language->setLastUpdateDate(time());
+            $language->setLastUpdateDate(new DateTime());
             $this->getRepository()->update($language);
             return new JsonModel(array('successfull' => 'true'));
         } catch (Exception $e) {
