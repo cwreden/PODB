@@ -4,7 +4,7 @@ namespace PODB\Repository;
 
 use PODB\Entity\User;
 
-class UserRepository extends Repository
+class UserRepository extends Repository /*implements UserInterface*/
 {
     protected $entityClass = 'PODB\Entity\User';
 
