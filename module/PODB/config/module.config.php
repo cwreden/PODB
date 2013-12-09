@@ -38,6 +38,9 @@ return array(
             'PODB\Repository\PODataset' => 'PODB\Repository\PODatasetRepository',
             'PODB\Repository\Translation' => 'PODB\Repository\TranslationRepository',
         ),
+//        'aliases' => array(
+//            'podb_user_mapper' => 'PODB\Repository\UserRepository',
+//        ),
 //
 //      Alternative zum Invokable:
 //      Dies hätte den Vorteil, dass der EntitiyManager von aussen injiziert wird => In UserRepository den EnitityManager im Konstruktor dann setzten
