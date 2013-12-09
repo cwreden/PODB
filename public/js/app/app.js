@@ -14,6 +14,10 @@ angular.module('app', ['restangular', 'ngRoute'])
                 templateUrl: '/template/users/users.html',
                 controller: 'UserController'
             })
+            .when('/login', {
+                templateUrl: '/template/login.html',
+                controller: 'LoginController'
+            })
             .otherwise({
                 redirectTo: '/home'
             });
