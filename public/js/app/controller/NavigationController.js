@@ -4,24 +4,24 @@ angular.module('app').controller('NavigationController', function($scope, Restan
     $scope.menus = [
         {
             label: 'Home',
-            url: '#/home',
+            url: '/#/home',
             active: 1
         },
         {
             label: 'Users',
-            url: '#/users'
+            url: '/#/users'
         },
         {
             label: 'Projects',
-            url: '#/projects'
+            url: '/#/projects'
         },
         {
             label: 'Domains',
-            url: '#/domains'
+            url: '/#/domains'
         },
         {
             label: 'Languages',
-            url: '#/languages'
+            url: '/#/languages'
         }
     ];
 });
