@@ -10,6 +10,11 @@ $restler = new \Luracast\Restler\Restler();
 $restler->setAPIVersion(1);
 //$restler->addAuthenticationClass('OpenCoders\PODB\access\Authentication');
 
-//$restler->addAPIClass('RestTEST\Under\FirstUnderClass', 'lala');
+$restler->addAPIClass('OpenCoders\PODB\API\Users');
+$restler->addAPIClass('OpenCoders\PODB\API\Projects');
+$restler->addAPIClass('OpenCoders\PODB\API\Languages');
+$restler->addAPIClass('OpenCoders\PODB\API\Domains');
+$restler->addAPIClass('OpenCoders\PODB\API\DataSets');
+$restler->addAPIClass('OpenCoders\PODB\API\Translations');
 
 $restler->handle();
