@@ -1,6 +1,6 @@
 <?php
 
-namespace OpenCoders\PODB\API\v1;
+namespace OpenCoders\API\v1;
 
 
 class Users {
@@ -23,38 +23,38 @@ class Users {
      */
     public function get($username)
     {
-        return array('test' => $username);
+        return array();
     }
 
     /**
-     * @param $userName
-     * @url GET /users/:userName/projects
+     * @param $username
+     * @url GET /users/:username/projects
      *
      * @return array
      */
-    public function getProjects($userName)
+    public function getProjects($username)
     {
         return array();
     }
 
     /**
-     * @param $userName
-     * @url GET /users/:userName/languages
+     * @param $username
+     * @url GET /users/:username/languages
      *
      * @return array
      */
-    public function getLanguages($userName)
+    public function getLanguages($username)
     {
         return array();
     }
 
     /**
-     * @param $userName
-     * @url GET /users/:userName/translations
+     * @param $username
+     * @url GET /users/:username/translations
      *
      * @return array
      */
-    public function getTranslations($userName)
+    public function getTranslations($username)
     {
         return array();
     }
