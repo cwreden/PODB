@@ -16,13 +16,18 @@
         "po",
         "editor"
     ],
+    "autoload": {
+        "psr-0": {
+            "OpenCoders": "/src"
+        }
+    },
     "homepage": "",
+    "require-dev": {
+        "phpunit/phpunit": "3.7.*"
+    },
     "require": {
         "php": ">=5.3.3",
-        "zendframework/zendframework": "2.2.*",
-        "doctrine/doctrine-orm-module": "*",
-        "zendframework/zend-developer-tools": "dev-master",
-        "zf-commons/zfc-user": "dev-master",
-        "zf-commons/zfc-user-doctrine-orm": "dev-master"
+        "doctrine/orm": "*",
+        "luracast/restler": "*"
     }
 }
