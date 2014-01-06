@@ -6,7 +6,7 @@ class Languages
 {
 
     /**
-     * @url /languages
+     * @url GET /languages
      *
      * @return array
      */
@@ -17,7 +17,7 @@ class Languages
 
     /**
      * @param $abbreviation
-     * @url /languages/:abbreviation
+     * @url GET /languages/:abbreviation
      *
      * @return array
      */
@@ -28,7 +28,7 @@ class Languages
 
     /**
      * @param $abbreviation
-     * @url /languages/:abbreviation/projects
+     * @url GET /languages/:abbreviation/projects
      *
      * @return array
      */

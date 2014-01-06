@@ -6,7 +6,7 @@ class Translations
 {
 
     /**
-     * @url /translations
+     * @url GET /translations
      *
      * @return array
      */
@@ -17,7 +17,7 @@ class Translations
 
     /**
      * @param $id
-     * @url /translations/:id
+     * @url GET /translations/:id
      *
      * @return array
      */
