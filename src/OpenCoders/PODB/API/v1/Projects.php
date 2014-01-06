@@ -3,6 +3,8 @@
 namespace OpenCoders\PODB\API\v1;
 
 
+use OpenCoders\PODB\helper\Server;
+
 class Projects {
 
     /**
@@ -12,7 +14,30 @@ class Projects {
      */
     public function getList()
     {
-        return array();
+        $apiBaseUrl = Server::getBaseApiUrl();
+
+        return array(
+            array(
+                'id' => 12344567,
+                'name' => 'Fake-Project-1',
+                'owner' => array(),
+                'url' => $apiBaseUrl . "/projects/Fake-Project-1",
+                'url_html' => '',
+                'url_members' => $apiBaseUrl . "/projects/Fake-Project-1/members",
+                'url_domains' => $apiBaseUrl . "/projects/Fake-Project-1/domains",
+                'url_languages' => $apiBaseUrl . "/projects/Fake-Project-1/languages"
+            ),
+            array(
+                'id' => 12344567,
+                'name' => 'Fake-Project-2',
+                'owner' => array(),
+                'url' => $apiBaseUrl . "/projects/Fake-Project-2",
+                'url_html' => '',
+                'url_members' => $apiBaseUrl . "/projects/Fake-Project-2/members",
+                'url_domains' => $apiBaseUrl . "/projects/Fake-Project-2/domains",
+                'url_languages' => $apiBaseUrl . "/projects/Fake-Project-2/languages"
+            )
+        );
     }
 
     /**
@@ -23,16 +48,29 @@ class Projects {
      */
     public function get($projectName)
     {
-        return array();
+        $apiBaseUrl = Server::getBaseApiUrl();
+
+        return array(
+            'id' => 12344567,
+            'name' => $projectName,
+            'owner' => array(),
+            'url' => $apiBaseUrl . "/projects/$projectName",
+            'url_html' => '',
+            'url_members' => $apiBaseUrl . "/projects/$projectName/members",
+            'url_domains' => $apiBaseUrl . "/projects/$projectName/domains",
+            'url_languages' => $apiBaseUrl . "/projects/$projectName/languages",
+            'created_at' => 1389051097,
+            'updated_at' => 1389051097
+        );
     }
 
     /**
      * @param $projectName
-     * @url GET /projects/:projectName/users
+     * @url GET /projects/:projectName/members
      *
      * @return array
      */
-    public function getUsers($projectName)
+    public function getMembers($projectName)
     {
         return array();
     }
