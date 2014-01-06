@@ -6,7 +6,11 @@ namespace OpenCoders\PODB\API\v1;
 class DataSet {
 
     /**
+     * @param $id
+     *
      * @url GET /dataSets/:id
+     *
+     * @return array
      */
     public function get($id)
     {
@@ -14,10 +18,14 @@ class DataSet {
     }
 
     /**
+     * @param $id
+     *
      * @URL GET /dataSets/:id/translations
+     *
+     * @return array
      */
-    public function getTranslations()
+    public function getTranslations($id)
     {
-
+        return array();
     }
-} 
+}
