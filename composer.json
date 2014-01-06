@@ -1,7 +1,7 @@
 {
     "name": "opencoders/podb",
     "description": "an open source po webeditor",
-    "license": "AGPL",
+    "license": "AGPL-3.0",
     "authors": [
         {
             "name": "André Meyerjürgens",
@@ -16,18 +16,18 @@
         "po",
         "editor"
     ],
-    "autoload": {
-        "psr-0": {
-            "OpenCoders": "/src"
-        }
-    },
     "homepage": "",
-    "require-dev": {
-        "phpunit/phpunit": "3.7.*"
-    },
     "require": {
         "php": ">=5.3.3",
         "doctrine/orm": "*",
         "luracast/restler": "*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "3.7.*"
+    },
+    "autoload": {
+        "psr-0": {
+            "OpenCoders": "src/"
+        }
     }
 }
