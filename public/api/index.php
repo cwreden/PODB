@@ -8,7 +8,7 @@ require __DIR__ . '/../../src/autoload.php';
 
 $restler = new \Luracast\Restler\Restler();
 $restler->setAPIVersion(1);
-//$restler->addAuthenticationClass('OpenCoders\PODB\access\Authentication');
+$restler->addAuthenticationClass('OpenCoders\PODB\access\Authentication');
 
 $restler->addAPIClass('OpenCoders\PODB\API\Users');
 $restler->addAPIClass('OpenCoders\PODB\API\Projects');
