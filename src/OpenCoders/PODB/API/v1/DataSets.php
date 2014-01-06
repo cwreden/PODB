@@ -8,7 +8,7 @@ class DataSet {
     /**
      * @param $id
      *
-     * @url GET /dataSets/:id
+     * @url GET /datasets/:id
      *
      * @return array
      */
@@ -20,7 +20,7 @@ class DataSet {
     /**
      * @param $id
      *
-     * @URL GET /dataSets/:id/translations
+     * @url GET /datasets/:id/translations
      *
      * @return array
      */

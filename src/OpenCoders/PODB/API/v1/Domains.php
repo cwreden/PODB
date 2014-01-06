@@ -7,6 +7,8 @@ class Domains {
 
     /**
      * @url GET /domains
+     *
+     * @return array
      */
     public function getList()
     {
@@ -14,7 +16,11 @@ class Domains {
     }
 
     /**
+     * @param $projactName
+     * @param $domainName
      * @url GET /domains/:projectName/:domainName
+     *
+     * @return array
      */
     public function get($projactName, $domainName)
     {
@@ -22,7 +28,11 @@ class Domains {
     }
 
     /**
-     * @url GET /domains/:projectName/:domainName/translatedLanguages
+     * @param $projectName
+     * @param $domainName
+     * @url GET /domains/:projectName/:domainName/translated_languages
+     *
+     * @return array
      */
     public function getTranslatedLanguages($projectName, $domainName)
     {
@@ -30,7 +40,11 @@ class Domains {
     }
 
     /**
+     * @param $projectName
+     * @param $domainName
      * @url GET /domains/:projectName/:domainName/datasets
+     *
+     * @return array
      */
     public function getDataSets($projectName, $domainName)
     {
