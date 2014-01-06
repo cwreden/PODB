@@ -16,13 +16,13 @@ class Domains {
     }
 
     /**
-     * @param $projactName
+     * @param $projectName
      * @param $domainName
      * @url GET /domains/:projectName/:domainName
      *
      * @return array
      */
-    public function get($projactName, $domainName)
+    public function get($projectName, $domainName)
     {
         return array();
     }
