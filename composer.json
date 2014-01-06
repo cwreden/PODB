@@ -17,6 +17,7 @@
         "editor"
     ],
     "homepage": "",
+    "minimum-stability": "stable",
     "require": {
         "php": ">=5.3.3",
         "doctrine/orm": "*",
