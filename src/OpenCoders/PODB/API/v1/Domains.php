@@ -77,7 +77,17 @@ class Domains {
      */
     public function getTranslatedLanguages($projectName, $domainName)
     {
-        return array();
+        $apiBaseUrl = Server::getBaseApiUrl();
+
+        return array(
+            array(
+                'id' => 2,
+                'locale' => 'en_GB',
+                'label' => 'Deutsch',
+                'url' => $apiBaseUrl . "/{$this->version}/languages/en_GB",
+                'url_projects' => $apiBaseUrl . "/{$this->version}/languages/en_GB/projects"
+            )
+        );
     }
 
     /**
