@@ -74,7 +74,34 @@ class Projects {
      */
     public function getMembers($projectName)
     {
-        return array();
+        $baseUrl = Server::getBaseApiUrl();
+
+        return array(
+            array(
+                'id' => 123456789,
+                'username' => 'dax',
+                'prename' => 'André',
+                'name' => 'Meyerjürgens',
+                'created_at' => 4356852635423,
+                'modified_at' => 4356852635423,
+                'url_user' => $baseUrl . "/{$this->apiVersion}/users/dax",
+                'url_projects' => $baseUrl . "/{$this->apiVersion}/users/dax/projects",
+                'url_languages' => $baseUrl . "/{$this->apiVersion}/users/dax/languages",
+                'url_translations' => $baseUrl . "/{$this->apiVersion}/users/dax/translations",
+            ),
+            array(
+                'id' => 987654321,
+                'username' => 'hans',
+                'prename' => 'André',
+                'name' => 'Meyerjürgens',
+                'created_at' => 4356852635423,
+                'modified_at' => 4356852635423,
+                'url_user' => $baseUrl . "/{$this->apiVersion}/users/hans",
+                'url_projects' => $baseUrl . "/{$this->apiVersion}/users/hans/projects",
+                'url_languages' => $baseUrl . "/{$this->apiVersion}/users/hans/languages",
+                'url_translations' => $baseUrl . "/{$this->apiVersion}/users/hans/translations",
+            )
+        );
     }
 
     /**
