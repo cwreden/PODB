@@ -15,3 +15,4 @@ README.txt
 demos/
 extras/documentation
 doctrine-module
+config/doctrine.local.php
