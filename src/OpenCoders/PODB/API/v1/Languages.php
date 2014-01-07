@@ -37,7 +37,7 @@ class Languages
                 'label' => 'Deutsch',
                 'url' => $apiBaseUrl . "/languages/en_US",
                 'url_Projects' => $apiBaseUrl . "/languages/en_US/projects"
-            ),
+            )
         );
     }
 

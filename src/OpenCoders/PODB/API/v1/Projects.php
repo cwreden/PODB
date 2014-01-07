@@ -94,6 +94,23 @@ class Projects {
      */
     public function getLanguages($projectName)
     {
-        return array();
+        $apiBaseUrl = Server::getBaseApiUrl();
+
+        return array(
+            array(
+                'id' => 1,
+                'locale' => 'de_DE',
+                'label' => 'Deutsch',
+                'url' => $apiBaseUrl . "/languages/de_DE",
+                'url_Projects' => $apiBaseUrl . "/languages/de_DE/projects"
+            ),
+            array(
+                'id' => 3,
+                'locale' => 'en_US',
+                'label' => 'Deutsch',
+                'url' => $apiBaseUrl . "/languages/en_US",
+                'url_Projects' => $apiBaseUrl . "/languages/en_US/projects"
+            )
+        );
     }
 } 
