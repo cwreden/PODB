@@ -3,7 +3,17 @@
 namespace OpenCoders\PODB\API\v1;
 
 
-class DataSet {
+class DataSets {
+
+    /**
+     * @url GET /datasets
+     *
+     * @return array
+     */
+    public function getList()
+    {
+        return array();
+    }
 
     /**
      * @param $id
