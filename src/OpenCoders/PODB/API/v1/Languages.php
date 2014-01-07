@@ -56,7 +56,9 @@ class Languages
             'locale' => $abbreviation,
             'label' => 'Language 1',
             'url' => $apiBaseUrl . "/languages/{$abbreviation}",
-            'url_Projects' => $apiBaseUrl . "/languages/{$abbreviation}/projects"
+            'url_Projects' => $apiBaseUrl . "/languages/{$abbreviation}/projects",
+            'created_at' => 1389051097,
+            'updated_at' => 1389051097
         );
     }
 
