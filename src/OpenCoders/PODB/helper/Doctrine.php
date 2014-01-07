@@ -4,7 +4,10 @@ namespace OpenCoders\PODB\helper;
 
 use Doctrine\Common\Cache\ApcCache;
 use Doctrine\Common\Cache\ArrayCache;
+use Doctrine\Common\EventManager;
+use Doctrine\ORM\Configuration;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Mapping\Driver\XmlDriver;
 use Doctrine\ORM\Tools\Setup;
 
 class Doctrine
@@ -30,13 +33,22 @@ class Doctrine
     {
         if (self::$em == null) {
             $dbParams = include(__DIR__ . '/../../../../config/doctrine.local.php');
-            $paths = array(__DIR__ . "/../Entity");
+            $pathToEntities = array(__DIR__ . "/../Entity");
+
+            $config = new Configuration(); // (2)
+
+//            $config->setProxyDir(__DIR__ . '/lib/MyProject/Proxies');
+//            $config->setProxyNamespace('MyProject\Proxies');
+//            $config->setAutoGenerateProxyClasses(self::$isDevMode);
+
+            $driverImpl = $config->newDefaultAnnotationDriver($pathToEntities);
+            $config->setMetadataDriverImpl($driverImpl);
 
             $cache = (self::$isDevMode ? new ArrayCache() : new ApcCache()); // @ToDo: How does the Array Cache and APC Cache works?
+            $config->setMetadataCacheImpl($cache);
+            $config->setQueryCacheImpl($cache);
 
-            $config = Setup::createAnnotationMetadataConfiguration($paths, self::$isDevMode, null, $cache, false);
-
-            self::$em = EntityManager::create($dbParams, $config);
+            self::$em = EntityManager::create($dbParams, $config, new EventManager());
         }
 
         return self::$em;
