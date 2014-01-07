@@ -78,21 +78,30 @@ class Users
      */
     public function getProjects($userName)
     {
+
+        $apiBaseUrl = Server::getBaseApiUrl();
+
         return array(
             array(
-                'id' => 123456789,
-                'name' => 'PODB',
-                'default_language' => 'de_DE',
-                'created_at' => 4356852635423,
-                'modified_at' => 4356852635423,
+                'id' => 12344567,
+                'name' => 'Fake-Project-1',
+                'owner' => array(),
+                'url' => $apiBaseUrl . "/{$this->apiVersion}/projects/Fake-Project-1",
+                'url_html' => '',
+                'url_members' => $apiBaseUrl . "/{$this->apiVersion}/projects/Fake-Project-1/members",
+                'url_domains' => $apiBaseUrl . "/{$this->apiVersion}/projects/Fake-Project-1/domains",
+                'url_languages' => $apiBaseUrl . "/{$this->apiVersion}/projects/Fake-Project-1/languages"
             ),
             array(
-                'id' => 987654321,
-                'name' => 'PODB2',
-                'default_language' => 'en_US',
-                'created_at' => 4356852635423,
-                'modified_at' => 4356852635423,
-            ),
+                'id' => 12344567,
+                'name' => 'Fake-Project-2',
+                'owner' => array(),
+                'url' => $apiBaseUrl . "/{$this->apiVersion}/projects/Fake-Project-2",
+                'url_html' => '',
+                'url_members' => $apiBaseUrl . "/{$this->apiVersion}/projects/Fake-Project-2/members",
+                'url_domains' => $apiBaseUrl . "/{$this->apiVersion}/projects/Fake-Project-2/domains",
+                'url_languages' => $apiBaseUrl . "/{$this->apiVersion}/projects/Fake-Project-2/languages"
+            )
         );
     }
 
