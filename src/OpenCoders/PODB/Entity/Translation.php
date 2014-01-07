@@ -3,81 +3,80 @@
 namespace OpenCoders\PODB\Entity;
 
 use DateTime;
-use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Class Translation
  * @package OpenCoders\PODB\Entity
- * @ORM\Entity
+ * @Entity
  */
-class Translation extends BaseEntity
+class Translation
 {
 
     /**
      * @var
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     * @ORM\Column(type="integer")
+     * @Id
+     * @GeneratedValue(strategy="AUTO")
+     * @Column(type="integer")
      */
     protected $id;
 
     /**
      * @var
-     * @ORM\ManyToOne(targetEntity="PODataSet")
+     * @ManyToOne(targetEntity="PODataSet")
      */
     protected $poDataSetId;
 
     /**
      * @var
-     * @ORM\ManyToOne(targetEntity="Language")
+     * @ManyToOne(targetEntity="Language")
      */
     protected $languageId;
 
     /**
      * @var
-     * @ORM\Column(type="string")
+     * @Column(type="string")
      */
     protected $msgStr;
 
     /**
      * @var
-     * @ORM\Column(type="string")
+     * @Column(type="string")
      */
     protected $msgStr1;
 
     /**
      * @var
-     * @ORM\Column(type="string")
+     * @Column(type="string")
      */
     protected $msgStr2;
 
     /**
      * @var
-     * @ORM\Column(type="boolean")
+     * @Column(type="boolean")
      */
     protected $fuzzy;
 
     /**
      * @var
-     * @ORM\ManyToOne(targetEntity="User")
+     * @ManyToOne(targetEntity="User")
      */
     protected $createdBy;
 
     /**
      * @var
-     * @ORM\Column(type="datetime")
+     * @Column(type="datetime")
      */
     protected $createDate;
 
     /**
      * @var
-     * @ORM\ManyToOne(targetEntity="User")
+     * @ManyToOne(targetEntity="User")
      */
     protected $lastUpdateBy;
 
     /**
      * @var
-     * @ORM\Column(type="datetime")
+     * @Column(type="datetime")
      */
     protected $lastUpdateDate;
 

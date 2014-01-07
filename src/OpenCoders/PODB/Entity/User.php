@@ -3,70 +3,69 @@
 namespace OpenCoders\PODB\Entity;
 
 use DateTime;
-use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Class User
  * @package OpenCoders\PODB\Entity
- * @ORM\Entity
+ * @Entity
  */
 class User
 {
 
     /**
      * @var
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     * @ORM\Column(type="integer")
+     * @Id
+     * @GeneratedValue(strategy="AUTO")
+     * @Column(type="integer")
      */
     private $id;
 
     /**
      * @var
-     * @ORM\Column(type="string")
+     * @Column(type="string")
      */
     private $username;
 
     /**
      * @var
-     * @ORM\Column(type="string")
+     * @Column(type="string")
      */
     private $displayName;
 
     /**
      * @var
-     * @ORM\Column(type="integer")
+     * @Column(type="integer")
      */
     private $state;
 
     /**
      * @var
-     * @ORM\Column(type="string")
+     * @Column(type="string")
      */
     private $email;
 
     /**
      * @var
-     * @ORM\Column(type="string")
+     * @Column(type="string")
      */
     private $password;
 
     /**
      * @var
-     * @ORM\ManyToMany(targetEntity="Project", inversedBy="users")
-     * @ORM\JoinTable(name="users_projects")
+     * @ManyToMany(targetEntity="Project", inversedBy="users")
+     * @JoinTable(name="users_projects")
      */
     private $projects;
 
     /**
      * @var
-     * @ORM\Column(type="datetime")
+     * @Column(type="datetime")
      */
     protected $createDate;
 
     /**
      * @var
-     * @ORM\Column(type="datetime")
+     * @Column(type="datetime")
      */
     protected $lastUpdateDate;
 

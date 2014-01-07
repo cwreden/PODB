@@ -3,63 +3,62 @@
 namespace OpenCoders\PODB\Entity;
 
 use DateTime;
-use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Class Project
  * @package OpenCoders\PODB\Entity
- * @ORM\Entity
+ * @Entity
  */
-class Project extends BaseEntity
+class Project
 {
 
     /**
      * @var
-     * @ORM\ID
-     * @ORM\GeneratedValue(strategy="AUTO")
-     * @ORM\Column(type="integer")
+     * @ID
+     * @GeneratedValue(strategy="AUTO")
+     * @Column(type="integer")
      */
     protected $id;
 
     /**
      * @var
-     * @ORM\Column(type="string")
+     * @Column(type="string")
      */
     protected $name;
 
     /**
      * @var
-     * @ORM\ManyToOne(targetEntity="Language")
+     * @ManyToOne(targetEntity="Language")
      */
     protected $default_language;
 
     /**
      * @var
-     * @ORM\ManyToMany(targetEntity="User", mappedBy="projects")
+     * @ManyToMany(targetEntity="User", mappedBy="projects")
      */
     protected $users;
 
     /**
      * @var
-     * @ORM\ManyToOne(targetEntity="User")
+     * @ManyToOne(targetEntity="User")
      */
     protected $createdBy;
 
     /**
      * @var
-     * @ORM\Column(type="datetime")
+     * @Column(type="datetime")
      */
     protected $createDate;
 
     /**
      * @var
-     * @ORM\ManyToOne(targetEntity="User")
+     * @ManyToOne(targetEntity="User")
      */
     protected $lastUpdateBy;
 
     /**
      * @var
-     * @ORM\Column(type="datetime")
+     * @Column(type="datetime")
      */
     protected $lastUpdateDate;
 

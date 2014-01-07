@@ -3,57 +3,56 @@
 namespace OpenCoders\PODB\Entity;
 
 use DateTime;
-use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Class PODomain
  * @package OpenCoders\PODB\Entity
- * @ORM\Entity
+ * @Entity
  */
-class PODomain extends BaseEntity
+class PODomain
 {
 
     /**
      * @var
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     * @ORM\Column(type="integer")
+     * @Id
+     * @GeneratedValue(strategy="AUTO")
+     * @Column(type="integer")
      */
     protected $id;
 
     /**
      * @var
-     * @ORM\Column(type="string")
+     * @Column(type="string")
      */
     protected $name;
 
     /**
      * @var
-     * @ORM\ManyToOne(targetEntity="Project")
+     * @ManyToOne(targetEntity="Project")
      */
     protected $projectId;
 
     /**
      * @var
-     * @ORM\ManyToOne(targetEntity="User")
+     * @ManyToOne(targetEntity="User")
      */
     protected $createdBy;
 
     /**
      * @var
-     * @ORM\Column(type="datetime")
+     * @Column(type="datetime")
      */
     protected $createDate;
 
     /**
      * @var
-     * @ORM\ManyToOne(targetEntity="User")
+     * @ManyToOne(targetEntity="User")
      */
     protected $lastUpdateBy;
 
     /**
      * @var
-     * @ORM\Column(type="datetime")
+     * @Column(type="datetime")
      */
     protected $lastUpdateDate;
 
