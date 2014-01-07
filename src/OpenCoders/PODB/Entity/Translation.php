@@ -22,9 +22,9 @@ class Translation
 
     /**
      * @var
-     * @ManyToOne(targetEntity="PODataSet")
+     * @ManyToOne(targetEntity="DataSet")
      */
-    protected $poDataSetId;
+    protected $dataSetId;
 
     /**
      * @var
@@ -241,19 +241,19 @@ class Translation
     }
 
     /**
-     * @param string $poDataSetId
+     * @param string $dataSetId
      */
-    public function setPoDataSetId($poDataSetId)
+    public function setDataSetId($dataSetId)
     {
-        $this->poDataSetId = $poDataSetId;
+        $this->dataSetId = $dataSetId;
     }
 
     /**
      * @return string
      */
-    public function getPoDataSetId()
+    public function getDataSetId()
     {
-        return $this->poDataSetId;
+        return $this->dataSetId;
     }
 
     /**
@@ -263,7 +263,7 @@ class Translation
     {
         return array(
             'id' => $this->getId(),
-            'poDateSetId' => $this->getPoDataSetId(),
+            'dateSetId' => $this->getDataSetId(),
             'languageId' => $this->getLanguageId(),
             'msgStr' => $this->getMsgStr(),
             'msgStr1' => $this->getMsgStr1(),

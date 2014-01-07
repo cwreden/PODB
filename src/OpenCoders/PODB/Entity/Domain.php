@@ -5,11 +5,11 @@ namespace OpenCoders\PODB\Entity;
 use DateTime;
 
 /**
- * Class PODataSet
+ * Class Domain
  * @package OpenCoders\PODB\Entity
  * @Entity
  */
-class PODataSet
+class Domain
 {
 
     /**
@@ -28,15 +28,9 @@ class PODataSet
 
     /**
      * @var
-     * @ManyToOne(targetEntity="PODomain")
+     * @ManyToOne(targetEntity="Project")
      */
-    protected $domainId;
-
-    /**
-     * @var
-     * @Column(type="string")
-     */
-    protected $msgId;
+    protected $projectId;
 
     /**
      * @var
@@ -95,22 +89,6 @@ class PODataSet
     }
 
     /**
-     * @param string $domainId
-     */
-    public function setDomainId($domainId)
-    {
-        $this->domainId = $domainId;
-    }
-
-    /**
-     * @return string
-     */
-    public function getDomainId()
-    {
-        return $this->domainId;
-    }
-
-    /**
      * @param string $id
      */
     public function setId($id)
@@ -159,43 +137,11 @@ class PODataSet
     }
 
     /**
-     * @param string $msgId
+     * @param string $name
      */
-    public function setMsgId($msgId)
+    public function setName($name)
     {
-        $this->msgId = $msgId;
-    }
-
-    /**
-     * @return string
-     */
-    public function getMsgId()
-    {
-        return $this->msgId;
-    }
-
-    /**
-     * @return array
-     */
-    public function asArray()
-    {
-        return array(
-            'id' => $this->getId(),
-            'domainId' => $this->getDomainId(),
-            'msgId' => $this->getMsgId(),
-            'lastUpdatedDate' => $this->getLastUpdateDate(),
-            'lastUpdatedBy' => $this->getLastUpdateBy(),
-            'createdDate' => $this->getCreateDate(),
-            'createdBy' => $this->getCreatedBy(),
-        );
-    }
-
-    public function asShortArray()
-    {
-        return array(
-            'id' => $this->getId(),
-            'name' => $this->getName(),
-        );
+        $this->name = $name;
     }
 
     /**
@@ -207,10 +153,44 @@ class PODataSet
     }
 
     /**
-     * @param string $name
+     * @param string $projectId
      */
-    public function setName($name)
+    public function setProjectId($projectId)
     {
-        $this->name = $name;
+        $this->projectId = $projectId;
+    }
+
+    /**
+     * @return string
+     */
+    public function getProjectId()
+    {
+        return $this->projectId;
+    }
+
+    /**
+     * @return array
+     */
+    public function asArray()
+    {
+        return array(
+            'id' => $this->getId(),
+            'name' => $this->getName(),
+            'lastUpdatedDate' => $this->getLastUpdateDate(),
+            'lastUpdatedBy' => $this->getLastUpdateBy(),
+            'createdDate' => $this->getCreateDate(),
+            'createdBy' => $this->getCreatedBy(),
+        );
+    }
+
+    /**
+     * @return array
+     */
+    public function asAShortArray()
+    {
+        return array(
+            'id' => $this->getId(),
+            'name' => $this->getName(),
+        );
     }
 } 
