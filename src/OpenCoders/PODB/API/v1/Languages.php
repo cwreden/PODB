@@ -2,6 +2,8 @@
 
 namespace OpenCoders\PODB\API\v1;
 
+use OpenCoders\PODB\helper\Server;
+
 class Languages
 {
 
@@ -12,7 +14,31 @@ class Languages
      */
     public function getList()
     {
-        return array();
+        $apiBaseUrl = Server::getBaseApiUrl();
+
+        return array(
+            array(
+                'id' => 1,
+                'locale' => 'de_DE',
+                'label' => 'Deutsch',
+                'url' => $apiBaseUrl . "/languages/de_DE",
+                'url_Projects' => $apiBaseUrl . "/languages/de_DE/projects"
+            ),
+            array(
+                'id' => 2,
+                'locale' => 'en_GB',
+                'label' => 'Deutsch',
+                'url' => $apiBaseUrl . "/languages/en_GB",
+                'url_Projects' => $apiBaseUrl . "/languages/en_GB/projects"
+            ),
+            array(
+                'id' => 3,
+                'locale' => 'en_US',
+                'label' => 'Deutsch',
+                'url' => $apiBaseUrl . "/languages/en_US",
+                'url_Projects' => $apiBaseUrl . "/languages/en_US/projects"
+            ),
+        );
     }
 
     /**
@@ -23,7 +49,15 @@ class Languages
      */
     public function get($abbreviation)
     {
-        return array();
+        $apiBaseUrl = Server::getBaseApiUrl();
+
+        return array(
+            'id' => 1,
+            'locale' => $abbreviation,
+            'label' => 'Language 1',
+            'url' => $apiBaseUrl . "/languages/{$abbreviation}",
+            'url_Projects' => $apiBaseUrl . "/languages/{$abbreviation}/projects"
+        );
     }
 
     /**
@@ -34,6 +68,29 @@ class Languages
      */
     public function getProjects($abbreviation)
     {
-        return array();
+        $apiBaseUrl = Server::getBaseApiUrl();
+
+        return array(
+            array(
+                'id' => 12344567,
+                'name' => 'Fake-Project-1',
+                'owner' => array(),
+                'url' => $apiBaseUrl . "/projects/Fake-Project-1",
+                'url_html' => '',
+                'url_members' => $apiBaseUrl . "/projects/Fake-Project-1/members",
+                'url_domains' => $apiBaseUrl . "/projects/Fake-Project-1/domains",
+                'url_languages' => $apiBaseUrl . "/projects/Fake-Project-1/languages"
+            ),
+            array(
+                'id' => 12344567,
+                'name' => 'Fake-Project-2',
+                'owner' => array(),
+                'url' => $apiBaseUrl . "/projects/Fake-Project-2",
+                'url_html' => '',
+                'url_members' => $apiBaseUrl . "/projects/Fake-Project-2/members",
+                'url_domains' => $apiBaseUrl . "/projects/Fake-Project-2/domains",
+                'url_languages' => $apiBaseUrl . "/projects/Fake-Project-2/languages"
+            )
+        );
     }
 } 

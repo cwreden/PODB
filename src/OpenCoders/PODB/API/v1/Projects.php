@@ -54,11 +54,11 @@ class Projects {
             'id' => 12344567,
             'name' => $projectName,
             'owner' => array(),
-            'url' => $apiBaseUrl . "/projects/$projectName",
+            'url' => $apiBaseUrl . "/projects/{$projectName}",
             'url_html' => '',
-            'url_members' => $apiBaseUrl . "/projects/$projectName/members",
-            'url_domains' => $apiBaseUrl . "/projects/$projectName/domains",
-            'url_languages' => $apiBaseUrl . "/projects/$projectName/languages",
+            'url_members' => $apiBaseUrl . "/projects/{$projectName}/members",
+            'url_domains' => $apiBaseUrl . "/projects/{$projectName}/domains",
+            'url_languages' => $apiBaseUrl . "/projects/{$projectName}/languages",
             'created_at' => 1389051097,
             'updated_at' => 1389051097
         );
