@@ -2,6 +2,9 @@
 
 namespace OpenCoders\PODB\API\v1;
 
+use DateTime;
+use OpenCoders\PODB\Entity\User;
+use OpenCoders\PODB\helper\Doctrine;
 use OpenCoders\PODB\helper\Server;
 
 class Users
@@ -203,11 +206,36 @@ class Users
 
     /**
      * @param $request_data
+     *
      * @url POST /users
+     *
+     * @return array
      */
     public function post($request_data = NULL)
     {
+        $em = Doctrine::getEntityManager();
 
+        $user = new User();
+        $user->setDisplayName($request_data['displayName']);
+        $user->setEmail($request_data['email']);
+        $user->setUsername($request_data['userName']);
+        $user->setPassword($request_data['password']);
+        $user->setCreateDate(new DateTime());
+        $user->setLastUpdateDate(new DateTime());
+
+        $user->setState(0);
+
+        try {
+            $em->persist($user);
+            $em->flush();
+        } catch (\Exception $e) {
+            return array(
+                'error_msg' => $e->getMessage(),
+                'success' => false
+            );
+        };
+
+        return $user->asArray();
     }
 
     /**
