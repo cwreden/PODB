@@ -7,8 +7,6 @@ use Doctrine\Common\Cache\ArrayCache;
 use Doctrine\Common\EventManager;
 use Doctrine\ORM\Configuration;
 use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\Mapping\Driver\XmlDriver;
-use Doctrine\ORM\Tools\Setup;
 
 class Doctrine
 {
@@ -44,9 +42,9 @@ class Doctrine
             $driverImpl = $config->newDefaultAnnotationDriver($pathToEntities);
             $config->setMetadataDriverImpl($driverImpl);
 
-            $cache = (self::$isDevMode ? new ArrayCache() : new ApcCache()); // @ToDo: How does the Array Cache and APC Cache works?
-            $config->setMetadataCacheImpl($cache);
-            $config->setQueryCacheImpl($cache);
+//            $cache = (self::$isDevMode ? new ArrayCache() : new ApcCache()); // @ToDo: How does the Array Cache and APC Cache works?
+//            $config->setMetadataCacheImpl($cache);
+//            $config->setQueryCacheImpl($cache);
 
             self::$em = EntityManager::create($dbParams, $config, new EventManager());
         }
