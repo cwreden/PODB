@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Class Translation
- * @package PODB\Entity
+ * @package OpenCoders\PODB\Entity
  * @ORM\Entity
  */
 class Translation extends BaseEntity

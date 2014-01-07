@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Class PODomain
- * @package PODB\Entity
+ * @package OpenCoders\PODB\Entity
  * @ORM\Entity
  */
 class PODomain extends BaseEntity

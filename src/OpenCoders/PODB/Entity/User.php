@@ -7,10 +7,10 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Class User
- * @package PODB\Entity
+ * @package OpenCoders\PODB\Entity
  * @ORM\Entity
  */
-class User extends BaseEntity
+class User
 {
 
     /**
