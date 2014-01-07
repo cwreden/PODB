@@ -85,7 +85,19 @@ class Projects {
      */
     public function getDomains($projectName)
     {
-        return array();
+        return array(
+            array(
+                'id' => 2,
+                'name' => 'Fake-Domain-2',
+                'project' => 'Fake-Project-2',
+                'url' => $apiBaseUrl . "/{$this->version}/domains/Fake-Project-2/Fake-Domain-2",
+                'url_project' => $apiBaseUrl . "/{$this->version}/projects/Fake-Project-2",
+                'url_translated_languages' => $apiBaseUrl . "/{$this->version}/domains/Fake-Project-2/Fake-Domain-2/translated_languages",
+                'url_datasets' => $apiBaseUrl . "/{$this->version}/domains/Fake-Project-2/Fake-Domain-2/datasets",
+                'created_at' => 1389051097,
+                'updated_at' => 1389051097
+            )
+        );
     }
 
     /**
