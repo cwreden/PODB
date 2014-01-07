@@ -2,8 +2,76 @@
 
 namespace OpenCoders\PODB\API\v1;
 
+use OpenCoders\PODB\helper\Server;
+
 class Translations
 {
+
+    private $apiVersion = 'v1';
+    /**
+     * @url GET /translations
+     *
+     * @return array
+     */
+    public function getList()
+    {
+        $baseUrl = Server::getBaseApiUrl();
+
+        return array(
+            array(
+                'id' => 123456789,
+                'language' => 'en_US',
+                'msg_str' => 'test',
+                'msg_str1' => '',
+                'msg_str2' => '',
+                'fuzzy' => true,
+                'created_at' => 12345678,
+                'modified_at' => 12345678,
+                'url_dataset' => $baseUrl . "/{$this->apiVersion}/datasets/123456789",
+                'url_created_by' => $baseUrl . "/{$this->apiVersion}/users/dax",
+                'url_modified_by' => $baseUrl . "/{$this->apiVersion}/users/dax",
+            ),
+            array(
+                'id' => 123456789,
+                'language' => 'en_US',
+                'msg_str' => 'test',
+                'msg_str1' => '',
+                'msg_str2' => '',
+                'fuzzy' => true,
+                'created_at' => 12345678,
+                'modified_at' => 12345678,
+                'url_dataset' => $baseUrl . "/{$this->apiVersion}/datasets/123456789",
+                'url_created_by' => $baseUrl . "/{$this->apiVersion}/users/dax",
+                'url_modified_by' => $baseUrl . "/{$this->apiVersion}/users/dax",
+            ),
+            array(
+                'id' => 123456789,
+                'language' => 'en_US',
+                'msg_str' => 'test',
+                'msg_str1' => '',
+                'msg_str2' => '',
+                'fuzzy' => true,
+                'created_at' => 12345678,
+                'modified_at' => 12345678,
+                'url_dataset' => $baseUrl . "/{$this->apiVersion}/datasets/123456789",
+                'url_created_by' => $baseUrl . "/{$this->apiVersion}/users/dax",
+                'url_modified_by' => $baseUrl . "/{$this->apiVersion}/users/dax",
+            ),
+            array(
+                'id' => 123456789,
+                'language' => 'en_US',
+                'msg_str' => 'test',
+                'msg_str1' => '',
+                'msg_str2' => '',
+                'fuzzy' => true,
+                'created_at' => 12345678,
+                'modified_at' => 12345678,
+                'url_dataset' => $baseUrl . "/{$this->apiVersion}/datasets/123456789",
+                'url_created_by' => $baseUrl . "/{$this->apiVersion}/users/dax",
+                'url_modified_by' => $baseUrl . "/{$this->apiVersion}/users/dax",
+            ),
+        );
+    }
 
     /**
      * @param $id
@@ -13,17 +81,23 @@ class Translations
      */
     public function get($id)
     {
-        return array();
-    }
+        $baseUrl = Server::getBaseApiUrl();
 
-    /**
-     * @url GET /translations
-     *
-     * @return array
-     */
-    public function getList()
-    {
-        return array();
+        return array(
+            array(
+                'id' => 123456789,
+                'language' => 'en_US',
+                'msg_str' => 'test',
+                'msg_str1' => '',
+                'msg_str2' => '',
+                'fuzzy' => true,
+                'created_at' => 12345678,
+                'modified_at' => 12345678,
+                'url_dataset' => $baseUrl . "/{$this->apiVersion}/datasets/123456789",
+                'url_created_by' => $baseUrl . "/{$this->apiVersion}/users/dax",
+                'url_modified_by' => $baseUrl . "/{$this->apiVersion}/users/dax",
+            ),
+        );
     }
 
 }

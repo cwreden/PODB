@@ -7,7 +7,7 @@ use OpenCoders\PODB\helper\Server;
 
 class Projects {
 
-    private $version = 'v1';
+    private $apiVersion = 'v1';
 
     /**
      * @url GET /projects
@@ -23,21 +23,21 @@ class Projects {
                 'id' => 12344567,
                 'name' => 'Fake-Project-1',
                 'owner' => array(),
-                'url' => $apiBaseUrl . "/{$this->version}/projects/Fake-Project-1",
+                'url' => $apiBaseUrl . "/{$this->apiVersion}/projects/Fake-Project-1",
                 'url_html' => '',
-                'url_members' => $apiBaseUrl . "/{$this->version}/projects/Fake-Project-1/members",
-                'url_domains' => $apiBaseUrl . "/{$this->version}/projects/Fake-Project-1/domains",
-                'url_languages' => $apiBaseUrl . "/{$this->version}/projects/Fake-Project-1/languages"
+                'url_members' => $apiBaseUrl . "/{$this->apiVersion}/projects/Fake-Project-1/members",
+                'url_domains' => $apiBaseUrl . "/{$this->apiVersion}/projects/Fake-Project-1/domains",
+                'url_languages' => $apiBaseUrl . "/{$this->apiVersion}/projects/Fake-Project-1/languages"
             ),
             array(
                 'id' => 12344567,
                 'name' => 'Fake-Project-2',
                 'owner' => array(),
-                'url' => $apiBaseUrl . "/{$this->version}/projects/Fake-Project-2",
+                'url' => $apiBaseUrl . "/{$this->apiVersion}/projects/Fake-Project-2",
                 'url_html' => '',
-                'url_members' => $apiBaseUrl . "/{$this->version}/projects/Fake-Project-2/members",
-                'url_domains' => $apiBaseUrl . "/{$this->version}/projects/Fake-Project-2/domains",
-                'url_languages' => $apiBaseUrl . "/{$this->version}/projects/Fake-Project-2/languages"
+                'url_members' => $apiBaseUrl . "/{$this->apiVersion}/projects/Fake-Project-2/members",
+                'url_domains' => $apiBaseUrl . "/{$this->apiVersion}/projects/Fake-Project-2/domains",
+                'url_languages' => $apiBaseUrl . "/{$this->apiVersion}/projects/Fake-Project-2/languages"
             )
         );
     }
@@ -56,11 +56,11 @@ class Projects {
             'id' => 12344567,
             'name' => $projectName,
             'owner' => array(),
-            'url' => $apiBaseUrl . "/{$this->version}/projects/{$projectName}",
+            'url' => $apiBaseUrl . "/{$this->apiVersion}/projects/{$projectName}",
             'url_html' => '',
-            'url_members' => $apiBaseUrl . "/{$this->version}/projects/{$projectName}/members",
-            'url_domains' => $apiBaseUrl . "/{$this->version}/projects/{$projectName}/domains",
-            'url_languages' => $apiBaseUrl . "/{$this->version}/projects/{$projectName}/languages",
+            'url_members' => $apiBaseUrl . "/{$this->apiVersion}/projects/{$projectName}/members",
+            'url_domains' => $apiBaseUrl . "/{$this->apiVersion}/projects/{$projectName}/domains",
+            'url_languages' => $apiBaseUrl . "/{$this->apiVersion}/projects/{$projectName}/languages",
             'created_at' => 1389051097,
             'updated_at' => 1389051097
         );
@@ -119,10 +119,10 @@ class Projects {
                 'id' => 2,
                 'name' => 'Fake-Domain-2',
                 'project' => 'Fake-Project-2',
-                'url' => $apiBaseUrl . "/{$this->version}/domains/Fake-Project-2/Fake-Domain-2",
-                'url_project' => $apiBaseUrl . "/{$this->version}/projects/Fake-Project-2",
-                'url_translated_languages' => $apiBaseUrl . "/{$this->version}/domains/Fake-Project-2/Fake-Domain-2/translated_languages",
-                'url_datasets' => $apiBaseUrl . "/{$this->version}/domains/Fake-Project-2/Fake-Domain-2/datasets",
+                'url' => $apiBaseUrl . "/{$this->apiVersion}/domains/Fake-Project-2/Fake-Domain-2",
+                'url_project' => $apiBaseUrl . "/{$this->apiVersion}/projects/Fake-Project-2",
+                'url_translated_languages' => $apiBaseUrl . "/{$this->apiVersion}/domains/Fake-Project-2/Fake-Domain-2/translated_languages",
+                'url_datasets' => $apiBaseUrl . "/{$this->apiVersion}/domains/Fake-Project-2/Fake-Domain-2/datasets",
                 'created_at' => 1389051097,
                 'updated_at' => 1389051097
             )
@@ -144,15 +144,15 @@ class Projects {
                 'id' => 1,
                 'locale' => 'de_DE',
                 'label' => 'Deutsch',
-                'url' => $apiBaseUrl . "/{$this->version}/languages/de_DE",
-                'url_projects' => $apiBaseUrl . "/{$this->version}/languages/de_DE/projects"
+                'url' => $apiBaseUrl . "/{$this->apiVersion}/languages/de_DE",
+                'url_projects' => $apiBaseUrl . "/{$this->apiVersion}/languages/de_DE/projects"
             ),
             array(
                 'id' => 3,
                 'locale' => 'en_US',
                 'label' => 'Deutsch',
-                'url' => $apiBaseUrl . "/{$this->version}/languages/en_US",
-                'url_projects' => $apiBaseUrl . "/{$this->version}/languages/en_US/projects"
+                'url' => $apiBaseUrl . "/{$this->apiVersion}/languages/en_US",
+                'url_projects' => $apiBaseUrl . "/{$this->apiVersion}/languages/en_US/projects"
             )
         );
     }

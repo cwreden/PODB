@@ -7,7 +7,7 @@ use OpenCoders\PODB\helper\Server;
 class Languages
 {
 
-    private $version = 'v1';
+    private $apiVersion = 'v1';
 
     /**
      * @url GET /languages
@@ -23,22 +23,22 @@ class Languages
                 'id' => 1,
                 'locale' => 'de_DE',
                 'label' => 'Deutsch',
-                'url' => $apiBaseUrl . "/{$this->version}/languages/de_DE",
-                'url_projects' => $apiBaseUrl . "/{$this->version}/languages/de_DE/projects"
+                'url' => $apiBaseUrl . "/{$this->apiVersion}/languages/de_DE",
+                'url_projects' => $apiBaseUrl . "/{$this->apiVersion}/languages/de_DE/projects"
             ),
             array(
                 'id' => 2,
                 'locale' => 'en_GB',
                 'label' => 'Deutsch',
-                'url' => $apiBaseUrl . "/{$this->version}/languages/en_GB",
-                'url_projects' => $apiBaseUrl . "/{$this->version}/languages/en_GB/projects"
+                'url' => $apiBaseUrl . "/{$this->apiVersion}/languages/en_GB",
+                'url_projects' => $apiBaseUrl . "/{$this->apiVersion}/languages/en_GB/projects"
             ),
             array(
                 'id' => 3,
                 'locale' => 'en_US',
                 'label' => 'Deutsch',
-                'url' => $apiBaseUrl . "/{$this->version}/languages/en_US",
-                'url_projects' => $apiBaseUrl . "/{$this->version}/languages/en_US/projects"
+                'url' => $apiBaseUrl . "/{$this->apiVersion}/languages/en_US",
+                'url_projects' => $apiBaseUrl . "/{$this->apiVersion}/languages/en_US/projects"
             )
         );
     }
@@ -57,8 +57,8 @@ class Languages
             'id' => 1,
             'locale' => $abbreviation,
             'label' => 'Language 1',
-            'url' => $apiBaseUrl . "/{$this->version}/languages/{$abbreviation}",
-            'url_projects' => $apiBaseUrl . "/{$this->version}/languages/{$abbreviation}/projects",
+            'url' => $apiBaseUrl . "/{$this->apiVersion}/languages/{$abbreviation}",
+            'url_projects' => $apiBaseUrl . "/{$this->apiVersion}/languages/{$abbreviation}/projects",
             'created_at' => 1389051097,
             'updated_at' => 1389051097
         );
@@ -79,21 +79,21 @@ class Languages
                 'id' => 12344567,
                 'name' => 'Fake-Project-1',
                 'owner' => array(),
-                'url' => $apiBaseUrl . "/{$this->version}/projects/Fake-Project-1",
+                'url' => $apiBaseUrl . "/{$this->apiVersion}/projects/Fake-Project-1",
                 'url_html' => '',
-                'url_members' => $apiBaseUrl . "/{$this->version}/projects/Fake-Project-1/members",
-                'url_domains' => $apiBaseUrl . "/{$this->version}/projects/Fake-Project-1/domains",
-                'url_languages' => $apiBaseUrl . "/{$this->version}/projects/Fake-Project-1/languages"
+                'url_members' => $apiBaseUrl . "/{$this->apiVersion}/projects/Fake-Project-1/members",
+                'url_domains' => $apiBaseUrl . "/{$this->apiVersion}/projects/Fake-Project-1/domains",
+                'url_languages' => $apiBaseUrl . "/{$this->apiVersion}/projects/Fake-Project-1/languages"
             ),
             array(
                 'id' => 12344567,
                 'name' => 'Fake-Project-2',
                 'owner' => array(),
-                'url' => $apiBaseUrl . "/{$this->version}/projects/Fake-Project-2",
+                'url' => $apiBaseUrl . "/{$this->apiVersion}/projects/Fake-Project-2",
                 'url_html' => '',
-                'url_members' => $apiBaseUrl . "/{$this->version}/projects/Fake-Project-2/members",
-                'url_domains' => $apiBaseUrl . "/{$this->version}/projects/Fake-Project-2/domains",
-                'url_languages' => $apiBaseUrl . "/{$this->version}/projects/Fake-Project-2/languages"
+                'url_members' => $apiBaseUrl . "/{$this->apiVersion}/projects/Fake-Project-2/members",
+                'url_domains' => $apiBaseUrl . "/{$this->apiVersion}/projects/Fake-Project-2/domains",
+                'url_languages' => $apiBaseUrl . "/{$this->apiVersion}/projects/Fake-Project-2/languages"
             )
         );
     }
