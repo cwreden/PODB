@@ -160,7 +160,7 @@ class Projects {
     /**
      * @url POST /projects
      */
-    public function create($request_data = NULL)
+    public function post($request_data = NULL)
     {
         return array(
             'data' => $request_data,
@@ -169,26 +169,27 @@ class Projects {
     }
 
     /**
-     * @url PUT /projects/:projectName
+     * @url PUT /projects/:id
      */
-    public function update($projectName, $request_data = NULL)
+    public function put($id, $request_data = NULL)
     {
         $apiBaseUrl = Server::getBaseApiUrl();
 
         return array(
             'data' => $request_data,
-            'url' => $apiBaseUrl . "/{$this->apiVersion}/projects/{$projectName}",
+            'id' => $id,
+            'url' => $apiBaseUrl . "/{$this->apiVersion}/projects/{$id}",
             'success' => true
         );
     }
 
     /**
-     * @url DELETE /projects/:projectName
+     * @url DELETE /projects/:id
      */
-    public function remove($projectName)
+    public function delete($id)
     {
         return array(
-            'name' => $projectName,
+            'id' => $id,
             'success' => true
         );
     }
