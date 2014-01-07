@@ -101,4 +101,32 @@ class DataSets {
             )
         );
     }
+
+    /**
+     * @param $request_data
+     * @url POST /datasets
+     */
+    public function post($request_data = NULL)
+    {
+
+    }
+
+    /**
+     * @param $id
+     * @param $request_data
+     * @url PUT /datasets/:id
+     */
+    public function put($id, $request_data = NULL)
+    {
+
+    }
+
+    /**
+     * @param $id
+     * @url DELETE /datasets/:id
+     */
+    public function delete($id)
+    {
+
+    }
 }

@@ -201,4 +201,32 @@ class Users
         );
     }
 
+    /**
+     * @param $request_data
+     * @url POST /users
+     */
+    public function post($request_data = NULL)
+    {
+
+    }
+
+    /**
+     * @param $id
+     * @param $request_data
+     * @url PUT /users/:id
+     */
+    public function put($id, $request_data = NULL)
+    {
+
+    }
+
+    /**
+     * @param $id
+     * @url DELETE /users/:id
+     */
+    public function delete($id)
+    {
+
+    }
+
 } 

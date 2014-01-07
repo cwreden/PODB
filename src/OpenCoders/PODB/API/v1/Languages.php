@@ -97,4 +97,32 @@ class Languages
             )
         );
     }
+
+    /**
+     * @param $request_data
+     * @url POST /languages
+     */
+    public function post($request_data = NULL)
+    {
+
+    }
+
+    /**
+     * @param $id
+     * @param $request_data
+     * @url PUT /languages/:id
+     */
+    public function put($id, $request_data = NULL)
+    {
+
+    }
+
+    /**
+     * @param $id
+     * @url DELETE /languages/:id
+     */
+    public function delete($id)
+    {
+
+    }
 } 
