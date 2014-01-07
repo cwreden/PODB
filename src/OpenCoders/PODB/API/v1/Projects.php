@@ -104,14 +104,14 @@ class Projects {
                 'locale' => 'de_DE',
                 'label' => 'Deutsch',
                 'url' => $apiBaseUrl . "/{$this->version}/languages/de_DE",
-                'url_Projects' => $apiBaseUrl . "/{$this->version}/languages/de_DE/projects"
+                'url_projects' => $apiBaseUrl . "/{$this->version}/languages/de_DE/projects"
             ),
             array(
                 'id' => 3,
                 'locale' => 'en_US',
                 'label' => 'Deutsch',
                 'url' => $apiBaseUrl . "/{$this->version}/languages/en_US",
-                'url_Projects' => $apiBaseUrl . "/{$this->version}/languages/en_US/projects"
+                'url_projects' => $apiBaseUrl . "/{$this->version}/languages/en_US/projects"
             )
         );
     }

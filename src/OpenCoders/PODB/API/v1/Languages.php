@@ -24,21 +24,21 @@ class Languages
                 'locale' => 'de_DE',
                 'label' => 'Deutsch',
                 'url' => $apiBaseUrl . "/{$this->version}/languages/de_DE",
-                'url_Projects' => $apiBaseUrl . "/{$this->version}/languages/de_DE/projects"
+                'url_projects' => $apiBaseUrl . "/{$this->version}/languages/de_DE/projects"
             ),
             array(
                 'id' => 2,
                 'locale' => 'en_GB',
                 'label' => 'Deutsch',
                 'url' => $apiBaseUrl . "/{$this->version}/languages/en_GB",
-                'url_Projects' => $apiBaseUrl . "/{$this->version}/languages/en_GB/projects"
+                'url_projects' => $apiBaseUrl . "/{$this->version}/languages/en_GB/projects"
             ),
             array(
                 'id' => 3,
                 'locale' => 'en_US',
                 'label' => 'Deutsch',
                 'url' => $apiBaseUrl . "/{$this->version}/languages/en_US",
-                'url_Projects' => $apiBaseUrl . "/{$this->version}/languages/en_US/projects"
+                'url_projects' => $apiBaseUrl . "/{$this->version}/languages/en_US/projects"
             )
         );
     }
@@ -58,7 +58,7 @@ class Languages
             'locale' => $abbreviation,
             'label' => 'Language 1',
             'url' => $apiBaseUrl . "/{$this->version}/languages/{$abbreviation}",
-            'url_Projects' => $apiBaseUrl . "/{$this->version}/languages/{$abbreviation}/projects",
+            'url_projects' => $apiBaseUrl . "/{$this->version}/languages/{$abbreviation}/projects",
             'created_at' => 1389051097,
             'updated_at' => 1389051097
         );
