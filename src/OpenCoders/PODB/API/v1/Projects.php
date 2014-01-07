@@ -85,6 +85,8 @@ class Projects {
      */
     public function getDomains($projectName)
     {
+        $apiBaseUrl = Server::getBaseApiUrl();
+
         return array(
             array(
                 'id' => 2,
