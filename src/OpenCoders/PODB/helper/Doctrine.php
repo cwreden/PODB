@@ -31,11 +31,10 @@ class Doctrine
         if (self::$em == null) {
             $dbParams = include(__DIR__ . '/../../../../config/doctrine.local.php');
             $paths = array(__DIR__ . "/../Entity");
-            $config = Setup::createAnnotationMetadataConfiguration($paths, self::$isDevMode);
 
             $cache = (self::$isDevMode ? new ArrayCache() : new ApcCache()); // @ToDo: How does the Array Cache and APC Cache works?
-            $config->setMetadataCacheImpl($cache);
-            $config->setQueryCacheImpl($cache);
+
+            $config = Setup::createAnnotationMetadataConfiguration($paths, self::$isDevMode, null, $cache, false);
 
             self::$em = EntityManager::create($dbParams, $config);
         }
