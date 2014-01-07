@@ -35,11 +35,11 @@ class Doctrine
             $dbParams = include(__DIR__ . '/../../../../config/doctrine.local.php');
             $pathToEntities = array(__DIR__ . "/../Entity");
 
-            $config = new Configuration(); // (2)
+            $config = new Configuration();
 
-//            $config->setProxyDir(__DIR__ . '/lib/MyProject/Proxies');
-//            $config->setProxyNamespace('MyProject\Proxies');
-//            $config->setAutoGenerateProxyClasses(self::$isDevMode);
+            $config->setProxyDir(__DIR__ . '/../../../../tmp/doctrine/proxy');
+            $config->setProxyNamespace('OpenCoders\PODB\Proxies');
+            $config->setAutoGenerateProxyClasses(self::$isDevMode);
 
             $driverImpl = $config->newDefaultAnnotationDriver($pathToEntities);
             $config->setMetadataDriverImpl($driverImpl);
