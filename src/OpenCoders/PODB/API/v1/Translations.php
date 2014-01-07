@@ -100,4 +100,32 @@ class Translations
         );
     }
 
+    /**
+     * @param $request_data
+     * @url POST /translations
+     */
+    public function post($request_data = NULL)
+    {
+
+    }
+
+    /**
+     * @param $id
+     * @param $request_data
+     * @url PUT /translations/:id
+     */
+    public function put($id, $request_data = NULL)
+    {
+
+    }
+
+    /**
+     * @param $id
+     * @url DELETE /translations/:id
+     */
+    public function delete($id)
+    {
+
+    }
+
 }

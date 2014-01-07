@@ -123,4 +123,32 @@ class Domains {
         );
     }
 
+    /**
+     * @param $request_data
+     * @url POST /domains
+     */
+    public function post($request_data = NULL)
+    {
+
+    }
+
+    /**
+     * @param $id
+     * @param $request_data
+     * @url PUT /domains/:id
+     */
+    public function put($id, $request_data = NULL)
+    {
+
+    }
+
+    /**
+     * @param $id
+     * @url DELETE /domains/:id
+     */
+    public function delete($id)
+    {
+
+    }
+
 } 
