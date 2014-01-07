@@ -61,7 +61,7 @@ class Users
         $baseUrl = Server::getBaseApiUrl();
 
         return array(
-            'id' => 1234567890,
+            'id' => $userName,
             'username' => $userName,
             'prename' => 'André',
             'name' => 'Meyerjürgens',
@@ -250,11 +250,28 @@ class Users
 
     /**
      * @param $id
+     *
      * @url DELETE /users/:id
+     *
+     * @return array
      */
     public function delete($id)
     {
+        if (intval($id) == 0) {
+            return array(
+                'error_msg' => 'Invalid Object ID.',
+                'success' => false
+            );
+        }
+        $em = Doctrine::getEntityManager();
 
+        $user = $em->getPartialReference('OpenCoders\PODB\Entity\User', array('id' => $id));
+        $em->remove($user);
+        $em->flush();
+
+        return array(
+            'success' => true
+        );
     }
 
 } 
