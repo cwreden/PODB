@@ -1,6 +1,6 @@
 'use Strict';
 
-angular.module('app').controller('NavigationController', function($scope, Restangular) {
+angular.module('poDB').controller('NavigationController', function($scope, Restangular) {
     $scope.menus = [
         {
             label: 'Home',

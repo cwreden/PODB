@@ -1,6 +1,6 @@
 'use Strict';
 
-angular.module('app', ['restangular', 'ngRoute'])
+angular.module('poDB', ['restangular', 'ngRoute'])
     .config(['RestangularProvider', '$routeProvider',
         function (RestangularProvider, $routeProvider) {
             RestangularProvider.setBaseUrl('/api/v1');

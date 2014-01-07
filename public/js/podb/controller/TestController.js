@@ -1,7 +1,7 @@
 'use Strict';
 
 var testController;
-angular.module('app').controller('TestController', function($scope, Restangular) {
+angular.module('poDB').controller('TestController', function($scope, Restangular) {
 
     $scope.getAll = function (objectType) {
         $scope.allObjects = Restangular.all(objectType).getList();
