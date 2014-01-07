@@ -156,4 +156,40 @@ class Projects {
             )
         );
     }
+
+    /**
+     * @url POST /projects
+     */
+    public function create($request_data = NULL)
+    {
+        return array(
+            'data' => $request_data,
+            'success' => true
+        );
+    }
+
+    /**
+     * @url PUT /projects/:projectName
+     */
+    public function update($projectName, $request_data = NULL)
+    {
+        $apiBaseUrl = Server::getBaseApiUrl();
+
+        return array(
+            'data' => $request_data,
+            'url' => $apiBaseUrl . "/{$this->apiVersion}/projects/{$projectName}",
+            'success' => true
+        );
+    }
+
+    /**
+     * @url DELETE /projects/:projectName
+     */
+    public function remove($projectName)
+    {
+        return array(
+            'name' => $projectName,
+            'success' => true
+        );
+    }
 } 
