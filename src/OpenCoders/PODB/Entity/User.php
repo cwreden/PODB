@@ -3,6 +3,7 @@
 namespace OpenCoders\PODB\Entity;
 
 use DateTime;
+use OpenCoders\PODB\Exception\EmptyParameterException;
 use OpenCoders\PODB\Exception\PodbException;
 
 /**
@@ -16,6 +17,11 @@ use OpenCoders\PODB\Exception\PodbException;
  */
 class User extends AbstractBaseEntity
 {
+
+    /**
+     * @var string EntityClassName (FQN)
+     */
+    protected $entityName = 'OpenCoders\PODB\Entity\User';
 
     /**
      * @var
@@ -84,7 +90,7 @@ class User extends AbstractBaseEntity
     public function setEmail($email)
     {
         if ($email == null || $email == '') {
-            throw new PodbException('EMail not allowed to be empty.');
+            throw new EmptyParameterException('EMail not allowed to be empty.');
         }
         $this->email = $email;
     }
@@ -124,7 +130,7 @@ class User extends AbstractBaseEntity
     public function setUsername($username)
     {
         if ($username == null || $username == '') {
-            throw new PodbException('Username not allowed to be empty.');
+            throw new EmptyParameterException('Username not allowed to be empty.');
         }
         $this->username = $username;
     }
@@ -147,7 +153,7 @@ class User extends AbstractBaseEntity
     public function setPassword($password)
     {
         if ($password == null || $password == '') {
-            throw new PodbException('Password not allowed to be empty.');
+            throw new EmptyParameterException('Password not allowed to be empty.');
         }
         $this->password = $password;
     }
@@ -190,7 +196,7 @@ class User extends AbstractBaseEntity
      * Set displayName.
      *
      * @param string $displayName
-     * @return UserInterface
+     * @return void
      */
     public function setDisplayName($displayName)
     {
@@ -293,5 +299,24 @@ class User extends AbstractBaseEntity
             'url_languages' => $baseUrl . '/' . $apiVersion . '/users/' . $this->getUsername() . '/languages',
             'url_translations' => $baseUrl . '/' . $apiVersion . '/users/' . $this->getUsername() . '/translations'
         );
+    }
+
+    public function update($data)
+    {
+        if ($data == null) {
+            throw new PodbException('There is nothing to update.');
+        }
+        foreach ($data as $key => $value) {
+            if ($key == 'displayName') {
+                $this->setDisplayName($value);
+            } else if ($key == 'email') {
+                $this->setEmail($value);
+            } else if ($key == 'password') {
+                $this->setPassword(sha1($value));
+            } else if ($key == 'state') {
+                $this->setState($value);
+            }
+        }
+        $this->setLastUpdateDate(new DateTime());
     }
 }
