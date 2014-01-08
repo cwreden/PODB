@@ -22,7 +22,7 @@ class UserRepository extends EntityRepository
             throw new RestException(404, "No user found with identifier $userId.");
         }
 
-        return $user->findProjects();
+        return $user->getProjects();
     }
 
     /**
@@ -42,6 +42,6 @@ class UserRepository extends EntityRepository
             throw new RestException(404, "No user found with identifier $userName.");
         }
 
-        return $user->findProjects();
+        return $user->getProjects();
     }
 }
