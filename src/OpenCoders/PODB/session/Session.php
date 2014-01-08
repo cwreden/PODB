@@ -26,4 +26,14 @@ class Session {
     {
         unset($_SESSION['attributes'][$key]);
     }
+
+    public function isAuthenticated()
+    {
+        return isset($_SESSION['authenticated']) && $_SESSION['authenticated'] ? true : false;
+    }
+
+    public function setAuthenticated($isAuthenticated = false)
+    {
+        $_SESSION['authenticated'] = $isAuthenticated;
+    }
 } 
