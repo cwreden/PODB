@@ -227,6 +227,7 @@ class Users extends AbstractBaseApi
      *
      * @url POST /users
      * @protected
+     * @status 201
      *
      * @throws \Luracast\Restler\RestException
      *
@@ -234,8 +235,6 @@ class Users extends AbstractBaseApi
      */
     public function post($request_data = NULL)
     {
-        $em = Doctrine::getEntityManager();
-
         $user = new User();
         $user->setDisplayName($request_data['displayName']);
         $user->setEmail($request_data['email']);
@@ -247,9 +246,11 @@ class Users extends AbstractBaseApi
         $user->setState(0);
 
         try {
-            $em->flush($user);
+            $em = $this->getEntityManager();
+            $em->persist($user);
+            $em->flush();
         } catch (\Exception $e) {
-            throw new RestException(400, 'Invalid parameters.');
+            throw new RestException(400, $e->getMessage());
         };
 
         return $user->asArrayWithAPIInformation($this->apiVersion);
