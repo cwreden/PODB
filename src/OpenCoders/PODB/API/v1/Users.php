@@ -4,28 +4,20 @@ namespace OpenCoders\PODB\API\v1;
 
 use DateTime;
 use Luracast\Restler\RestException;
+use OpenCoders\PODB\API\AbstractBaseApi;
 use OpenCoders\PODB\Entity\Project;
 use OpenCoders\PODB\Entity\User;
+use OpenCoders\PODB\Exception\PodbException;
 use OpenCoders\PODB\helper\Doctrine;
 use OpenCoders\PODB\helper\Server;
 use OpenCoders\PODB\Repository\UserRepository;
 
-class Users
+class Users extends AbstractBaseApi
 {
     /**
-     * @var string
+     * @var string EntityClassName (FQN)
      */
-    private $apiVersion = 'v1';
-
-    /**
-     * @var \Doctrine\ORM\EntityManager
-     */
-    private $em;
-
-    public function __construct()
-    {
-        $this->em = Doctrine::getEntityManager();
-    }
+    protected $entityName = 'OpenCoders\PODB\Entity\User';
 
     /**
      * @url GET /users
@@ -36,7 +28,7 @@ class Users
     {
         $data = array();
 
-        $repository = $this->em->getRepository('OpenCoders\PODB\Entity\User');
+        $repository = $this->getRepository();
         $users = $repository->findAll();
 
         /**
@@ -60,7 +52,7 @@ class Users
      */
     public function get($userName)
     {
-        $repository = $this->em->getRepository('OpenCoders\PODB\Entity\User');
+        $repository = $this->getRepository();
         /**
          * @var $user User
          */
@@ -80,6 +72,7 @@ class Users
 
     /**
      * @param $userName
+     *
      * @url GET /users/:userName/projects
      *
      * @return array
@@ -91,7 +84,7 @@ class Users
         /**
          * @var $repository UserRepository
          */
-        $repository = $this->em->getRepository('OpenCoders\PODB\Entity\User');
+        $repository = $this->getRepository();
         if (intval($userName) == 0) {
             $projects = $repository->getProjectsByUserName($userName);
         } else {
@@ -233,6 +226,9 @@ class Users
      * @param $request_data
      *
      * @url POST /users
+     * @protected
+     *
+     * @throws \Luracast\Restler\RestException
      *
      * @return array
      */
@@ -244,53 +240,68 @@ class Users
         $user->setDisplayName($request_data['displayName']);
         $user->setEmail($request_data['email']);
         $user->setUsername($request_data['userName']);
-        $user->setPassword($request_data['password']);
+        $user->setPassword(sha1($request_data['password']));
         $user->setCreateDate(new DateTime());
         $user->setLastUpdateDate(new DateTime());
 
         $user->setState(0);
 
         try {
-            $em->persist($user);
-            $em->flush();
+            $em->flush($user);
         } catch (\Exception $e) {
-            return array(
-                'error_msg' => $e->getMessage(),
-                'success' => false
-            );
+            throw new RestException(400, 'Invalid parameters.');
         };
 
-        return $user->asArray();
+        return $user->asArrayWithAPIInformation($this->apiVersion);
     }
 
     /**
      * @param $id
      * @param $request_data
+     *
      * @url PUT /users/:id
+     * @protected
+     *
+     * @throws \Luracast\Restler\RestException
+     *
+     * @return bool
      */
     public function put($id, $request_data = NULL)
     {
+        $repository = $this->getRepository();
+        /**
+         * @var $user User
+         */
+        $user = $repository->find($id);
 
+        try {
+            $user->update($request_data);
+            $this->getEntityManager()->flush($user);
+        } catch (PodbException $e) {
+            throw new RestException(400, $e->getMessage());
+        }
+
+        return $user->asArrayWithAPIInformation($this->apiVersion);
     }
 
     /**
      * @param $id
      *
      * @url DELETE /users/:id
+     * @protected
+     *
+     * @throws \Luracast\Restler\RestException
      *
      * @return array
      */
     public function delete($id)
     {
         if (intval($id) == 0) {
-            return array(
-                'error_msg' => 'Invalid Object ID.',
-                'success' => false
-            );
+            throw new RestException(400, 'Invalid ID ' . $id);
         }
-        $em = Doctrine::getEntityManager();
 
-        $user = $em->getPartialReference('OpenCoders\PODB\Entity\User', array('id' => $id));
+        $em = $this->getEntityManager();
+        $user = $em->getPartialReference($this->entityName, array('id' => $id));
         $em->remove($user);
         $em->flush();
 
