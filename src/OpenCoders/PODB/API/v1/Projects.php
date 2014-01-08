@@ -2,12 +2,20 @@
 
 namespace OpenCoders\PODB\API\v1;
 
-
+use Luracast\Restler\RestException;
+use OpenCoders\PODB\Entity\Project;
+use OpenCoders\PODB\helper\Doctrine;
 use OpenCoders\PODB\helper\Server;
 
-class Projects {
+class Projects
+{
 
     private $apiVersion = 'v1';
+
+    function __construct()
+    {
+        $this->em = Doctrine::getEntityManager();
+    }
 
     /**
      * @url GET /projects
@@ -16,58 +24,46 @@ class Projects {
      */
     public function getList()
     {
-        $apiBaseUrl = Server::getBaseApiUrl();
+        $projects = $this->getRepository()->findAll();
 
-        return array(
-            array(
-                'id' => 12344567,
-                'name' => 'Fake-Project-1',
-                'owner' => array(),
-                'url' => $apiBaseUrl . "/{$this->apiVersion}/projects/Fake-Project-1",
-                'url_html' => '',
-                'url_members' => $apiBaseUrl . "/{$this->apiVersion}/projects/Fake-Project-1/members",
-                'url_domains' => $apiBaseUrl . "/{$this->apiVersion}/projects/Fake-Project-1/domains",
-                'url_languages' => $apiBaseUrl . "/{$this->apiVersion}/projects/Fake-Project-1/languages"
-            ),
-            array(
-                'id' => 12344567,
-                'name' => 'Fake-Project-2',
-                'owner' => array(),
-                'url' => $apiBaseUrl . "/{$this->apiVersion}/projects/Fake-Project-2",
-                'url_html' => '',
-                'url_members' => $apiBaseUrl . "/{$this->apiVersion}/projects/Fake-Project-2/members",
-                'url_domains' => $apiBaseUrl . "/{$this->apiVersion}/projects/Fake-Project-2/domains",
-                'url_languages' => $apiBaseUrl . "/{$this->apiVersion}/projects/Fake-Project-2/languages"
-            )
-        );
+        $response = array();
+        /** @var $project Project */
+        foreach ($projects as $project) {
+            $response[] = $project->asShortArrayWithAPIInformation($this->apiVersion);
+        }
+
+        return $projects;
     }
 
     /**
-     * @param $projectName
+     * @param string|int $projectName The name of the project or its ID
+     *
      * @url GET /projects/:projectName
+     *
+     * @throws \Luracast\Restler\RestException
      *
      * @return array
      */
     public function get($projectName)
     {
-        $apiBaseUrl = Server::getBaseApiUrl();
+        /** @var $project Project */
+        if (is_int($projectName)) {
+            $project = $this->getRepository()->find($projectName);
+        } else {
+            $project = $this->getRepository()->findOneBy(array('name' => $projectName));
+        }
 
-        return array(
-            'id' => 12344567,
-            'name' => $projectName,
-            'owner' => array(),
-            'url' => $apiBaseUrl . "/{$this->apiVersion}/projects/{$projectName}",
-            'url_html' => '',
-            'url_members' => $apiBaseUrl . "/{$this->apiVersion}/projects/{$projectName}/members",
-            'url_domains' => $apiBaseUrl . "/{$this->apiVersion}/projects/{$projectName}/domains",
-            'url_languages' => $apiBaseUrl . "/{$this->apiVersion}/projects/{$projectName}/languages",
-            'created_at' => 1389051097,
-            'updated_at' => 1389051097
-        );
+        if (!$project) {
+            throw new RestException(404, 'project not found with identifier ' . $projectName);
+        }
+
+        return $project->asArrayWithAPIInformation($this->apiVersion);
     }
 
     /**
-     * @param $projectName
+     *
+     * @param string|int $projectName The name of the project or its ID
+     *
      * @url GET /projects/:projectName/members
      *
      * @return array
@@ -192,5 +188,14 @@ class Projects {
             'id' => $id,
             'success' => true
         );
+    }
+
+    /**
+     * @return \Doctrine\ORM\EntityRepository
+     */
+    private function getRepository()
+    {
+        $repository = $this->em->getRepository('OpenCoders\PODB\Entity\Project');
+        return $repository;
     }
 } 

@@ -13,7 +13,7 @@ use DateTime;
  *      uniqueConstraints={@UniqueConstraint(name="project_unique",columns={"name"})}
  * )
  */
-class Project
+class Project extends AbstractBaseEntity
 {
 
     /**
@@ -219,6 +219,22 @@ class Project
         return array(
             'id' => $this->getId(),
             'name' => $this->getName(),
+        );
+    }
+
+    /**
+     * @param string $apiVersion
+     * @return array
+     */
+    public  function getApiInformation($apiVersion)
+    {
+        $apiBaseUrl = $this->getBaseApiUrl();
+        return array(
+            'url' => $apiBaseUrl . "/" . $apiVersion . "/projects/" . $this->getName(),
+            'url_html' => '',   // @ToDo: Überlegen, was mit url_html gemeint war
+            'url_members' => $apiBaseUrl . "/" . $apiVersion . "/projects/" . $this->getName() . "/members",
+            'url_domains' => $apiBaseUrl . "/" . $apiVersion . "/projects/" . $this->getName() . "/domains",
+            'url_languages' => $apiBaseUrl . "/" . $apiVersion . "/projects/" . $this->getName() . "/languages"
         );
     }
 } 
