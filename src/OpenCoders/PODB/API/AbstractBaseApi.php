@@ -11,7 +11,7 @@ abstract class AbstractBaseApi {
     /**
      * @var string EntityClassName (FQN)
      */
-    protected $entityName = 'OpenCoders\PODB\Entity\Project';
+    protected $entityName;
 
     /**
      * @var string Api Version
