@@ -9,7 +9,20 @@ use OpenCoders\PODB\helper\Server;
 
 class Users
 {
+    /**
+     * @var string
+     */
     private $apiVersion = 'v1';
+
+    /**
+     * @var \Doctrine\ORM\EntityManager
+     */
+    private $em;
+
+    public function __construct()
+    {
+        $this->em = Doctrine::getEntityManager();
+    }
 
     /**
      * @url GET /users
@@ -18,9 +31,16 @@ class Users
      */
     public function getList()
     {
-
+        $data = array();
         $baseUrl = Server::getBaseApiUrl();
 
+        $repository = $this->em->getRepository('OpenCoders\PODB\Entity\User');
+        /**
+         * @var $user User
+         */
+        $users = $repository->findAll();
+
+//        return $users;
         return array(
             array(
                 'id' => 123456789,
@@ -57,20 +77,43 @@ class Users
      */
     public function get($userName)
     {
+        try {
+            $baseUrl = Server::getBaseApiUrl();
 
-        $baseUrl = Server::getBaseApiUrl();
-
-        return array(
-            'id' => $userName,
-            'username' => $userName,
-            'prename' => 'André',
-            'name' => 'Meyerjürgens',
-            'created_at' => 4356852635423,
-            'modified_at' => 4356852635423,
-            'url_projects' => $baseUrl . "/{$this->apiVersion}/users/{$userName}/projects",
-            'url_languages' => $baseUrl . "/{$this->apiVersion}/users/{$userName}/languages",
-            'url_translations' => $baseUrl . "/{$this->apiVersion}/users/{$userName}/translations",
-        );
+            $repository = $this->em->getRepository('OpenCoders\PODB\Entity\User');
+            /**
+             * @var $user User
+             */
+            if (intval($userName) == 0) {
+                $users = $repository->findBy(array(
+                    'username' => $userName
+                ));
+                if (!is_array($users) || empty($users)) {
+                    throw new \Exception('No user found.');
+                }
+                $user = $users[0];
+                return $user->asArray();
+            } else {
+                $user = $repository->find($userName);
+                return $user->asArray();
+            }
+        } catch (\Exception $e) {
+            return array(
+                'error_msg' => $e->getMessage(),
+                'success' => false
+            );
+        }
+//        return array(
+//            'id' => $userName,
+//            'username' => $userName,
+//            'prename' => 'André',
+//            'name' => 'Meyerjürgens',
+//            'created_at' => 4356852635423,
+//            'modified_at' => 4356852635423,
+//            'url_projects' => $baseUrl . "/{$this->apiVersion}/users/{$userName}/projects",
+//            'url_languages' => $baseUrl . "/{$this->apiVersion}/users/{$userName}/languages",
+//            'url_translations' => $baseUrl . "/{$this->apiVersion}/users/{$userName}/translations",
+//        );
     }
 
     /**
