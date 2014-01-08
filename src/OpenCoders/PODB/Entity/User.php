@@ -7,7 +7,7 @@ use DateTime;
 /**
  * Class User
  * @package OpenCoders\PODB\Entity
- * @Entity
+ * @Entity(repositoryClass="OpenCoders\PODB\Repository\UserRepository")
  */
 class User
 {

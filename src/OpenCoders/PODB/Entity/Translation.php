@@ -7,7 +7,7 @@ use DateTime;
 /**
  * Class Translation
  * @package OpenCoders\PODB\Entity
- * @Entity
+ * @Entity(repositoryClass="OpenCoders\PODB\Repository\TranslationRepository")
  */
 class Translation
 {

@@ -7,7 +7,7 @@ use DateTime;
 /**
  * Class DataSet
  * @package OpenCoders\PODB\Entity
- * @Entity
+ * @Entity(repositoryClass="OpenCoders\PODB\Repository\DataSetRepository")
  */
 class DataSet
 {
