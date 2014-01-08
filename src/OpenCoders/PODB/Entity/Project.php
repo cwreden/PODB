@@ -8,6 +8,10 @@ use DateTime;
  * Class Project
  * @package OpenCoders\PODB\Entity
  * @Entity(repositoryClass="OpenCoders\PODB\Repository\ProjectRepository")
+ * @Table(
+ *      name="project",
+ *      uniqueConstraints={@UniqueConstraint(name="project_unique",columns={"name"})}
+ * )
  */
 class Project
 {

@@ -8,6 +8,10 @@ use DateTime;
  * Class User
  * @package OpenCoders\PODB\Entity
  * @Entity(repositoryClass="OpenCoders\PODB\Repository\UserRepository")
+ * @Table(
+ *      name="user",
+ *      uniqueConstraints={@UniqueConstraint(name="user_unique",columns={"username", "email"})}
+ * )
  */
 class User
 {
