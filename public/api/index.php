@@ -8,10 +8,13 @@ set_include_path('.'); // Remove default include_path so only using Composer inc
 require __DIR__ . '/../../src/autoload.php';
 
 Defaults::$useUrlBasedVersioning = true;
+//Defaults::$cacheDirectory = '/../../tmp/restler/cache';
 
 $restler = new Restler();
 $restler->setAPIVersion(1);
 $restler->addAuthenticationClass('OpenCoders\PODB\access\Authentication');
+
+$restler->addFilterClass('OpenCoders\PODB\filter\RateLimit');
 
 $restler->addAPIClass('OpenCoders\PODB\API\Users', '');
 $restler->addAPIClass('OpenCoders\PODB\API\Projects', '');

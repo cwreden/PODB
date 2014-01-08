@@ -16,4 +16,5 @@ demos/
 extras/documentation
 doctrine-module
 config/doctrine.local.php
+config/rateLimit.config.php
 tmp
