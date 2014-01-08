@@ -3,6 +3,7 @@
 namespace OpenCoders\PODB\Entity;
 
 use DateTime;
+use OpenCoders\PODB\helper\Server;
 
 /**
  * Class User
@@ -13,7 +14,7 @@ use DateTime;
  *      uniqueConstraints={@UniqueConstraint(name="user_unique",columns={"username", "email"})}
  * )
  */
-class User
+class User extends AbstractBaseEntity
 {
 
     /**
@@ -257,6 +258,22 @@ class User
         return array(
             'id' => $this->getId(),
             'displayname' => $this->getDisplayName(),
+        );
+    }
+
+    /**
+     * @param $apiVersion
+     * @return array
+     */
+    public function getAPIInformation($apiVersion)
+    {
+        $baseUrl = $this->getBaseAPIUrl();
+
+        return array(
+            'url_user' => $baseUrl . '/' . $apiVersion . '/users/' . $this->getUsername(),
+            'url_projects' => $baseUrl . '/' . $apiVersion . '/users/' . $this->getUsername() . '/projects',
+            'url_languages' => $baseUrl . '/' . $apiVersion . '/users/' . $this->getUsername() . '/languages',
+            'url_translations' => $baseUrl . '/' . $apiVersion . '/users/' . $this->getUsername() . '/translations'
         );
     }
 }
