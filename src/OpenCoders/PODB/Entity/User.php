@@ -3,7 +3,7 @@
 namespace OpenCoders\PODB\Entity;
 
 use DateTime;
-use OpenCoders\PODB\helper\Server;
+use OpenCoders\PODB\Exception\PodbException;
 
 /**
  * Class User
@@ -76,10 +76,16 @@ class User extends AbstractBaseEntity
 
     /**
      * @param mixed $email
+     *
+     * @throws \OpenCoders\PODB\Exception\PodbException
+     *
      * @return void
      */
     public function setEmail($email)
     {
+        if ($email == null || $email == '') {
+            throw new PodbException('EMail not allowed to be empty.');
+        }
         $this->email = $email;
     }
 
@@ -110,10 +116,16 @@ class User extends AbstractBaseEntity
 
     /**
      * @param string $username
+     *
+     * @throws \OpenCoders\PODB\Exception\PodbException
+     *
      * @return void
      */
     public function setUsername($username)
     {
+        if ($username == null || $username == '') {
+            throw new PodbException('Username not allowed to be empty.');
+        }
         $this->username = $username;
     }
 
@@ -127,10 +139,16 @@ class User extends AbstractBaseEntity
 
     /**
      * @param mixed $password
+     *
+     * @throws \OpenCoders\PODB\Exception\PodbException
+     *
      * @return void
      */
     public function setPassword($password)
     {
+        if ($password == null || $password == '') {
+            throw new PodbException('Password not allowed to be empty.');
+        }
         $this->password = $password;
     }
 
