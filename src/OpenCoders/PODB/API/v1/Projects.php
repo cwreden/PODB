@@ -2,20 +2,20 @@
 
 namespace OpenCoders\PODB\API\v1;
 
+use DateTime;
 use Luracast\Restler\RestException;
+use OpenCoders\PODB\API\AbstractBaseApi;
 use OpenCoders\PODB\Entity\Project;
-use OpenCoders\PODB\helper\Doctrine;
+use OpenCoders\PODB\Exception\PodbException;
 use OpenCoders\PODB\helper\Server;
 
-class Projects
+class Projects extends AbstractBaseApi
 {
 
-    private $apiVersion = 'v1';
-
-    function __construct()
-    {
-        $this->em = Doctrine::getEntityManager();
-    }
+    /**
+     * @var string EntityClassName (FQN)
+     */
+    protected $entityName = 'OpenCoders\PODB\Entity\Project';
 
     /**
      * @url GET /projects
@@ -24,15 +24,15 @@ class Projects
      */
     public function getList()
     {
+        $response = array();
         $projects = $this->getRepository()->findAll();
 
-        $response = array();
         /** @var $project Project */
         foreach ($projects as $project) {
-            $response[] = $project->asShortArrayWithAPIInformation($this->apiVersion);
+            $response[] = $project->asShortArrayWithAPIInformation($this->getApiVersion());
         }
 
-        return $projects;
+        return $response;
     }
 
     /**
@@ -57,7 +57,7 @@ class Projects
             throw new RestException(404, 'project not found with identifier ' . $projectName);
         }
 
-        return $project->asArrayWithAPIInformation($this->apiVersion);
+        return $project->asArrayWithAPIInformation($this->getApiVersion());
     }
 
     /**
@@ -154,48 +154,87 @@ class Projects
     }
 
     /**
+     * Creates a new project
+     * @param array|null $request_data Array containing data of new project
+     *
      * @url POST /projects
+     * @protected
+     *
+     * @throws \Luracast\Restler\RestException
+     *
+     * @return array
      */
-    public function post($request_data = NULL)
+    public function post($request_data = null)
     {
-        return array(
-            'data' => $request_data,
-            'success' => true
-        );
+        $project = new Project();
+
+        $project->setName($request_data['name']);
+        $project->setCreateDate(new DateTime());
+        $project->setLastUpdateDate(new DateTime());
+
+        try {
+            $this->getEntityManager()->flush($project);
+        } catch (\Exception $e) {
+            throw new RestException(400, 'Invalid parameters');
+        }
+
+        return $project->asArrayWithAPIInformation($this->getApiVersion());
     }
 
     /**
+     * Updates a project
+     * @param int $id ID project
+     * @param array|null $request_data Array with data to update
+     *
      * @url PUT /projects/:id
+     * @protected
+     *
+     * @throws \Luracast\Restler\RestException
+     *
+     * @return array
      */
-    public function put($id, $request_data = NULL)
+    public function put($id, $request_data = null)
     {
-        $apiBaseUrl = Server::getBaseApiUrl();
+        if (!is_int($id)) {
+            throw new RestException(400, 'Cannot update. Project with given ID ' . $id . ' does not exists');
+        }
 
-        return array(
-            'data' => $request_data,
-            'id' => $id,
-            'url' => $apiBaseUrl . "/{$this->apiVersion}/projects/{$id}",
-            'success' => true
-        );
+        /** @var Project $project */
+        $project = $this->getRepository()->find($id);
+
+        try {
+            $project->update($request_data);
+        } catch (PodbException $e) {
+            throw new RestException(400, $e->getMessage());
+        }
+
+        $this->getEntityManager()->flush($project);
+        return $project->asArrayWithAPIInformation($this->getApiVersion());
     }
 
     /**
+     * Deletes a project
+     * @param $id
+     *
      * @url DELETE /projects/:id
+     * @protected
+     *
+     * @throws \Luracast\Restler\RestException
+     *
+     * @return array
      */
     public function delete($id)
     {
-        return array(
-            'id' => $id,
-            'success' => true
-        );
+        if (intval($id) == 0) {
+            throw new RestException(400, 'Invalid ID ' . $id);
+        }
+        try {
+            $project = $this->getRepository()->find($id);
+            $this->getEntityManager()->remove($project);
+            return array('success' => true);
+        } catch (\Exception $e) {
+            throw new RestException(400, 'Could not delete project');
+        }
     }
 
-    /**
-     * @return \Doctrine\ORM\EntityRepository
-     */
-    private function getRepository()
-    {
-        $repository = $this->em->getRepository('OpenCoders\PODB\Entity\Project');
-        return $repository;
-    }
-} 
+}

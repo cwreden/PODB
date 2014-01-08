@@ -3,6 +3,7 @@
 namespace OpenCoders\PODB\Entity;
 
 use DateTime;
+use OpenCoders\PODB\Exception\NothingToUpdatePodbException;
 
 /**
  * Class Project
@@ -226,15 +227,34 @@ class Project extends AbstractBaseEntity
      * @param string $apiVersion
      * @return array
      */
-    public  function getApiInformation($apiVersion)
+    public function getApiInformation($apiVersion)
     {
         $apiBaseUrl = $this->getBaseApiUrl();
         return array(
             'url' => $apiBaseUrl . "/" . $apiVersion . "/projects/" . $this->getName(),
-            'url_html' => '',   // @ToDo: Überlegen, was mit url_html gemeint war
+            'url_html' => '', // @ToDo: Überlegen, was mit url_html gemeint war
             'url_members' => $apiBaseUrl . "/" . $apiVersion . "/projects/" . $this->getName() . "/members",
             'url_domains' => $apiBaseUrl . "/" . $apiVersion . "/projects/" . $this->getName() . "/domains",
             'url_languages' => $apiBaseUrl . "/" . $apiVersion . "/projects/" . $this->getName() . "/languages"
         );
     }
-} 
+
+    /**
+     * Updates the project model by given data
+     * @param array $data
+     *
+     * @throws \OpenCoders\PODB\Exception\NothingToUpdatePodbException
+     */
+    public function update($data = null)
+    {
+        if ($data == null) {
+            throw new NothingToUpdatePodbException('There is nothing to update.');
+        }
+
+        foreach ($data as $key => $value) {
+            if ($key == 'name') {
+                $this->setName($value);
+            }
+        }
+    }
+}
