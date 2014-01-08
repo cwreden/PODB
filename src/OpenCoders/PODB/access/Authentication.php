@@ -3,7 +3,9 @@
 namespace OpenCoders\PODB\access;
 
 
-class Authentication {
+use Luracast\Restler\iAuthenticate;
+
+class Authentication implements iAuthenticate{
 
     /**
      * Access verification method.
