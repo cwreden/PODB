@@ -19,12 +19,17 @@ class Session {
 
     public function getAttribute($key)
     {
-        return $_SESSION['attributes'][$key];
+        if ($_SESSION['attributes'][$key]) {
+            return $_SESSION['attributes'][$key];
+        }
+        return null;
     }
 
     public function removeAttribute($key)
     {
-        unset($_SESSION['attributes'][$key]);
+        if (isset($_SESSION['attributes'][$key])) {
+            unset($_SESSION['attributes'][$key]);
+        }
     }
 
     public function isAuthenticated()
