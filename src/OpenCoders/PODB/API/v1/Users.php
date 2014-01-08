@@ -3,9 +3,12 @@
 namespace OpenCoders\PODB\API\v1;
 
 use DateTime;
+use Luracast\Restler\RestException;
+use OpenCoders\PODB\Entity\Project;
 use OpenCoders\PODB\Entity\User;
 use OpenCoders\PODB\helper\Doctrine;
 use OpenCoders\PODB\helper\Server;
+use OpenCoders\PODB\Repository\UserRepository;
 
 class Users
 {
@@ -32,88 +35,47 @@ class Users
     public function getList()
     {
         $data = array();
-        $baseUrl = Server::getBaseApiUrl();
 
         $repository = $this->em->getRepository('OpenCoders\PODB\Entity\User');
+        $users = $repository->findAll();
+
         /**
          * @var $user User
          */
-        $users = $repository->findAll();
+        foreach ($users as $user) {
+            $data[] = $user->asShortArrayWithAPIInformation($this->apiVersion);
+        }
 
-//        return $users;
-        return array(
-            array(
-                'id' => 123456789,
-                'username' => 'dax',
-                'prename' => 'André',
-                'name' => 'Meyerjürgens',
-                'created_at' => 4356852635423,
-                'modified_at' => 4356852635423,
-                'url_user' => $baseUrl . "/{$this->apiVersion}/users/dax",
-                'url_projects' => $baseUrl . "/{$this->apiVersion}/users/dax/projects",
-                'url_languages' => $baseUrl . "/{$this->apiVersion}/users/dax/languages",
-                'url_translations' => $baseUrl . "/{$this->apiVersion}/users/dax/translations",
-            ),
-            array(
-                'id' => 987654321,
-                'username' => 'hans',
-                'prename' => 'André',
-                'name' => 'Meyerjürgens',
-                'created_at' => 4356852635423,
-                'modified_at' => 4356852635423,
-                'url_user' => $baseUrl . "/{$this->apiVersion}/users/hans",
-                'url_projects' => $baseUrl . "/{$this->apiVersion}/users/hans/projects",
-                'url_languages' => $baseUrl . "/{$this->apiVersion}/users/hans/languages",
-                'url_translations' => $baseUrl . "/{$this->apiVersion}/users/hans/translations",
-            )
-        );
+        return $data;
     }
 
     /**
      * @param $userName
+     *
      * @url GET /users/:userName
+     *
+     * @throws \Luracast\Restler\RestException
      *
      * @return array
      */
     public function get($userName)
     {
-        try {
-            $baseUrl = Server::getBaseApiUrl();
-
-            $repository = $this->em->getRepository('OpenCoders\PODB\Entity\User');
-            /**
-             * @var $user User
-             */
-            if (intval($userName) == 0) {
-                $users = $repository->findBy(array(
-                    'username' => $userName
-                ));
-                if (!is_array($users) || empty($users)) {
-                    throw new \Exception('No user found.');
-                }
-                $user = $users[0];
-                return $user->asArray();
-            } else {
-                $user = $repository->find($userName);
-                return $user->asArray();
-            }
-        } catch (\Exception $e) {
-            return array(
-                'error_msg' => $e->getMessage(),
-                'success' => false
-            );
+        $repository = $this->em->getRepository('OpenCoders\PODB\Entity\User');
+        /**
+         * @var $user User
+         */
+        if (intval($userName) == 0) {
+            $user = $repository->findOneBy(array(
+                'username' => $userName
+            ));
+        } else {
+            $user = $repository->find($userName);
         }
-//        return array(
-//            'id' => $userName,
-//            'username' => $userName,
-//            'prename' => 'André',
-//            'name' => 'Meyerjürgens',
-//            'created_at' => 4356852635423,
-//            'modified_at' => 4356852635423,
-//            'url_projects' => $baseUrl . "/{$this->apiVersion}/users/{$userName}/projects",
-//            'url_languages' => $baseUrl . "/{$this->apiVersion}/users/{$userName}/languages",
-//            'url_translations' => $baseUrl . "/{$this->apiVersion}/users/{$userName}/translations",
-//        );
+
+        if ($user == null) {
+            throw new RestException(404, "No user found with identifier $userName.");
+        }
+        return $user->asArrayWithAPIInformation($this->apiVersion);
     }
 
     /**
@@ -124,31 +86,51 @@ class Users
      */
     public function getProjects($userName)
     {
+        $data = array();
 
-        $apiBaseUrl = Server::getBaseApiUrl();
+        /**
+         * @var $repository UserRepository
+         */
+        $repository = $this->em->getRepository('OpenCoders\PODB\Entity\User');
+        if (intval($userName) == 0) {
+            $projects = $repository->getProjectsByUserName($userName);
+        } else {
+            $projects = $repository->getProjects($userName);
+        }
 
-        return array(
-            array(
-                'id' => 12344567,
-                'name' => 'Fake-Project-1',
-                'owner' => array(),
-                'url' => $apiBaseUrl . "/{$this->apiVersion}/projects/Fake-Project-1",
-                'url_html' => '',
-                'url_members' => $apiBaseUrl . "/{$this->apiVersion}/projects/Fake-Project-1/members",
-                'url_domains' => $apiBaseUrl . "/{$this->apiVersion}/projects/Fake-Project-1/domains",
-                'url_languages' => $apiBaseUrl . "/{$this->apiVersion}/projects/Fake-Project-1/languages"
-            ),
-            array(
-                'id' => 12344567,
-                'name' => 'Fake-Project-2',
-                'owner' => array(),
-                'url' => $apiBaseUrl . "/{$this->apiVersion}/projects/Fake-Project-2",
-                'url_html' => '',
-                'url_members' => $apiBaseUrl . "/{$this->apiVersion}/projects/Fake-Project-2/members",
-                'url_domains' => $apiBaseUrl . "/{$this->apiVersion}/projects/Fake-Project-2/domains",
-                'url_languages' => $apiBaseUrl . "/{$this->apiVersion}/projects/Fake-Project-2/languages"
-            )
-        );
+        /**
+         * @var $project Project
+         */
+        foreach ($projects as $project) {
+            $data[] = $project->asShortArrayWithAPIInformation($this->apiVersion);
+        }
+
+        return $data;
+
+//        $apiBaseUrl = Server::getBaseApiUrl();
+//
+//        return array(
+//            array(
+//                'id' => 12344567,
+//                'name' => 'Fake-Project-1',
+//                'owner' => array(),
+//                'url' => $apiBaseUrl . "/{$this->apiVersion}/projects/Fake-Project-1",
+//                'url_html' => '',
+//                'url_members' => $apiBaseUrl . "/{$this->apiVersion}/projects/Fake-Project-1/members",
+//                'url_domains' => $apiBaseUrl . "/{$this->apiVersion}/projects/Fake-Project-1/domains",
+//                'url_languages' => $apiBaseUrl . "/{$this->apiVersion}/projects/Fake-Project-1/languages"
+//            ),
+//            array(
+//                'id' => 12344567,
+//                'name' => 'Fake-Project-2',
+//                'owner' => array(),
+//                'url' => $apiBaseUrl . "/{$this->apiVersion}/projects/Fake-Project-2",
+//                'url_html' => '',
+//                'url_members' => $apiBaseUrl . "/{$this->apiVersion}/projects/Fake-Project-2/members",
+//                'url_domains' => $apiBaseUrl . "/{$this->apiVersion}/projects/Fake-Project-2/domains",
+//                'url_languages' => $apiBaseUrl . "/{$this->apiVersion}/projects/Fake-Project-2/languages"
+//            )
+//        );
     }
 
     /**
