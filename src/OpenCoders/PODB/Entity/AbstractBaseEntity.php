@@ -5,7 +5,7 @@ namespace OpenCoders\PODB\Entity;
 
 use OpenCoders\PODB\helper\Server;
 
-class AbstractBaseEntity {
+abstract class AbstractBaseEntity {
 
     /**
      * @return array
