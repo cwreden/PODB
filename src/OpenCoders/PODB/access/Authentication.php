@@ -1,6 +1,6 @@
 <?php
 
-namespace OpenCoders\PODB\access;
+namespace OpenCoders\Podb\Access;
 
 
 use Luracast\Restler\iAuthenticate;

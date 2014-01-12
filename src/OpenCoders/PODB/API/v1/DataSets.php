@@ -1,9 +1,9 @@
 <?php
 
-namespace OpenCoders\PODB\API\v1;
+namespace OpenCoders\Podb\Api\v1;
 
 
-use OpenCoders\PODB\helper\Server;
+use OpenCoders\Podb\Api\ApiUrl;
 
 class DataSets {
 
@@ -16,7 +16,7 @@ class DataSets {
      */
     public function getList()
     {
-        $apiBaseUrl = Server::getBaseApiUrl();
+        $apiBaseUrl = ApiUrl::getBaseApiUrl();
 
         return array(
             array(
@@ -58,7 +58,7 @@ class DataSets {
      */
     public function get($id)
     {
-        $apiBaseUrl = Server::getBaseApiUrl();
+        $apiBaseUrl = ApiUrl::getBaseApiUrl();
 
         return array(
             'id' => $id,
@@ -82,7 +82,7 @@ class DataSets {
      */
     public function getTranslations($id)
     {
-        $apiBaseUrl = Server::getBaseApiUrl();
+        $apiBaseUrl = ApiUrl::getBaseApiUrl();
 
         return array(
             array(

@@ -1,10 +1,10 @@
 <?php
 
-namespace OpenCoders\PODB\API;
+namespace OpenCoders\Podb\Api;
 
 
-use OpenCoders\PODB\helper\Doctrine;
-use OpenCoders\PODB\Repository\ProjectRepository;
+use OpenCoders\Podb\Helper\Doctrine;
+use OpenCoders\Podb\Repository\ProjectRepository;
 
 abstract class AbstractBaseApi {
 

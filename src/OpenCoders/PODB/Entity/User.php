@@ -1,15 +1,15 @@
 <?php
 
-namespace OpenCoders\PODB\Entity;
+namespace OpenCoders\Podb\Entity;
 
 use DateTime;
-use OpenCoders\PODB\Exception\EmptyParameterException;
-use OpenCoders\PODB\Exception\PodbException;
+use OpenCoders\Podb\Exception\EmptyParameterException;
+use OpenCoders\Podb\Exception\PodbException;
 
 /**
  * Class User
- * @package OpenCoders\PODB\Entity
- * @Entity(repositoryClass="OpenCoders\PODB\Repository\UserRepository")
+ * @package OpenCoders\Podb\Entity
+ * @Entity(repositoryClass="OpenCoders\Podb\Repository\UserRepository")
  * @Table(
  *      name="user",
  *      uniqueConstraints={@UniqueConstraint(name="user_unique",columns={"username", "email"})}
@@ -21,7 +21,7 @@ class User extends AbstractBaseEntity
     /**
      * @var string EntityClassName (FQN)
      */
-    protected $entityName = 'OpenCoders\PODB\Entity\User';
+    protected $entityName = 'OpenCoders\Podb\Entity\User';
 
     /**
      * @var
@@ -83,7 +83,7 @@ class User extends AbstractBaseEntity
     /**
      * @param mixed $email
      *
-     * @throws \OpenCoders\PODB\Exception\PodbException
+     * @throws \OpenCoders\Podb\Exception\PodbException
      *
      * @return void
      */
@@ -123,7 +123,7 @@ class User extends AbstractBaseEntity
     /**
      * @param string $username
      *
-     * @throws \OpenCoders\PODB\Exception\PodbException
+     * @throws \OpenCoders\Podb\Exception\PodbException
      *
      * @return void
      */
@@ -146,7 +146,7 @@ class User extends AbstractBaseEntity
     /**
      * @param mixed $password
      *
-     * @throws \OpenCoders\PODB\Exception\PodbException
+     * @throws \OpenCoders\Podb\Exception\PodbException
      *
      * @return void
      */

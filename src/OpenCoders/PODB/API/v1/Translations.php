@@ -1,8 +1,8 @@
 <?php
 
-namespace OpenCoders\PODB\API\v1;
+namespace OpenCoders\Podb\Api\v1;
 
-use OpenCoders\PODB\helper\Server;
+use OpenCoders\Podb\Api\ApiUrl;
 
 class Translations
 {
@@ -15,7 +15,7 @@ class Translations
      */
     public function getList()
     {
-        $baseUrl = Server::getBaseApiUrl();
+        $baseUrl = ApiUrl::getBaseApiUrl();
 
         return array(
             array(
@@ -81,7 +81,7 @@ class Translations
      */
     public function get($id)
     {
-        $baseUrl = Server::getBaseApiUrl();
+        $baseUrl = ApiUrl::getBaseApiUrl();
 
         return array(
             array(

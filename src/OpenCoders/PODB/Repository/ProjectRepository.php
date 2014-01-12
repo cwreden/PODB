@@ -1,6 +1,6 @@
 <?php
 
-namespace OpenCoders\PODB\Repository;
+namespace OpenCoders\Podb\Repository;
 
 use Doctrine\ORM\EntityRepository;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace OpenCoders\PODB\config;
+namespace OpenCoders\Podb\config;
 
 
 class ConfigManager {

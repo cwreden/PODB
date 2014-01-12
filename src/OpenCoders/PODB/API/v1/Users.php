@@ -1,23 +1,22 @@
 <?php
 
-namespace OpenCoders\PODB\API\v1;
+namespace OpenCoders\Podb\Api\v1;
 
 use DateTime;
 use Luracast\Restler\RestException;
-use OpenCoders\PODB\API\AbstractBaseApi;
-use OpenCoders\PODB\Entity\Project;
-use OpenCoders\PODB\Entity\User;
-use OpenCoders\PODB\Exception\PodbException;
-use OpenCoders\PODB\helper\Doctrine;
-use OpenCoders\PODB\helper\Server;
-use OpenCoders\PODB\Repository\UserRepository;
+use OpenCoders\Podb\Api\AbstractBaseApi;
+use OpenCoders\Podb\Entity\Project;
+use OpenCoders\Podb\Entity\User;
+use OpenCoders\Podb\Exception\PodbException;
+use OpenCoders\Podb\Api\ApiUrl;
+use OpenCoders\Podb\Repository\UserRepository;
 
 class Users extends AbstractBaseApi
 {
     /**
      * @var string EntityClassName (FQN)
      */
-    protected $entityName = 'OpenCoders\PODB\Entity\User';
+    protected $entityName = 'OpenCoders\Podb\Entity\User';
 
     /**
      * @url GET /users
@@ -100,7 +99,7 @@ class Users extends AbstractBaseApi
 
         return $data;
 
-//        $apiBaseUrl = Server::getBaseApiUrl();
+//        $apiBaseUrl = ApiUrl::getBaseApiUrl();
 //
 //        return array(
 //            array(
@@ -135,7 +134,7 @@ class Users extends AbstractBaseApi
     public function getLanguages($userName)
     {
 
-        $apiBaseUrl = Server::getBaseApiUrl();
+        $apiBaseUrl = ApiUrl::getBaseApiUrl();
 
         return array(
             array(
@@ -164,7 +163,7 @@ class Users extends AbstractBaseApi
     public function getTranslations($userName)
     {
 
-        $baseUrl = Server::getBaseApiUrl();
+        $baseUrl = ApiUrl::getBaseApiUrl();
 
         return array(
             array(

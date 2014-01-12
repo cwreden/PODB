@@ -1,9 +1,9 @@
 <?php
 
-namespace OpenCoders\PODB\API\v1;
+namespace OpenCoders\Podb\Api\v1;
 
 
-use OpenCoders\PODB\helper\Server;
+use OpenCoders\Podb\Api\ApiUrl;
 
 class Domains {
 
@@ -16,7 +16,7 @@ class Domains {
      */
     public function getList()
     {
-        $apiBaseUrl = Server::getBaseApiUrl();
+        $apiBaseUrl = ApiUrl::getBaseApiUrl();
 
         return array(
             array(
@@ -53,7 +53,7 @@ class Domains {
      */
     public function get($projectName, $domainName)
     {
-        $apiBaseUrl = Server::getBaseApiUrl();
+        $apiBaseUrl = ApiUrl::getBaseApiUrl();
 
         return array(
             'id' => 12362,
@@ -77,7 +77,7 @@ class Domains {
      */
     public function getTranslatedLanguages($projectName, $domainName)
     {
-        $apiBaseUrl = Server::getBaseApiUrl();
+        $apiBaseUrl = ApiUrl::getBaseApiUrl();
 
         return array(
             array(
@@ -99,7 +99,7 @@ class Domains {
      */
     public function getDataSets($projectName, $domainName)
     {
-        $apiBaseUrl = Server::getBaseApiUrl();
+        $apiBaseUrl = ApiUrl::getBaseApiUrl();
 
         return array(
             array(

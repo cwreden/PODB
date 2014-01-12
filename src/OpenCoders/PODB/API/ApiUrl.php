@@ -1,9 +1,9 @@
 <?php
 
-namespace OpenCoders\PODB\helper;
+namespace OpenCoders\Podb\Api;
 
 
-class Server {
+class ApiUrl {
 
     static public function getBaseApiUrl()
     {

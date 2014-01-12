@@ -1,13 +1,13 @@
 <?php
 
-namespace OpenCoders\PODB\API\v1;
+namespace OpenCoders\Podb\Api\v1;
 
 use DateTime;
 use Luracast\Restler\RestException;
-use OpenCoders\PODB\API\AbstractBaseApi;
-use OpenCoders\PODB\Entity\Project;
-use OpenCoders\PODB\Exception\PodbException;
-use OpenCoders\PODB\helper\Server;
+use OpenCoders\Podb\Api\AbstractBaseApi;
+use OpenCoders\Podb\Entity\Project;
+use OpenCoders\Podb\Exception\PodbException;
+use OpenCoders\Podb\Api\ApiUrl;
 
 class Projects extends AbstractBaseApi
 {
@@ -15,7 +15,7 @@ class Projects extends AbstractBaseApi
     /**
      * @var string EntityClassName (FQN)
      */
-    protected $entityName = 'OpenCoders\PODB\Entity\Project';
+    protected $entityName = 'OpenCoders\Podb\Entity\Project';
 
     /**
      * @url GET /projects
@@ -70,7 +70,7 @@ class Projects extends AbstractBaseApi
      */
     public function getMembers($projectName)
     {
-        $baseUrl = Server::getBaseApiUrl();
+        $baseUrl = ApiUrl::getBaseApiUrl();
 
         return array(
             array(
@@ -108,7 +108,7 @@ class Projects extends AbstractBaseApi
      */
     public function getDomains($projectName)
     {
-        $apiBaseUrl = Server::getBaseApiUrl();
+        $apiBaseUrl = ApiUrl::getBaseApiUrl();
 
         return array(
             array(
@@ -133,7 +133,7 @@ class Projects extends AbstractBaseApi
      */
     public function getLanguages($projectName)
     {
-        $apiBaseUrl = Server::getBaseApiUrl();
+        $apiBaseUrl = ApiUrl::getBaseApiUrl();
 
         return array(
             array(

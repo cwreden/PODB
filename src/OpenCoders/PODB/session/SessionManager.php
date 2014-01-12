@@ -1,9 +1,9 @@
 <?php
 
-namespace OpenCoders\PODB\session;
+namespace OpenCoders\Podb\Session;
 
 
-use OpenCoders\PODB\config\ConfigManager;
+use OpenCoders\Podb\config\ConfigManager;
 
 class SessionManager {
 

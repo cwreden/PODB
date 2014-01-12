@@ -1,10 +1,10 @@
 <?php
 
-namespace OpenCoders\PODB\Exception;
+namespace OpenCoders\Podb\Exception;
 
 /**
  * Class PodbException
- * @package OpenCoders\PODB\Exception
+ * @package OpenCoders\Podb\Exception
  */
 class PodbException extends \Exception{
 

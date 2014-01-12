@@ -1,11 +1,10 @@
 <?php
 
-namespace OpenCoders\PODB\filter;
+namespace OpenCoders\Podb\Filter;
 
 
 use Luracast\Restler\iFilter;
-use Luracast\Restler\iUseAuthentication;
-use OpenCoders\PODB\session\SessionManager;
+use OpenCoders\Podb\Session\SessionManager;
 
 class RateLimit implements iFilter {
 

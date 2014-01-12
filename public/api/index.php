@@ -12,15 +12,15 @@ Defaults::$useUrlBasedVersioning = true;
 
 $restler = new Restler();
 $restler->setAPIVersion(1);
-$restler->addAuthenticationClass('OpenCoders\PODB\access\BasicAuthentication');
+$restler->addAuthenticationClass('OpenCoders\Podb\Access\BasicAuthentication');
 
-$restler->addFilterClass('OpenCoders\PODB\filter\RateLimit');
+$restler->addFilterClass('OpenCoders\Podb\Filter\RateLimit');
 
-$restler->addAPIClass('OpenCoders\PODB\API\Users', '');
-$restler->addAPIClass('OpenCoders\PODB\API\Projects', '');
-$restler->addAPIClass('OpenCoders\PODB\API\Languages', '');
-$restler->addAPIClass('OpenCoders\PODB\API\Domains', '');
-$restler->addAPIClass('OpenCoders\PODB\API\DataSets', '');
-$restler->addAPIClass('OpenCoders\PODB\API\Translations', '');
+$restler->addAPIClass('OpenCoders\Podb\Api\Users', '');
+$restler->addAPIClass('OpenCoders\Podb\Api\Projects', '');
+$restler->addAPIClass('OpenCoders\Podb\Api\Languages', '');
+$restler->addAPIClass('OpenCoders\Podb\Api\Domains', '');
+$restler->addAPIClass('OpenCoders\Podb\Api\DataSets', '');
+$restler->addAPIClass('OpenCoders\Podb\Api\Translations', '');
 
 $restler->handle();

@@ -1,9 +1,9 @@
 <?php
 
-namespace OpenCoders\PODB\Entity;
+namespace OpenCoders\Podb\Entity;
 
 
-use OpenCoders\PODB\helper\Server;
+use OpenCoders\Podb\Api\ApiUrl;
 
 abstract class AbstractBaseEntity {
 
@@ -55,6 +55,6 @@ abstract class AbstractBaseEntity {
      */
     protected function getBaseAPIUrl()
     {
-        return Server::getBaseApiUrl();
+        return ApiUrl::getBaseApiUrl();
     }
 } 

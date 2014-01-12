@@ -1,13 +1,13 @@
 <?php
 
-namespace OpenCoders\PODB\Entity;
+namespace OpenCoders\Podb\Entity;
 
 use DateTime;
 
 /**
  * Class Language
- * @package OpenCoders\PODB\Entity
- * @Entity(repositoryClass="OpenCoders\PODB\Repository\LanguageRepository")
+ * @package OpenCoders\Podb\Entity
+ * @Entity(repositoryClass="OpenCoders\Podb\Repository\LanguageRepository")
  */
 class Language
 {

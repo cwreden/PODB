@@ -1,8 +1,8 @@
 <?php
 
-namespace OpenCoders\PODB\API\v1;
+namespace OpenCoders\Podb\Api\v1;
 
-use OpenCoders\PODB\helper\Server;
+use OpenCoders\Podb\Api\ApiUrl;
 
 class Languages
 {
@@ -16,7 +16,7 @@ class Languages
      */
     public function getList()
     {
-        $apiBaseUrl = Server::getBaseApiUrl();
+        $apiBaseUrl = ApiUrl::getBaseApiUrl();
 
         return array(
             array(
@@ -51,7 +51,7 @@ class Languages
      */
     public function get($abbreviation)
     {
-        $apiBaseUrl = Server::getBaseApiUrl();
+        $apiBaseUrl = ApiUrl::getBaseApiUrl();
 
         return array(
             'id' => 1,
@@ -72,7 +72,7 @@ class Languages
      */
     public function getProjects($abbreviation)
     {
-        $apiBaseUrl = Server::getBaseApiUrl();
+        $apiBaseUrl = ApiUrl::getBaseApiUrl();
 
         return array(
             array(

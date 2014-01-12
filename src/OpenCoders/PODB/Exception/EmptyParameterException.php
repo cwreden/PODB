@@ -1,6 +1,6 @@
 <?php
 
-namespace OpenCoders\PODB\Exception;
+namespace OpenCoders\Podb\Exception;
 
 
 use Exception;

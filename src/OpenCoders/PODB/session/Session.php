@@ -1,6 +1,6 @@
 <?php
 
-namespace OpenCoders\PODB\session;
+namespace OpenCoders\Podb\Session;
 
 
 class Session {

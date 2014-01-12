@@ -1,13 +1,13 @@
 <?php
 
-namespace OpenCoders\PODB\Entity;
+namespace OpenCoders\Podb\Entity;
 
 use DateTime;
 
 /**
  * Class DataSet
- * @package OpenCoders\PODB\Entity
- * @Entity(repositoryClass="OpenCoders\PODB\Repository\DataSetRepository")
+ * @package OpenCoders\Podb\Entity
+ * @Entity(repositoryClass="OpenCoders\Podb\Repository\DataSetRepository")
  */
 class DataSet
 {

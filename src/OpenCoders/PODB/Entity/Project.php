@@ -1,14 +1,14 @@
 <?php
 
-namespace OpenCoders\PODB\Entity;
+namespace OpenCoders\Podb\Entity;
 
 use DateTime;
-use OpenCoders\PODB\Exception\NothingToUpdatePodbException;
+use OpenCoders\Podb\Exception\NothingToUpdatePodbException;
 
 /**
  * Class Project
- * @package OpenCoders\PODB\Entity
- * @Entity(repositoryClass="OpenCoders\PODB\Repository\ProjectRepository")
+ * @package OpenCoders\Podb\Entity
+ * @Entity(repositoryClass="OpenCoders\Podb\Repository\ProjectRepository")
  * @Table(
  *      name="project",
  *      uniqueConstraints={@UniqueConstraint(name="project_unique",columns={"name"})}
@@ -243,7 +243,7 @@ class Project extends AbstractBaseEntity
      * Updates the project model by given data
      * @param array $data
      *
-     * @throws \OpenCoders\PODB\Exception\NothingToUpdatePodbException
+     * @throws \OpenCoders\Podb\Exception\NothingToUpdatePodbException
      */
     public function update($data = null)
     {

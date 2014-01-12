@@ -1,13 +1,13 @@
 <?php
 
-namespace OpenCoders\PODB\access;
+namespace OpenCoders\Podb\Access;
 
 
 use Luracast\Restler\iAuthenticate;
 use Luracast\Restler\RestException;
-use OpenCoders\PODB\Entity\User;
-use OpenCoders\PODB\helper\Doctrine;
-use OpenCoders\PODB\session\SessionManager;
+use OpenCoders\Podb\Entity\User;
+use OpenCoders\Podb\Helper\Doctrine;
+use OpenCoders\Podb\Session\SessionManager;
 
 class BasicAuthentication implements iAuthenticate{
 
@@ -33,7 +33,7 @@ class BasicAuthentication implements iAuthenticate{
         $pass = sha1($_SERVER['PHP_AUTH_PW']);
 
         $em = Doctrine::getEntityManager();
-        $repository = $em->getRepository('OpenCoders\PODB\Entity\User');
+        $repository = $em->getRepository('OpenCoders\Podb\Entity\User');
         /**
          * @var $user User
          */

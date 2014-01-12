@@ -1,6 +1,6 @@
 <?php
 
-namespace OpenCoders\PODB\helper;
+namespace OpenCoders\Podb\Helper;
 
 use Doctrine\Common\Cache\ApcCache;
 use Doctrine\Common\Cache\ArrayCache;
@@ -36,7 +36,7 @@ class Doctrine
             $config = new Configuration();
 
             $config->setProxyDir(__DIR__ . '/../../../../tmp/doctrine/proxy');
-            $config->setProxyNamespace('OpenCoders\PODB\Proxies');
+            $config->setProxyNamespace('OpenCoders\Podb\Proxies');
             $config->setAutoGenerateProxyClasses(self::$isDevMode);
 
             $driverImpl = $config->newDefaultAnnotationDriver($pathToEntities);
