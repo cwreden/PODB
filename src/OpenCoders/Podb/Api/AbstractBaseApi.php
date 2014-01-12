@@ -5,6 +5,7 @@ namespace OpenCoders\Podb\Api;
 
 use OpenCoders\Podb\Persistence\Doctrine;
 use OpenCoders\Podb\Persistence\Repository\ProjectRepository;
+use OpenCoders\Podb\Session\SessionManager;
 
 abstract class AbstractBaseApi {
 
@@ -65,5 +66,15 @@ abstract class AbstractBaseApi {
     protected function isId($value)
     {
         return isset($value) && intval($value) != 0;
+    }
+
+    /**
+     * Returns the Session
+     *
+     * @return \OpenCoders\Podb\Session\Session
+     */
+    protected function getSession() {
+        $sm = new SessionManager();
+        return $sm->getSession();
     }
 }
