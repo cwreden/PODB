@@ -211,10 +211,7 @@ class Domain extends AbstractBaseEntity
             }
         }
 
-        if (($user = $this->getSession()->getUser())) {
-            $this->setLastUpdateBy($user);
-        }
-
+        $this->setLastUpdateBy($this->getSession()->getUser());
         $this->setLastUpdateDate(new DateTime());
 
         return $this;
