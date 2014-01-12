@@ -8,6 +8,7 @@ use OpenCoders\Podb\Api\AbstractBaseApi;
 use OpenCoders\Podb\Api\ApiUrl;
 use OpenCoders\Podb\Exception\PodbException;
 use OpenCoders\Podb\Persistence\Entity\Language;
+use OpenCoders\Podb\Persistence\Entity\User;
 use OpenCoders\Podb\Session\SessionManager;
 
 class Languages extends AbstractBaseApi
@@ -109,11 +110,8 @@ class Languages extends AbstractBaseApi
      */
     public function post($request_data = NULL)
     {
-        $sm = new SessionManager();
-        $session = $sm->getSession();
-
         try {
-            $user = $session->getUser();
+            $user = $this->getSession()->getUser();
 
             $language = new Language();
             $language->setLocale($request_data['locale']);
@@ -151,18 +149,11 @@ class Languages extends AbstractBaseApi
             throw new RestException(400, 'Invalid ID ' . $id);
         }
 
-        $repository = $this->getRepository();
-        $sm = new SessionManager();
-        $session = $sm->getSession();
-
-        /**
-         * @var $language Language
-         */
-        $language = $repository->find($id);
+        /** @var Language $language */
+        $language = $this->getRepository()->find($id);
 
         try {
-            $language->update($request_data, $session->getUser());
-
+            $language->update($request_data, $this->getSession()->getUser());
             $this->getEntityManager()->flush($language);
         } catch (PodbException $e) {
             throw new RestException(400, $e->getMessage());
