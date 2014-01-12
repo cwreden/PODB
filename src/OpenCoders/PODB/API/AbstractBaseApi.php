@@ -3,7 +3,7 @@
 namespace OpenCoders\Podb\Api;
 
 
-use OpenCoders\Podb\Helper\Doctrine;
+use OpenCoders\Podb\Persistence\Doctrine;
 use OpenCoders\Podb\Repository\ProjectRepository;
 
 abstract class AbstractBaseApi {
