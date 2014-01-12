@@ -83,7 +83,7 @@ class Language extends AbstractBaseEntity
     }
 
     /**
-     * @return string
+     * @return User
      */
     public function getCreatedBy()
     {
@@ -149,7 +149,7 @@ class Language extends AbstractBaseEntity
     }
 
     /**
-     * @param string $createdBy
+     * @param User $createdBy
      */
     public function setCreatedBy($createdBy)
     {
@@ -157,7 +157,7 @@ class Language extends AbstractBaseEntity
     }
 
     /**
-     * @param string $lastUpdateBy
+     * @param User $lastUpdateBy
      */
     public function setLastUpdateBy($lastUpdateBy)
     {
@@ -165,7 +165,7 @@ class Language extends AbstractBaseEntity
     }
 
     /**
-     * @return string
+     * @return User
      */
     public function getLastUpdateBy()
     {
