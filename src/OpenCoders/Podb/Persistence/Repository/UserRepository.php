@@ -1,6 +1,6 @@
 <?php
 
-namespace OpenCoders\Podb\Repository;
+namespace OpenCoders\Podb\Persistence\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Luracast\Restler\RestException;

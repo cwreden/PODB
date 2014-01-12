@@ -5,18 +5,18 @@ namespace OpenCoders\Podb\Api\v1;
 use DateTime;
 use Luracast\Restler\RestException;
 use OpenCoders\Podb\Api\AbstractBaseApi;
-use OpenCoders\Podb\Entity\Project;
-use OpenCoders\Podb\Entity\User;
+use OpenCoders\Podb\Persistence\Entity\Project;
+use OpenCoders\Podb\Persistence\Entity\User;
 use OpenCoders\Podb\Exception\PodbException;
 use OpenCoders\Podb\Api\ApiUrl;
-use OpenCoders\Podb\Repository\UserRepository;
+use OpenCoders\Podb\Persistence\Repository\UserRepository;
 
 class Users extends AbstractBaseApi
 {
     /**
      * @var string EntityClassName (FQN)
      */
-    protected $entityName = 'OpenCoders\Podb\Entity\User';
+    protected $entityName = 'OpenCoders\Podb\Persistence\Entity\User';
 
     /**
      * @url GET /users

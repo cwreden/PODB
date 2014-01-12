@@ -5,7 +5,7 @@ namespace OpenCoders\Podb\Access;
 
 use Luracast\Restler\iAuthenticate;
 use Luracast\Restler\RestException;
-use OpenCoders\Podb\Entity\User;
+use OpenCoders\Podb\Persistence\Entity\User;
 use OpenCoders\Podb\Persistence\Doctrine;
 use OpenCoders\Podb\Session\SessionManager;
 
@@ -33,7 +33,7 @@ class BasicAuthentication implements iAuthenticate{
         $pass = sha1($_SERVER['PHP_AUTH_PW']);
 
         $em = Doctrine::getEntityManager();
-        $repository = $em->getRepository('OpenCoders\Podb\Entity\User');
+        $repository = $em->getRepository('OpenCoders\Podb\Persistence\Entity\User');
         /**
          * @var $user User
          */

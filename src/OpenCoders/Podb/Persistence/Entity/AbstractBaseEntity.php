@@ -1,6 +1,6 @@
 <?php
 
-namespace OpenCoders\Podb\Entity;
+namespace OpenCoders\Podb\Persistence\Entity;
 
 
 use OpenCoders\Podb\Api\ApiUrl;

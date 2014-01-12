@@ -1,6 +1,6 @@
 <?php
 
-namespace OpenCoders\Podb\Entity;
+namespace OpenCoders\Podb\Persistence\Entity;
 
 use DateTime;
 use OpenCoders\Podb\Exception\EmptyParameterException;
@@ -8,8 +8,8 @@ use OpenCoders\Podb\Exception\PodbException;
 
 /**
  * Class User
- * @package OpenCoders\Podb\Entity
- * @Entity(repositoryClass="OpenCoders\Podb\Repository\UserRepository")
+ * @package OpenCoders\Podb\Persistence\Entity
+ * @Entity(repositoryClass="OpenCoders\Podb\Persistence\Repository\UserRepository")
  * @Table(
  *      name="user",
  *      uniqueConstraints={@UniqueConstraint(name="user_unique",columns={"username", "email"})}
@@ -21,7 +21,7 @@ class User extends AbstractBaseEntity
     /**
      * @var string EntityClassName (FQN)
      */
-    protected $entityName = 'OpenCoders\Podb\Entity\User';
+    protected $entityName = 'OpenCoders\Podb\Persistence\Entity\User';
 
     /**
      * @var

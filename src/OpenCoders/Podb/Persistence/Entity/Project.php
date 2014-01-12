@@ -1,14 +1,14 @@
 <?php
 
-namespace OpenCoders\Podb\Entity;
+namespace OpenCoders\Podb\Persistence\Entity;
 
 use DateTime;
 use OpenCoders\Podb\Exception\NothingToUpdatePodbException;
 
 /**
  * Class Project
- * @package OpenCoders\Podb\Entity
- * @Entity(repositoryClass="OpenCoders\Podb\Repository\ProjectRepository")
+ * @package OpenCoders\Podb\Persistence\Entity
+ * @Entity(repositoryClass="OpenCoders\Podb\Persistence\Repository\ProjectRepository")
  * @Table(
  *      name="project",
  *      uniqueConstraints={@UniqueConstraint(name="project_unique",columns={"name"})}
