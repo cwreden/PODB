@@ -12,3 +12,12 @@ PO-Dataset: ID, DomainID, msgID, ..., createdBy, createDate, lastUpdateBy, lastU
 Translation: ID, LanguageID, PODID, msgStr, msgStr1, msgStr2, fuzzy, createdBy, createDate, lastUpdateBy, lastUpdateDate
 
 Language: ID, Name, locale, createdBy, createDate, lastUpdateBy, lastUpdateDate
+
+
+Project structure changes
+=========================
+- filter/rateLimit.php => API/filter/rateLimit.php
+- Entity/ => persistance/Entity/
+- helper/Doctrine.php => persistance/Doctrine.php
+- helper/Server.php => API/ApiUrl.php
+- Repository/ => persistance/Repository/
