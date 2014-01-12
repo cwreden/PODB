@@ -325,4 +325,13 @@ class User extends AbstractBaseEntity
         }
         $this->setLastUpdateDate(new DateTime());
     }
+
+    /**
+     * @param string $pass
+     * @return bool
+     */
+    public function checkPassword($pass)
+    {
+        return $this->password == $pass;
+    }
 }
