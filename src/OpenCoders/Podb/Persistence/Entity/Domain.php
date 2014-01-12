@@ -9,7 +9,7 @@ use DateTime;
  * @package OpenCoders\Podb\Persistence\Entity
  * @Entity(repositoryClass="OpenCoders\Podb\Persistence\Repository\DomainRepository")
  */
-class Domain
+class Domain extends AbstractBaseEntity
 {
 
     /**
@@ -192,5 +192,31 @@ class Domain
             'id' => $this->getId(),
             'name' => $this->getName(),
         );
+    }
+
+    /**
+     *
+     *
+     * @param array $data
+     *
+     * @return Domain
+     */
+    public function update($data = null)
+    {
+        if (is_array($data) && !empty($data)) {
+            foreach ($data as $key => $value) {
+                if ($key == 'name') {
+                    $this->setName($value);
+                }
+            }
+        }
+
+        if (($user = $this->getSession()->getUser())) {
+            $this->setLastUpdateBy($user);
+        }
+
+        $this->setLastUpdateDate(new DateTime());
+
+        return $this;
     }
 } 
