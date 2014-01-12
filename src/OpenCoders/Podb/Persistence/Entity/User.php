@@ -337,4 +337,13 @@ class User extends AbstractBaseEntity
         $project->removeUser($this);
         $this->projects->removeElement($project);
     }
+
+    /**
+     * @param string $pass
+     * @return bool
+     */
+    public function checkPassword($pass)
+    {
+        return $this->password == $pass;
+    }
 }

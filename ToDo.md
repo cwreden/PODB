@@ -3,7 +3,7 @@ Database structure
 
 User: ID, Name, EMail, Password, createdBy, createDate, lastUpdateBy, lastUpdateDate
 
-Project: ID, Name, Default_Language, createdBy, createDate, lastUpdateBy, lastUpdateDate
+Project: ID, Name, Default_Language, createdBy, createDate, lastUpdateBy, lastUpdateDate, users => members and owners
 
 PO-Domain: ID, Name, ProjectID, createdBy, createDate, lastUpdateBy, lastUpdateDate
 
