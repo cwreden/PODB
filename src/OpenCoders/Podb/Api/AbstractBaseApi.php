@@ -3,8 +3,10 @@
 namespace OpenCoders\Podb\Api;
 
 
+use Doctrine\ORM\EntityManager;
 use OpenCoders\Podb\Persistence\Doctrine;
 use OpenCoders\Podb\Persistence\Repository\ProjectRepository;
+use OpenCoders\Podb\Session\Session;
 use OpenCoders\Podb\Session\SessionManager;
 
 abstract class AbstractBaseApi {
@@ -20,13 +22,19 @@ abstract class AbstractBaseApi {
     protected $apiVersion = 'v1';
 
     /**
-     * @var
+     * @var EntityManager
      */
     private $em;
+
+    /**
+     * @var SessionManager
+     */
+    private $sessionmanager;
 
     function __construct()
     {
         $this->em = Doctrine::getEntityManager();
+        $this->sessionmanager = new SessionManager();
     }
 
     /**
@@ -71,10 +79,10 @@ abstract class AbstractBaseApi {
     /**
      * Returns the Session
      *
-     * @return \OpenCoders\Podb\Session\Session
+     * @return Session
      */
     protected function getSession() {
-        $sm = new SessionManager();
-        return $sm->getSession();
+
+        return $this->sessionmanager->getSession();
     }
 }
