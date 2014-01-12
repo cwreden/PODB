@@ -2,12 +2,19 @@
 
 namespace OpenCoders\Podb\Api\v1;
 
+use DateTime;
+use Luracast\Restler\RestException;
+use OpenCoders\Podb\Api\AbstractBaseApi;
 use OpenCoders\Podb\Api\ApiUrl;
+use OpenCoders\Podb\Exception\PodbException;
+use OpenCoders\Podb\Persistence\Entity\Language;
 
-class Languages
+class Languages extends AbstractBaseApi
 {
-
-    private $apiVersion = 'v1';
+    /**
+     * @var string EntityClassName (FQN)
+     */
+    protected $entityName = 'OpenCoders\Podb\Persistence\Entity\Language';
 
     /**
      * @url GET /languages
@@ -16,62 +23,51 @@ class Languages
      */
     public function getList()
     {
-        $apiBaseUrl = ApiUrl::getBaseApiUrl();
+        $data = array();
 
-        return array(
-            array(
-                'id' => 1,
-                'locale' => 'de_DE',
-                'label' => 'Deutsch',
-                'url' => $apiBaseUrl . "/{$this->apiVersion}/languages/de_DE",
-                'url_projects' => $apiBaseUrl . "/{$this->apiVersion}/languages/de_DE/projects"
-            ),
-            array(
-                'id' => 2,
-                'locale' => 'en_GB',
-                'label' => 'Deutsch',
-                'url' => $apiBaseUrl . "/{$this->apiVersion}/languages/en_GB",
-                'url_projects' => $apiBaseUrl . "/{$this->apiVersion}/languages/en_GB/projects"
-            ),
-            array(
-                'id' => 3,
-                'locale' => 'en_US',
-                'label' => 'Deutsch',
-                'url' => $apiBaseUrl . "/{$this->apiVersion}/languages/en_US",
-                'url_projects' => $apiBaseUrl . "/{$this->apiVersion}/languages/en_US/projects"
-            )
-        );
+        $repository = $this->getRepository();
+        $languages = $repository->findAll();
+
+        /** @var $language Language */
+        foreach ($languages as $language) {
+            $data[] = $language->asShortArrayWithAPIInformation($this->apiVersion);
+        }
+
+        return $data;
     }
 
     /**
-     * @param $abbreviation
-     * @url GET /languages/:abbreviation
+     * @param $locale
+     *
+     * @url GET /languages/:locale
+     *
+     * @throws \Luracast\Restler\RestException
      *
      * @return array
      */
-    public function get($abbreviation)
+    public function get($locale)
     {
-        $apiBaseUrl = ApiUrl::getBaseApiUrl();
+        $language = $this->getLanguage($locale);
 
-        return array(
-            'id' => 1,
-            'locale' => $abbreviation,
-            'label' => 'Language 1',
-            'url' => $apiBaseUrl . "/{$this->apiVersion}/languages/{$abbreviation}",
-            'url_projects' => $apiBaseUrl . "/{$this->apiVersion}/languages/{$abbreviation}/projects",
-            'created_at' => 1389051097,
-            'updated_at' => 1389051097
-        );
+        if ($language == null) {
+            throw new RestException(404, "No language found with identifier $locale.");
+        }
+        return $language->asArrayWithAPIInformation($this->apiVersion);
     }
 
     /**
-     * @param $abbreviation
-     * @url GET /languages/:abbreviation/projects
+     * @param $locale
+     *
+     * @url GET /languages/:locale/projects
+     *
+     * @throws \Luracast\Restler\RestException
      *
      * @return array
      */
-    public function getProjects($abbreviation)
+    public function getProjects($locale)
     {
+        throw new RestException(501);
+
         $apiBaseUrl = ApiUrl::getBaseApiUrl();
 
         return array(
@@ -100,29 +96,109 @@ class Languages
 
     /**
      * @param $request_data
+     *
      * @url POST /languages
+     * @protected
+     *
+     * @throws \Luracast\Restler\RestException
+     *
+     * @return array
      */
     public function post($request_data = NULL)
     {
+        try {
+            $language = new Language();
+            $language->setLocale($request_data['locale']);
+            $language->setName($request_data['name']);
+            $language->setCreateDate(new DateTime());
+            $language->setLastUpdateDate(new DateTime());
 
+            $em = $this->getEntityManager();
+            $em->persist($language);
+            $em->flush();
+        } catch (PodbException $e) {
+            throw new RestException(400, $e->getMessage());
+        };
+
+        return $language->asArrayWithAPIInformation($this->apiVersion);
     }
 
     /**
      * @param $id
      * @param $request_data
+     *
      * @url PUT /languages/:id
+     * @protected
+     *
+     * @throws \Luracast\Restler\RestException
+     *
+     * @return array
      */
     public function put($id, $request_data = NULL)
     {
+        $repository = $this->getRepository();
 
+        /**
+         * @var $language Language
+         */
+        $language = $repository->find($id);
+
+        try {
+            $language->update($request_data);
+
+            $this->getEntityManager()->flush($language);
+        } catch (PodbException $e) {
+            throw new RestException(400, $e->getMessage());
+        }
+
+        return $language->asArrayWithAPIInformation($this->apiVersion);
     }
 
     /**
      * @param $id
+     *
      * @url DELETE /languages/:id
+     * @protected
+     *
+     * @throws \Luracast\Restler\RestException
+     *
+     * @return array
      */
     public function delete($id)
     {
+        if (intval($id) == 0) {
+            throw new RestException(400, 'Invalid ID ' . $id);
+        }
 
+        $em = $this->getEntityManager();
+        $object = $em->getPartialReference($this->entityName, array('id' => $id));
+        $em->remove($object);
+        $em->flush();
+
+        return array(
+            'success' => true
+        );
+    }
+
+    /**
+     * @param $locale
+     *
+     * @return Language
+     */
+    private function getLanguage($locale)
+    {
+        $repository = $this->getRepository();
+
+        /**
+         * @var $language Language
+         */
+        if (intval($locale) == 0) {
+            $language = $repository->findOneBy(array(
+                'locale' => $locale
+            ));
+        } else {
+            $language = $repository->find($locale);
+        }
+        return $language;
     }
 } 
