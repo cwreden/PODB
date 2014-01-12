@@ -12,9 +12,3 @@ PO-Dataset: ID, DomainID, msgID, ..., createdBy, createDate, lastUpdateBy, lastU
 Translation: ID, LanguageID, PODID, msgStr, msgStr1, msgStr2, fuzzy, createdBy, createDate, lastUpdateBy, lastUpdateDate
 
 Language: ID, Name, locale, createdBy, createDate, lastUpdateBy, lastUpdateDate
-
-
-Project structure changes
-=========================
-- Entity/ => persistance/Entity/
-- Repository/ => persistance/Repository/
