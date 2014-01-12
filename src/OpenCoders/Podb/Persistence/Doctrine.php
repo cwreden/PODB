@@ -31,7 +31,7 @@ class Doctrine
     {
         if (self::$em == null) {
             $dbParams = include(__DIR__ . '/../../../../config/doctrine.local.php');
-            $pathToEntities = array(__DIR__ . "/../Entity");
+            $pathToEntities = array(__DIR__ . "/Entity");
 
             $config = new Configuration();
 
