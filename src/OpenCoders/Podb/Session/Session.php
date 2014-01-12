@@ -101,6 +101,9 @@ class Session
         $_SESSION['last_activity'] = time();
     }
 
+    /**
+     * @return null|object
+     */
     public function getUser()
     {
         if (!isset($_SESSION['userId'])) {
@@ -111,6 +114,9 @@ class Session
         return $em->getRepository('OpenCoders\Podb\Persistence\Entity\User')->find($_SESSION['userId']);
     }
 
+    /**
+     * @param $id int
+     */
     public function setUserId($id)
     {
         $_SESSION['userId'] = $id;
