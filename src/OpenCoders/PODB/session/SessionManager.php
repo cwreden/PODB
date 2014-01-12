@@ -3,6 +3,8 @@
 namespace OpenCoders\PODB\session;
 
 
+use OpenCoders\PODB\config\ConfigManager;
+
 class SessionManager {
 
     /**
@@ -21,5 +23,17 @@ class SessionManager {
         }
 
         return new Session();
+    }
+
+    /**
+     * @return bool
+     */
+    public function isSessionActive()
+    {
+        $cm = new ConfigManager();
+        $sessionConfig = $cm->getSessionConfig();
+        $session = new Session();
+
+        return (time() - $session->getLastActivityTime()) <= $sessionConfig['timeout'];
     }
 } 

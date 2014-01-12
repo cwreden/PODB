@@ -7,6 +7,9 @@ class Session {
 
     function __construct()
     {
+        if (!isset($_SESSION['last_activity'])) {
+            $_SESSION['last_activity'] = time();
+        }
         if (!isset($_SESSION['attributes'])) {
             $_SESSION['attributes'] = array();
         }
@@ -19,7 +22,7 @@ class Session {
 
     public function getAttribute($key)
     {
-        if ($_SESSION['attributes'][$key]) {
+        if (isset($_SESSION['attributes'][$key])) {
             return $_SESSION['attributes'][$key];
         }
         return null;
@@ -40,5 +43,15 @@ class Session {
     public function setAuthenticated($isAuthenticated = false)
     {
         $_SESSION['authenticated'] = $isAuthenticated;
+    }
+
+    public function getLastActivityTime()
+    {
+        return $_SESSION['last_activity'];
+    }
+
+    public function updateLastActivityTime()
+    {
+        $_SESSION['last_activity'] = time();
     }
 } 
