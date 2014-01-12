@@ -55,4 +55,15 @@ abstract class AbstractBaseApi {
     {
         return $this->apiVersion;
     }
+
+    /**
+     * Returns true, if $value is an integer
+     *
+     * @param $value
+     * @return bool
+     */
+    protected function isId($value)
+    {
+        return isset($value) && intval($value) != 0;
+    }
 }
