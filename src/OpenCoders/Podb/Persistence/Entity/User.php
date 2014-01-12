@@ -71,9 +71,21 @@ class User extends AbstractBaseEntity
 
     /**
      * @var
+     * @ManyToOne(targetEntity="User")
+     */
+    protected $createdBy;
+
+    /**
+     * @var
      * @Column(type="datetime")
      */
     protected $createDate;
+
+    /**
+     * @var
+     * @ManyToOne(targetEntity="User")
+     */
+    protected $lastUpdateBy;
 
     /**
      * @var
@@ -223,11 +235,43 @@ class User extends AbstractBaseEntity
      * Set state.
      *
      * @param int $state
-     * @return UserInterface
+     * @return int
      */
     public function setState($state)
     {
         $this->state = $state;
+    }
+
+    /**
+     * @return User
+     */
+    public function getCreatedBy()
+    {
+        return $this->createdBy;
+    }
+
+    /**
+     * @param User $user
+     */
+    public function setCreatedBy(User $user)
+    {
+        $this->createdBy = $user;
+    }
+
+    /**
+     * @return User
+     */
+    public function getLastUpdatedBy()
+    {
+        return $this->lastUpdateBy;
+    }
+
+    /**
+     * @param User $user
+     */
+    public function setLastUpdateBy(User $user)
+    {
+        $this->lastUpdateBy = $user;
     }
 
     /**

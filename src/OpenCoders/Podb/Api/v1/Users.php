@@ -10,6 +10,7 @@ use OpenCoders\Podb\Persistence\Entity\Project;
 use OpenCoders\Podb\Persistence\Entity\User;
 use OpenCoders\Podb\Exception\PodbException;
 use OpenCoders\Podb\Api\ApiUrl;
+use OpenCoders\Podb\Session\SessionManager;
 
 class Users extends AbstractBaseApi
 {
@@ -197,12 +198,20 @@ class Users extends AbstractBaseApi
      */
     public function post($request_data = NULL)
     {
+        $sm = new SessionManager();
+        $session = $sm->getSession();
+        /** @var User $actualUser */
+        $actualUser = $session->getUser();
+
         $user = new User();
         $user->setDisplayName($request_data['displayName']);
         $user->setEmail($request_data['email']);
         $user->setUsername($request_data['userName']);
         $user->setPassword(sha1($request_data['password']));
+
+        $user->setCreatedBy($actualUser);
         $user->setCreateDate(new DateTime());
+        $user->setLastUpdateBy($actualUser);
         $user->setLastUpdateDate(new DateTime());
 
         $user->setState(0);
@@ -231,14 +240,17 @@ class Users extends AbstractBaseApi
      */
     public function put($id, $request_data = NULL)
     {
-        $repository = $this->getRepository();
-        /**
-         * @var $user User
-         */
-        $user = $repository->find($id);
+        if (!$this->isId($id)) {
+            throw new RestException(400, 'Invalid ID ' . $id);
+        }
+
+        $sm = new SessionManager();
+        $session = $sm->getSession();
+        /** @var $user User */
+        $user = $this->getUser($id);
 
         try {
-            $user->update($request_data);
+            $user->update($request_data, $session->getUser());
 
             // TODO kann das hier bleiben
             if (isset($request_data['projects'])) {
@@ -276,7 +288,7 @@ class Users extends AbstractBaseApi
      */
     public function delete($id)
     {
-        if (intval($id) == 0) {
+        if (!$this->isId($id)) {
             throw new RestException(400, 'Invalid ID ' . $id);
         }
 
@@ -300,15 +312,14 @@ class Users extends AbstractBaseApi
         /**
          * @var $user User
          */
-        if (intval($userName) == 0) {
+        if ($this->isId($userName)) {
+            $user = $repository->find($userName);
+        } else {
             $user = $repository->findOneBy(array(
                 'username' => $userName
             ));
-            return $user;
-        } else {
-            $user = $repository->find($userName);
-            return $user;
         }
+        return $user;
     }
 
 } 
