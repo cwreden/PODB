@@ -3,4 +3,4 @@
 // Include Composer Autoload (relative to project root).
 require_once "src/autoload.php";
 
-$entityManager = \OpenCoders\Podb\Helper\Doctrine::getEntityManager();
+$entityManager = \OpenCoders\Podb\Persistence\Doctrine::getEntityManager();
