@@ -2,6 +2,8 @@
 
 namespace OpenCoders\Podb\Session;
 
+use OpenCoders\Podb\Persistence\Doctrine;
+
 class Session
 {
 
@@ -97,5 +99,20 @@ class Session
     public function updateLastActivityTime()
     {
         $_SESSION['last_activity'] = time();
+    }
+
+    public function getUser()
+    {
+        if (!isset($_SESSION['userId'])) {
+            return null;
+        }
+        $em = Doctrine::getEntityManager();
+
+        return $em->getRepository('OpenCoders\Podb\Persistence\Entity\User')->find($_SESSION['userId']);
+    }
+
+    public function setUserId($id)
+    {
+        $_SESSION['userId'] = $id;
     }
 } 
