@@ -147,6 +147,10 @@ class Languages extends AbstractBaseApi
      */
     public function put($id, $request_data = NULL)
     {
+        if (!$this->isId($id)) {
+            throw new RestException(400, 'Invalid ID ' . $id);
+        }
+
         $repository = $this->getRepository();
         $sm = new SessionManager();
         $session = $sm->getSession();
@@ -179,7 +183,7 @@ class Languages extends AbstractBaseApi
      */
     public function delete($id)
     {
-        if (intval($id) == 0) {
+        if (!$this->isId($id)) {
             throw new RestException(400, 'Invalid ID ' . $id);
         }
 
@@ -202,15 +206,13 @@ class Languages extends AbstractBaseApi
     {
         $repository = $this->getRepository();
 
-        /**
-         * @var $language Language
-         */
-        if (intval($locale) == 0) {
+        /** @var $language Language */
+        if ($this->isId($locale)) {
+            $language = $repository->find($locale);
+        } else {
             $language = $repository->findOneBy(array(
                 'locale' => $locale
             ));
-        } else {
-            $language = $repository->find($locale);
         }
         return $language;
     }
