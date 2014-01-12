@@ -6,7 +6,7 @@ namespace OpenCoders\Podb\Access;
 use Luracast\Restler\iAuthenticate;
 use Luracast\Restler\RestException;
 use OpenCoders\Podb\Entity\User;
-use OpenCoders\Podb\Helper\Doctrine;
+use OpenCoders\Podb\Persistence\Doctrine;
 use OpenCoders\Podb\Session\SessionManager;
 
 class BasicAuthentication implements iAuthenticate{
