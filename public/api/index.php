@@ -12,7 +12,7 @@ Defaults::$useUrlBasedVersioning = true;
 
 $restler = new Restler();
 $restler->setAPIVersion(1);
-$restler->addAuthenticationClass('OpenCoders\Podb\Access\Authentication');
+$restler->addAuthenticationClass('OpenCoders\Podb\Access\BasicAuthentication');
 
 $restler->addFilterClass('OpenCoders\Podb\Api\Filter\RateLimit');
 
