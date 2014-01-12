@@ -3,6 +3,7 @@
 namespace OpenCoders\Podb\Persistence\Entity;
 
 use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
 use OpenCoders\Podb\Exception\NothingToUpdatePodbException;
 
 /**
@@ -39,7 +40,8 @@ class Project extends AbstractBaseEntity
 
     /**
      * @var
-     * @ManyToMany(targetEntity="User", mappedBy="projects")
+     * @ManyToMany(targetEntity="User", inversedBy="projects")
+     * @JoinTable(name="users_projects")
      */
     protected $users;
 
@@ -66,6 +68,11 @@ class Project extends AbstractBaseEntity
      * @Column(type="datetime")
      */
     protected $lastUpdateDate;
+
+    public function __construct()
+    {
+        $this->users = new ArrayCollection();
+    }
 
     /**
      * @param DateTime $createDate
@@ -204,7 +211,7 @@ class Project extends AbstractBaseEntity
             'id' => $this->getId(),
             'name' => $this->getName(),
             'defaultLanguage' => $this->getDefaultLanguage(),
-            'users' => $this->getUsers(),
+//            'users' => $this->getUsers(),
             'lastUpdatedDate' => $this->getLastUpdateDate(),
             'lastUpdatedBy' => $this->getLastUpdateBy(),
             'createdDate' => $this->getCreateDate(),
@@ -254,6 +261,7 @@ class Project extends AbstractBaseEntity
         foreach ($data as $key => $value) {
             if ($key == 'name') {
                 $this->setName($value);
+            } else if ($key == 'users') {
             }
         }
     }

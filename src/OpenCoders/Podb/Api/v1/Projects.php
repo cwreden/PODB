@@ -3,11 +3,13 @@
 namespace OpenCoders\Podb\Api\v1;
 
 use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
 use Luracast\Restler\RestException;
 use OpenCoders\Podb\Api\AbstractBaseApi;
 use OpenCoders\Podb\Persistence\Entity\Project;
 use OpenCoders\Podb\Exception\PodbException;
 use OpenCoders\Podb\Api\ApiUrl;
+use OpenCoders\Podb\Persistence\Entity\User;
 
 class Projects extends AbstractBaseApi
 {
@@ -46,12 +48,7 @@ class Projects extends AbstractBaseApi
      */
     public function get($projectName)
     {
-        /** @var $project Project */
-        if (is_int($projectName)) {
-            $project = $this->getRepository()->find($projectName);
-        } else {
-            $project = $this->getRepository()->findOneBy(array('name' => $projectName));
-        }
+        $project = $this->getProject($projectName);
 
         if (!$project) {
             throw new RestException(404, 'project not found with identifier ' . $projectName);
@@ -66,38 +63,29 @@ class Projects extends AbstractBaseApi
      *
      * @url GET /projects/:projectName/members
      *
+     * @throws \Luracast\Restler\RestException
+     *
      * @return array
      */
     public function getMembers($projectName)
     {
-        $baseUrl = ApiUrl::getBaseApiUrl();
 
-        return array(
-            array(
-                'id' => 123456789,
-                'username' => 'dax',
-                'prename' => 'André',
-                'name' => 'Meyerjürgens',
-                'created_at' => 4356852635423,
-                'modified_at' => 4356852635423,
-                'url_user' => $baseUrl . "/{$this->apiVersion}/users/dax",
-                'url_projects' => $baseUrl . "/{$this->apiVersion}/users/dax/projects",
-                'url_languages' => $baseUrl . "/{$this->apiVersion}/users/dax/languages",
-                'url_translations' => $baseUrl . "/{$this->apiVersion}/users/dax/translations",
-            ),
-            array(
-                'id' => 987654321,
-                'username' => 'hans',
-                'prename' => 'André',
-                'name' => 'Meyerjürgens',
-                'created_at' => 4356852635423,
-                'modified_at' => 4356852635423,
-                'url_user' => $baseUrl . "/{$this->apiVersion}/users/hans",
-                'url_projects' => $baseUrl . "/{$this->apiVersion}/users/hans/projects",
-                'url_languages' => $baseUrl . "/{$this->apiVersion}/users/hans/languages",
-                'url_translations' => $baseUrl . "/{$this->apiVersion}/users/hans/translations",
-            )
-        );
+        $data = array();
+
+        $project = $this->getProject($projectName);
+
+        if ($project == null) {
+            throw new RestException(404);
+        }
+
+        /**
+         * @var $user User
+         */
+        foreach ($project->getUsers() as $user) {
+            $data[] = $user->asShortArrayWithAPIInformation($this->apiVersion);
+        }
+
+        return $data;
     }
 
     /**
@@ -173,9 +161,11 @@ class Projects extends AbstractBaseApi
         $project->setLastUpdateDate(new DateTime());
 
         try {
-            $this->getEntityManager()->flush($project);
+            $em = $this->getEntityManager();
+            $em->persist($project);
+            $em->flush();
         } catch (\Exception $e) {
-            throw new RestException(400, 'Invalid parameters');
+            throw new RestException(400, 'Invalid parameters' . $e->getMessage());
         }
 
         return $project->asArrayWithAPIInformation($this->getApiVersion());
@@ -204,11 +194,24 @@ class Projects extends AbstractBaseApi
 
         try {
             $project->update($request_data);
+
+            // TODO kann das hier bleiben
+            if (isset($request_data['users'])) {
+                $userIds = explode(',', $request_data['users']);
+                $users = new ArrayCollection();
+                foreach ($userIds as $userId) {
+                    $user = $this->getEntityManager()->getRepository('OpenCoders\Podb\Persistence\Entity\User')->find($userId);
+                    if ($user) {
+                        $users->add($user);
+                    }
+                }
+                $project->setUsers($users);
+            }
+
+            $this->getEntityManager()->flush($project);
         } catch (PodbException $e) {
             throw new RestException(400, $e->getMessage());
         }
-
-        $this->getEntityManager()->flush($project);
         return $project->asArrayWithAPIInformation($this->getApiVersion());
     }
 
@@ -234,6 +237,22 @@ class Projects extends AbstractBaseApi
             return array('success' => true);
         } catch (\Exception $e) {
             throw new RestException(400, 'Could not delete project');
+        }
+    }
+
+    /**
+     * @param $projectName
+     * @return Project
+     */
+    private function getProject($projectName)
+    {
+        /** @var $project Project */
+        if (intval($projectName) == 0) {
+            $project = $this->getRepository()->findOneBy(array('name' => $projectName));
+            return $project;
+        } else {
+            $project = $this->getRepository()->find($projectName);
+            return $project;
         }
     }
 

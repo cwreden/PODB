@@ -51,17 +51,7 @@ class Users extends AbstractBaseApi
      */
     public function get($userName)
     {
-        $repository = $this->getRepository();
-        /**
-         * @var $user User
-         */
-        if (intval($userName) == 0) {
-            $user = $repository->findOneBy(array(
-                'username' => $userName
-            ));
-        } else {
-            $user = $repository->find($userName);
-        }
+        $user = $this->getUser($userName);
 
         if ($user == null) {
             throw new RestException(404, "No user found with identifier $userName.");
@@ -74,55 +64,28 @@ class Users extends AbstractBaseApi
      *
      * @url GET /users/:userName/projects
      *
+     * @throws \Luracast\Restler\RestException
+     *
      * @return array
      */
     public function getProjects($userName)
     {
         $data = array();
 
-        /**
-         * @var $repository UserRepository
-         */
-        $repository = $this->getRepository();
-        if (intval($userName) == 0) {
-            $projects = $repository->getProjectsByUserName($userName);
-        } else {
-            $projects = $repository->getProjects($userName);
+        $user = $this->getUser($userName);
+
+        if ($user == null) {
+            throw new RestException(404);
         }
 
         /**
          * @var $project Project
          */
-        foreach ($projects as $project) {
+        foreach ($user->getProjects() as $project) {
             $data[] = $project->asShortArrayWithAPIInformation($this->apiVersion);
         }
 
         return $data;
-
-//        $apiBaseUrl = ApiUrl::getBaseApiUrl();
-//
-//        return array(
-//            array(
-//                'id' => 12344567,
-//                'name' => 'Fake-Project-1',
-//                'owner' => array(),
-//                'url' => $apiBaseUrl . "/{$this->apiVersion}/projects/Fake-Project-1",
-//                'url_html' => '',
-//                'url_members' => $apiBaseUrl . "/{$this->apiVersion}/projects/Fake-Project-1/members",
-//                'url_domains' => $apiBaseUrl . "/{$this->apiVersion}/projects/Fake-Project-1/domains",
-//                'url_languages' => $apiBaseUrl . "/{$this->apiVersion}/projects/Fake-Project-1/languages"
-//            ),
-//            array(
-//                'id' => 12344567,
-//                'name' => 'Fake-Project-2',
-//                'owner' => array(),
-//                'url' => $apiBaseUrl . "/{$this->apiVersion}/projects/Fake-Project-2",
-//                'url_html' => '',
-//                'url_members' => $apiBaseUrl . "/{$this->apiVersion}/projects/Fake-Project-2/members",
-//                'url_domains' => $apiBaseUrl . "/{$this->apiVersion}/projects/Fake-Project-2/domains",
-//                'url_languages' => $apiBaseUrl . "/{$this->apiVersion}/projects/Fake-Project-2/languages"
-//            )
-//        );
     }
 
     /**
@@ -276,6 +239,15 @@ class Users extends AbstractBaseApi
 
         try {
             $user->update($request_data);
+
+            // TODO kann das hier bleiben
+            if (isset($request_data['newProjectId'])) {
+                $project = $this->getEntityManager()->getRepository('OpenCoders\Podb\Persistence\Entity\Project')->find($request_data['newProjectId']);
+                if ($project) {
+                    $user->getProjects()->add($project);
+                }
+            }
+
             $this->getEntityManager()->flush($user);
         } catch (PodbException $e) {
             throw new RestException(400, $e->getMessage());
@@ -308,6 +280,27 @@ class Users extends AbstractBaseApi
         return array(
             'success' => true
         );
+    }
+
+    /**
+     * @param $userName
+     * @return User
+     */
+    private function getUser($userName)
+    {
+        $repository = $this->getRepository();
+        /**
+         * @var $user User
+         */
+        if (intval($userName) == 0) {
+            $user = $repository->findOneBy(array(
+                'username' => $userName
+            ));
+            return $user;
+        } else {
+            $user = $repository->find($userName);
+            return $user;
+        }
     }
 
 } 

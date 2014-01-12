@@ -3,6 +3,7 @@
 namespace OpenCoders\Podb\Persistence\Entity;
 
 use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
 use OpenCoders\Podb\Exception\EmptyParameterException;
 use OpenCoders\Podb\Exception\PodbException;
 
@@ -79,6 +80,11 @@ class User extends AbstractBaseEntity
      * @Column(type="datetime")
      */
     protected $lastUpdateDate;
+
+    public function __construct()
+    {
+        $this->projects = new ArrayCollection();
+    }
 
     /**
      * @param mixed $email
