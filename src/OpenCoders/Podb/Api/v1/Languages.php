@@ -8,6 +8,7 @@ use OpenCoders\Podb\Api\AbstractBaseApi;
 use OpenCoders\Podb\Api\ApiUrl;
 use OpenCoders\Podb\Exception\PodbException;
 use OpenCoders\Podb\Persistence\Entity\Language;
+use OpenCoders\Podb\Session\SessionManager;
 
 class Languages extends AbstractBaseApi
 {
@@ -58,6 +59,8 @@ class Languages extends AbstractBaseApi
     /**
      * @param $locale
      *
+     * @TODO rename to users and load user informations
+     *
      * @url GET /languages/:locale/projects
      *
      * @throws \Luracast\Restler\RestException
@@ -106,11 +109,19 @@ class Languages extends AbstractBaseApi
      */
     public function post($request_data = NULL)
     {
+        $sm = new SessionManager();
+        $session = $sm->getSession();
+
         try {
+            $user = $session->getUser();
+
             $language = new Language();
             $language->setLocale($request_data['locale']);
             $language->setName($request_data['name']);
+
+            $language->setCreatedBy($user);
             $language->setCreateDate(new DateTime());
+            $language->setLastUpdateBy($user);
             $language->setLastUpdateDate(new DateTime());
 
             $em = $this->getEntityManager();
@@ -137,6 +148,8 @@ class Languages extends AbstractBaseApi
     public function put($id, $request_data = NULL)
     {
         $repository = $this->getRepository();
+        $sm = new SessionManager();
+        $session = $sm->getSession();
 
         /**
          * @var $language Language
@@ -144,7 +157,7 @@ class Languages extends AbstractBaseApi
         $language = $repository->find($id);
 
         try {
-            $language->update($request_data);
+            $language->update($request_data, $session->getUser());
 
             $this->getEntityManager()->flush($language);
         } catch (PodbException $e) {

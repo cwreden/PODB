@@ -177,13 +177,23 @@ class Language extends AbstractBaseEntity
      */
     public function asArray()
     {
+        $createdBy = null;
+        /** @var $createUser User */
+        if ($createUser = $this->getCreatedBy()) {
+            $createdBy = $createUser->asShortArray();
+        }
+        $updatedBy = null;
+        /** @var User $updateUser */
+        if ($updateUser = $this->getLastUpdateBy()) {
+            $updatedBy = $updateUser->asShortArray();
+        }
         return array(
             'id' => $this->getId(),
             'name' => $this->getName(),
             'locale' => $this->getLocale(),
-            'createdBy' => $this->getCreatedBy(),
+            'createdBy' => $createdBy,
             'createDate' => $this->getCreateDate(),
-            'lastUpdatedBy' => $this->getLastUpdateBy(),
+            'lastUpdatedBy' => $updatedBy,
             'lastUpdateDate' => $this->getLastUpdateDate(),
         );
     }
@@ -209,7 +219,7 @@ class Language extends AbstractBaseEntity
         );
     }
 
-    public function update($data)
+    public function update($data, $user = null)
     {
         if ($data == null) {
             throw new PodbException('There is nothing to update.');
@@ -221,6 +231,7 @@ class Language extends AbstractBaseEntity
                 $this->setLocale($value);
             }
         }
+        $this->setLastUpdateBy($user);
         $this->setLastUpdateDate(new DateTime());
     }
 } 
