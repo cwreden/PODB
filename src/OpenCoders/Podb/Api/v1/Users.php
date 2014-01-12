@@ -3,13 +3,13 @@
 namespace OpenCoders\Podb\Api\v1;
 
 use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
 use Luracast\Restler\RestException;
 use OpenCoders\Podb\Api\AbstractBaseApi;
 use OpenCoders\Podb\Persistence\Entity\Project;
 use OpenCoders\Podb\Persistence\Entity\User;
 use OpenCoders\Podb\Exception\PodbException;
 use OpenCoders\Podb\Api\ApiUrl;
-use OpenCoders\Podb\Persistence\Repository\UserRepository;
 
 class Users extends AbstractBaseApi
 {
@@ -241,10 +241,18 @@ class Users extends AbstractBaseApi
             $user->update($request_data);
 
             // TODO kann das hier bleiben
-            if (isset($request_data['newProjectId'])) {
-                $project = $this->getEntityManager()->getRepository('OpenCoders\Podb\Persistence\Entity\Project')->find($request_data['newProjectId']);
-                if ($project) {
-                    $user->getProjects()->add($project);
+            if (isset($request_data['projects'])) {
+                $projects = $user->getProjects();
+                /** @var $project Project */
+                foreach ($projects as $project) {
+                    $user->removeProject($project);
+                }
+                $projectIds = explode(',', $request_data['projects']);
+                foreach ($projectIds as $projectId) {
+                    $project = $this->getEntityManager()->getRepository('OpenCoders\Podb\Persistence\Entity\Project')->find($projectId);
+                    if ($project) {
+                        $user->addProject($project);
+                    }
                 }
             }
 

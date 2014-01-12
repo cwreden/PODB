@@ -64,7 +64,7 @@ class User extends AbstractBaseEntity
 
     /**
      * @var
-     * @ManyToMany(targetEntity="Project", inversedBy="users")
+     * @ManyToMany(targetEntity="Project", mappedBy="users")
      * @JoinTable(name="users_projects")
      */
     private $projects;
@@ -324,5 +324,17 @@ class User extends AbstractBaseEntity
             }
         }
         $this->setLastUpdateDate(new DateTime());
+    }
+
+    public function addProject(Project $project)
+    {
+        $project->addUser($this);
+        $this->projects->add($project);
+    }
+
+    public function removeProject(Project $project)
+    {
+        $project->removeUser($this);
+        $this->projects->removeElement($project);
     }
 }

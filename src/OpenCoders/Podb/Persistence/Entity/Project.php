@@ -265,4 +265,14 @@ class Project extends AbstractBaseEntity
             }
         }
     }
+
+    public function addUser($user)
+    {
+        $this->users->add($user);
+    }
+
+    public function removeUser($user)
+    {
+        $this->users->removeElement($user);
+    }
 }
