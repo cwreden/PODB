@@ -3,9 +3,10 @@
 namespace OpenCoders\Podb\Api\v1;
 
 
+use OpenCoders\Podb\Api\AbstractBaseApi;
 use OpenCoders\Podb\Api\ApiUrl;
 
-class DataSets {
+class DataSets extends AbstractBaseApi{
 
     private $apiVersion = 'v1';
 
