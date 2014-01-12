@@ -25,7 +25,7 @@ class ConfigManager {
      */
     public function __construct ()
     {
-        $this->configPath = __DIR__ . '/../../../config/';
+        $this->configPath = __DIR__ . '/../../../../config/';
     }
 
     /**

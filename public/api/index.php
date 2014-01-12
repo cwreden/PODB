@@ -14,7 +14,7 @@ $restler = new Restler();
 $restler->setAPIVersion(1);
 $restler->addAuthenticationClass('OpenCoders\Podb\Access\BasicAuthentication');
 
-$restler->addFilterClass('OpenCoders\Podb\Filter\RateLimit');
+$restler->addFilterClass('OpenCoders\Podb\Api\Filter\RateLimit');
 
 $restler->addAPIClass('OpenCoders\Podb\Api\Users', '');
 $restler->addAPIClass('OpenCoders\Podb\Api\Projects', '');
