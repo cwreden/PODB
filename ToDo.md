@@ -16,8 +16,5 @@ Language: ID, Name, locale, createdBy, createDate, lastUpdateBy, lastUpdateDate
 
 Project structure changes
 =========================
-- filter/rateLimit.php => API/filter/rateLimit.php
 - Entity/ => persistance/Entity/
-- helper/Doctrine.php => persistance/Doctrine.php
-- helper/Server.php => API/ApiUrl.php
 - Repository/ => persistance/Repository/

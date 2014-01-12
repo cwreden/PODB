@@ -1,6 +1,6 @@
 <?php
 
-namespace OpenCoders\Podb\Filter;
+namespace OpenCoders\Podb\Api\Filter;
 
 
 use Luracast\Restler\iFilter;
@@ -17,7 +17,7 @@ class RateLimit implements iFilter {
      */
     public function __isAllowed()
     {
-        $rateLimitConfig = include(__DIR__ . '/../../../../config/rateLimit.config.php');
+        $rateLimitConfig = include(__DIR__ . '/../../../../../config/rateLimit.config.php');
         if ($rateLimitConfig['resetInterval'] == 0) {
             return true;
         }
