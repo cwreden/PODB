@@ -1,5 +1,7 @@
 Database structure
 ==================
+- Prefix
+
 
 User: ID, Name, EMail, Password, createdBy, createDate, lastUpdateBy, lastUpdateDate
 
