@@ -3,6 +3,7 @@
 namespace OpenCoders\Podb\Session;
 
 use OpenCoders\Podb\Persistence\Doctrine;
+use OpenCoders\Podb\Persistence\Entity\User;
 
 class Session
 {
@@ -102,7 +103,7 @@ class Session
     }
 
     /**
-     * @return null|object
+     * @return null|User
      */
     public function getUser()
     {

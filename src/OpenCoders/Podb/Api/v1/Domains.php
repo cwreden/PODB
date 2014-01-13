@@ -2,75 +2,69 @@
 
 namespace OpenCoders\Podb\Api\v1;
 
-
+use DateTime;
+use Luracast\Restler\RestException;
+use OpenCoders\Podb\Api\AbstractBaseApi;
 use OpenCoders\Podb\Api\ApiUrl;
+use OpenCoders\Podb\Exception\PodbException;
+use OpenCoders\Podb\Persistence\Entity\Domain;
+use OpenCoders\Podb\Persistence\Entity\Project;
 
-class Domains {
+class Domains extends AbstractBaseApi
+{
 
     private $apiVersion = 'v1';
 
     /**
+     * Returns a list of domains
+     *
      * @url GET /domains
      *
      * @return array
      */
     public function getList()
     {
-        $apiBaseUrl = ApiUrl::getBaseApiUrl();
+        $response = array();
+        $domains = $this->getRepository()->findAll();
 
-        return array(
-            array(
-                'id' => 1,
-                'name' => 'Fake-Domain-1',
-                'project' => 'Fake-Project-1',
-                'url' => $apiBaseUrl . "/{$this->apiVersion}/domains/Fake-Project-1/Fake-Domain-1",
-                'url_project' => $apiBaseUrl . "/{$this->apiVersion}/projects/Fake-Project-1",
-                'url_translated_languages' => $apiBaseUrl . "/{$this->apiVersion}/domains/Fake-Project-1/Fake-Domain-1/translated_languages",
-                'url_datasets' => $apiBaseUrl . "/{$this->apiVersion}/domains/Fake-Project-1/Fake-Domain-1/datasets",
-                'created_at' => 1389051097,
-                'updated_at' => 1389051097
-            ),
-            array(
-                'id' => 2,
-                'name' => 'Fake-Domain-2',
-                'project' => 'Fake-Project-2',
-                'url' => $apiBaseUrl . "/{$this->apiVersion}/domains/Fake-Project-2/Fake-Domain-2",
-                'url_project' => $apiBaseUrl . "/{$this->apiVersion}/projects/Fake-Project-2",
-                'url_translated_languages' => $apiBaseUrl . "/{$this->apiVersion}/domains/Fake-Project-2/Fake-Domain-2/translated_languages",
-                'url_datasets' => $apiBaseUrl . "/{$this->apiVersion}/domains/Fake-Project-2/Fake-Domain-2/datasets",
-                'created_at' => 1389051097,
-                'updated_at' => 1389051097
-            )
-        );
+        /** @var $domain Domain */
+        foreach ($domains as $domain) {
+            $response[] = $domain->asShortArrayWithAPIInformation($this->getApiVersion());
+        }
+
+        return $response;
     }
 
     /**
+     * Returns a specific domain
+     *
      * @param $projectName
      * @param $domainName
+     *
      * @url GET /domains/:projectName/:domainName
+     * @url GET /domains/:projectName
+     *
+     * @throws RestException
      *
      * @return array
      */
-    public function get($projectName, $domainName)
+    public function get($projectName, $domainName = null)
     {
-        $apiBaseUrl = ApiUrl::getBaseApiUrl();
+        $domain = $this->getDomain($projectName, $domainName);
 
-        return array(
-            'id' => 12362,
-            'name' => $domainName,
-            'project' => $projectName,
-            'url' => $apiBaseUrl . "/{$this->apiVersion}/domains/{$projectName}/{$domainName}",
-            'url_project' => $apiBaseUrl . "/{$this->apiVersion}/projects/{$projectName}",
-            'url_translated_languages' => $apiBaseUrl . "/{$this->apiVersion}/domains/{$projectName}/{$domainName}/translated_languages",
-            'url_datasets' => $apiBaseUrl . "/{$this->apiVersion}/domains/{$projectName}/{$domainName}/datasets",
-            'created_at' => 1389051097,
-            'updated_at' => 1389051097
-        );
+        if (!$domain) {
+            throw new RestException(404, 'project not found with identifier ' . $projectName);
+        }
+
+        return $domain->asArrayWithAPIInformation($this->getApiVersion());
     }
 
     /**
+     * Returns the translated Languages
+     *
      * @param $projectName
      * @param $domainName
+     *
      * @url GET /domains/:projectName/:domainName/translated_languages
      *
      * @return array
@@ -91,6 +85,8 @@ class Domains {
     }
 
     /**
+     *
+     *
      * @param $projectName
      * @param $domainName
      * @url GET /domains/:projectName/:domainName/datasets
@@ -124,31 +120,117 @@ class Domains {
     }
 
     /**
-     * @param $request_data
+     * Creates a new domain with given data
+     *
+     * @param array $request_data Data to create new domain
+     *
      * @url POST /domains
+     *
+     * @throws \Luracast\Restler\RestException
+     *
+     * @return array
      */
     public function post($request_data = NULL)
     {
+        $domain = new Domain();
+        $domain->update($request_data);
+        $domain->setCreateDate(new DateTime());
+        $domain->setCreatedBy($this->getSession()->getUser());
 
+        try {
+            $em = $this->getEntityManager();
+            $em->persist($domain);
+            $em->flush();
+        } catch (\Exception $e) {
+            throw new RestException(400, 'Invalid parameters' . $e->getMessage());
+        }
+
+        return $domain->asArrayWithAPIInformation($this->getApiVersion());
     }
 
     /**
+     * Updates a domain
+     *
      * @param $id
      * @param $request_data
+     *
      * @url PUT /domains/:id
+     *
+     * @throws \Luracast\Restler\RestException
+     *
+     * @return array
      */
     public function put($id, $request_data = NULL)
     {
+        if (!$this->isId($id)) {
+            throw new RestException(400, 'Invalid ID ' . $id);
+        }
 
+        /** @var Domain $domain */
+        $domain = $this->getRepository()->find($id);
+
+        try {
+            $domain->update($request_data);
+            $this->getEntityManager()->flush($domain);
+        } catch (PodbException $e) {
+            throw new RestException(400, $e->getMessage());
+        }
+
+        return $domain->asArrayWithAPIInformation($this->apiVersion);
     }
 
     /**
-     * @param $id
+     * Deletes a domain by ID
+     *
+     * @param string $id ID of the domain
+     *
      * @url DELETE /domains/:id
+     *
+     * @throws \Luracast\Restler\RestException
+     *
+     * @return array
      */
     public function delete($id)
     {
+        if (!$this->isId($id)) {
+            throw new RestException(400, 'Invalid ID ' . $id);
+        }
 
+        $em = $this->getEntityManager();
+        $object = $em->getPartialReference($this->entityName, array('id' => $id));
+        $em->remove($object);
+        $em->flush();
+
+        return array(
+            'success' => true
+        );
     }
 
-} 
+    private function getDomain($projectName, $domainName = null)
+    {
+
+        $domain = null;
+        if ($this->isId($projectName)) {
+            $domain = $this->getRepository()->find($projectName);
+        } else if (is_string($projectName) && is_string($domainName)) {
+            /** @var Project $project */
+            $project = $this->getProjectRepository()->findOneBy(array('name' => $projectName));
+            $domain = $this->getRepository()->findOneBy(array('projectId' => $project->getId(), 'name' => $domainName));
+        }
+
+        if ($domain) {
+            return $domain;
+        }
+
+        return null;
+    }
+
+    /**
+     * @return \Doctrine\ORM\EntityRepository
+     */
+    private function getProjectRepository()
+    {
+        return $this->getEntityManager()->getRepository('OpenCoders\Podb\Persistence\Entity\Project');
+    }
+
+}

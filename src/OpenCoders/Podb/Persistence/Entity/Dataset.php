@@ -9,7 +9,7 @@ use DateTime;
  * @package OpenCoders\Podb\Persistence\Entity
  * @Entity(repositoryClass="OpenCoders\Podb\Persistence\Repository\DataSetRepository")
  */
-class DataSet
+class DataSet extends AbstractBaseEntity
 {
 
     /**

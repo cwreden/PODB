@@ -2,10 +2,22 @@
 
 namespace OpenCoders\Podb\Persistence\Entity;
 
-
 use OpenCoders\Podb\Api\ApiUrl;
+use OpenCoders\Podb\Session\Session;
+use OpenCoders\Podb\Session\SessionManager;
 
-abstract class AbstractBaseEntity {
+abstract class AbstractBaseEntity
+{
+
+    /**
+     * @var \OpenCoders\Podb\Session\SessionManager
+     */
+    private $sessionmanager;
+
+    function __construct()
+    {
+        $this->sessionmanager = new SessionManager();
+    }
 
     /**
      * @return array
@@ -56,5 +68,15 @@ abstract class AbstractBaseEntity {
     protected function getBaseAPIUrl()
     {
         return ApiUrl::getBaseApiUrl();
+    }
+
+    /**
+     * Returns the actual Session
+     *
+     * @return Session
+     */
+    protected function getSession()
+    {
+        return $this->sessionmanager->getSession();
     }
 } 
