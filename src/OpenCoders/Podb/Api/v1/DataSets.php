@@ -8,8 +8,6 @@ use OpenCoders\Podb\Api\ApiUrl;
 
 class DataSets extends AbstractBaseApi{
 
-    private $apiVersion = 'v1';
-
     /**
      * @url GET /datasets
      *

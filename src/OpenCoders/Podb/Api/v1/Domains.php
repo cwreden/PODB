@@ -13,8 +13,6 @@ use OpenCoders\Podb\Persistence\Entity\Project;
 class Domains extends AbstractBaseApi
 {
 
-    private $apiVersion = 'v1';
-
     /**
      * Returns a list of domains
      *
