@@ -18,6 +18,7 @@ class SessionManager {
     public function getSession()
     {
         if (!$this::$sessionStarted) {
+            ini_set('session.gc_maxlifetime', $this->getSessionConfig()['lifetime']);
             session_start();
             $this::$sessionStarted = true;
         }
@@ -30,10 +31,14 @@ class SessionManager {
      */
     public function isSessionActive()
     {
-        $cm = new ConfigManager();
-        $sessionConfig = $cm->getSessionConfig();
         $session = new Session();
 
-        return (time() - $session->getLastActivityTime()) <= $sessionConfig['timeout'];
+        return (time() - $session->getLastActivityTime()) <= $this->getSessionConfig()['timeout'];
+    }
+
+    private function getSessionConfig()
+    {
+        $cm = new ConfigManager();
+        return $cm->getSessionConfig();
     }
 } 
