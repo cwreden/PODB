@@ -36,6 +36,13 @@ class Language extends AbstractBaseEntity
 
     /**
      * @var
+     * @ManyToMany(targetEntity="User", mappedBy="supportedLanguages")
+     * @JoinTable(name="users_languages")
+     */
+    protected $supportedBy;
+
+    /**
+     * @var
      * @ManyToOne(targetEntity="User")
      */
     protected $createdBy;
@@ -170,6 +177,22 @@ class Language extends AbstractBaseEntity
     public function getLastUpdateBy()
     {
         return $this->lastUpdateBy;
+    }
+
+    /**
+     * @param mixed $supportedBy
+     */
+    public function setSupportedBy($supportedBy)
+    {
+        $this->supportedBy = $supportedBy;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSupportedBy()
+    {
+        return $this->supportedBy;
     }
 
     /**

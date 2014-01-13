@@ -71,6 +71,13 @@ class User extends AbstractBaseEntity
 
     /**
      * @var
+     * @ManyToMany(targetEntity="Language", inversedBy="supportedBy")
+     * @JoinTable(name="users_languages")
+     */
+    private $supportedLanguages;
+
+    /**
+     * @var
      * @ManyToOne(targetEntity="User")
      */
     protected $createdBy;
@@ -304,6 +311,22 @@ class User extends AbstractBaseEntity
     public function setLastUpdateDate(DateTime $lastUpdateDate = null)
     {
         $this->lastUpdateDate = $lastUpdateDate ? clone $lastUpdateDate : null;
+    }
+
+    /**
+     * @param mixed $supportedLanguages
+     */
+    public function setSupportedLanguages($supportedLanguages)
+    {
+        $this->supportedLanguages = $supportedLanguages;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSupportedLanguages()
+    {
+        return $this->supportedLanguages;
     }
 
     /**

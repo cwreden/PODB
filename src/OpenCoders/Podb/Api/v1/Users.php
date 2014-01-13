@@ -253,6 +253,20 @@ class Users extends AbstractBaseApi
             $user->update($request_data, $session->getUser());
 
             // TODO kann das hier bleiben
+            if (isset($request_data['supportedLanguages'])) {
+                $supportedLanguageIds = explode(',', $request_data['supportedLanguages']);
+                $supportedLanguages = new ArrayCollection();
+                foreach ($supportedLanguageIds as $languageId) {
+                    $language = $this->getEntityManager()->getRepository('OpenCoders\Podb\Persistence\Entity\User')->find($languageId);
+                    if ($language) {
+                        $supportedLanguages->add($language);
+                    }
+                }
+                $user->setSupportedLanguages($supportedLanguages);
+                var_dump($supportedLanguages->count());
+            }
+
+            // TODO kann das hier bleiben
             if (isset($request_data['projects'])) {
                 $projects = $user->getProjects();
                 /** @var $project Project */
