@@ -53,7 +53,6 @@ class BasicAuthentication implements iAuthenticate
             return true;
         }
         header('WWW-Authenticate: Basic realm="' . self::REALM . '"');
-        echo $_SERVER['PHP_AUTH_USER'] . ' - ' . $_SERVER['PHP_AUTH_PW'];
         throw new RestException(401, 'Basic Authentication Required');
     }
 
