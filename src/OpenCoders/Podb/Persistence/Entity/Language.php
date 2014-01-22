@@ -42,30 +42,6 @@ class Language extends AbstractBaseEntity
     protected $supportedBy;
 
     /**
-     * @var
-     * @ManyToOne(targetEntity="User")
-     */
-    protected $createdBy;
-
-    /**
-     * @var
-     * @Column(type="datetime")
-     */
-    protected $createDate;
-
-    /**
-     * @var
-     * @ManyToOne(targetEntity="User")
-     */
-    protected $lastUpdateBy;
-
-    /**
-     * @var
-     * @Column(type="datetime")
-     */
-    protected $lastUpdateDate;
-
-    /**
      * @return
      */
     public function getId()
@@ -94,7 +70,7 @@ class Language extends AbstractBaseEntity
      */
     public function getCreatedBy()
     {
-        return $this->createdBy;
+        throw new \Exception('Not implemented!');
     }
 
     /**
@@ -102,7 +78,7 @@ class Language extends AbstractBaseEntity
      */
     public function getCreateDate()
     {
-        return $this->createDate ? clone $this->createDate : null;
+        throw new \Exception('Not implemented!');
     }
 
     /**
@@ -110,7 +86,7 @@ class Language extends AbstractBaseEntity
      */
     public function getLastUpdateDate()
     {
-        return $this->lastUpdateDate ? clone $this->lastUpdateDate : null;
+        throw new \Exception('Not implemented!');
     }
 
     /**
@@ -140,43 +116,11 @@ class Language extends AbstractBaseEntity
     }
 
     /**
-     * @param DateTime $createDate
-     */
-    public function setCreateDate(DateTime $createDate = null)
-    {
-        $this->createDate = $createDate ? clone $createDate : null;
-    }
-
-    /**
-     * @param DateTime $lastUpdateDate
-     */
-    public function setLastUpdateDate(DateTime $lastUpdateDate = null)
-    {
-        $this->lastUpdateDate = $lastUpdateDate ? clone $lastUpdateDate : null;
-    }
-
-    /**
-     * @param User $createdBy
-     */
-    public function setCreatedBy($createdBy)
-    {
-        $this->createdBy = $createdBy;
-    }
-
-    /**
-     * @param User $lastUpdateBy
-     */
-    public function setLastUpdateBy($lastUpdateBy)
-    {
-        $this->lastUpdateBy = $lastUpdateBy;
-    }
-
-    /**
      * @return User
      */
     public function getLastUpdateBy()
     {
-        return $this->lastUpdateBy;
+        throw new \Exception('Not implemented!');
     }
 
     /**
@@ -200,24 +144,14 @@ class Language extends AbstractBaseEntity
      */
     public function asArray()
     {
-        $createdBy = null;
-        /** @var $createUser User */
-        if ($createUser = $this->getCreatedBy()) {
-            $createdBy = $createUser->asShortArray();
-        }
-        $updatedBy = null;
-        /** @var User $updateUser */
-        if ($updateUser = $this->getLastUpdateBy()) {
-            $updatedBy = $updateUser->asShortArray();
-        }
         return array(
             'id' => $this->getId(),
             'name' => $this->getName(),
             'locale' => $this->getLocale(),
-            'createdBy' => $createdBy,
-            'createDate' => $this->getCreateDate(),
-            'lastUpdatedBy' => $updatedBy,
-            'lastUpdateDate' => $this->getLastUpdateDate(),
+//            'createdBy' => $createdBy,
+//            'createDate' => $this->getCreateDate(),
+//            'lastUpdatedBy' => $updatedBy,
+//            'lastUpdateDate' => $this->getLastUpdateDate(),
         );
     }
 

@@ -57,51 +57,11 @@ class Translation
     protected $fuzzy;
 
     /**
-     * @var
-     * @ManyToOne(targetEntity="User")
-     */
-    protected $createdBy;
-
-    /**
-     * @var
-     * @Column(type="datetime")
-     */
-    protected $createDate;
-
-    /**
-     * @var
-     * @ManyToOne(targetEntity="User")
-     */
-    protected $lastUpdateBy;
-
-    /**
-     * @var
-     * @Column(type="datetime")
-     */
-    protected $lastUpdateDate;
-
-    /**
-     * @param DateTime $createDate
-     */
-    public function setCreateDate(DateTime $createDate)
-    {
-        $this->createDate = $createDate ? clone $createDate : null;
-    }
-
-    /**
      * @return DateTime|null
      */
     public function getCreateDate()
     {
-        return $this->createDate ? clone $this->createDate : null;
-    }
-
-    /**
-     * @param string $createdBy
-     */
-    public function setCreatedBy($createdBy)
-    {
-        $this->createdBy = $createdBy;
+        throw new \Exception('Not implemented!');
     }
 
     /**
@@ -109,7 +69,7 @@ class Translation
      */
     public function getCreatedBy()
     {
-        return $this->createdBy;
+        throw new \Exception('Not implemented!');
     }
 
     /**
@@ -161,27 +121,11 @@ class Translation
     }
 
     /**
-     * @param string $lastUpdateBy
-     */
-    public function setLastUpdateBy($lastUpdateBy)
-    {
-        $this->lastUpdateBy = $lastUpdateBy;
-    }
-
-    /**
      * @return string
      */
     public function getLastUpdateBy()
     {
-        return $this->lastUpdateBy;
-    }
-
-    /**
-     * @param DateTime $lastUpdateDate
-     */
-    public function setLastUpdateDate(DateTime $lastUpdateDate)
-    {
-        $this->lastUpdateDate = $lastUpdateDate ? clone $lastUpdateDate : null;
+        throw new \Exception('Not implemented!');
     }
 
     /**
@@ -189,7 +133,7 @@ class Translation
      */
     public function getLastUpdateDate()
     {
-        return $this->lastUpdateDate ? clone $this->lastUpdateDate : null;
+        throw new \Exception('Not implemented!');
     }
 
     /**
@@ -269,10 +213,10 @@ class Translation
             'msgStr1' => $this->getMsgStr1(),
             'msgStr2' => $this->getMsgStr2(),
             'fuzzy' => $this->getFuzzy(),
-            'lastUpdatedDate' => $this->getLastUpdateDate(),
-            'lastUpdatedBy' => $this->getLastUpdateBy(),
-            'createdDate' => $this->getCreateDate(),
-            'createdBy' => $this->getCreatedBy(),
+//            'lastUpdatedDate' => $this->getLastUpdateDate(),
+//            'lastUpdatedBy' => $this->getLastUpdateBy(),
+//            'createdDate' => $this->getCreateDate(),
+//            'createdBy' => $this->getCreatedBy(),
         );
     }
 

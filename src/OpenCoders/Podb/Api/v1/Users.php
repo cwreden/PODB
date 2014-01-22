@@ -198,21 +198,11 @@ class Users extends AbstractBaseApi
      */
     public function post($request_data = NULL)
     {
-        $sm = new SessionManager();
-        $session = $sm->getSession();
-        /** @var User $actualUser */
-        $actualUser = $session->getUser();
-
         $user = new User();
         $user->setDisplayName($request_data['displayName']);
         $user->setEmail($request_data['email']);
         $user->setUsername($request_data['userName']);
         $user->setPassword(sha1($request_data['password']));
-
-        $user->setCreatedBy($actualUser);
-        $user->setCreateDate(new DateTime());
-        $user->setLastUpdateBy($actualUser);
-        $user->setLastUpdateDate(new DateTime());
 
         $user->setState(0);
 

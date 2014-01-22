@@ -13,7 +13,6 @@ use OpenCoders\Podb\Persistence\Entity\User;
 
 class Projects extends AbstractBaseApi
 {
-
     /**
      * @var string EntityClassName (FQN)
      */
@@ -157,8 +156,6 @@ class Projects extends AbstractBaseApi
         $project = new Project();
 
         $project->setName($request_data['name']);
-        $project->setCreateDate(new DateTime());
-        $project->setLastUpdateDate(new DateTime());
 
         try {
             $em = $this->getEntityManager();

@@ -2,12 +2,17 @@
 
 namespace OpenCoders\Podb\Api\v1;
 
+use OpenCoders\Podb\Api\AbstractBaseApi;
 use OpenCoders\Podb\Api\ApiUrl;
 
-class Translations
+class Translations extends AbstractBaseApi
 {
 
-    private $apiVersion = 'v1';
+    /**
+     * @var string EntityClassName (FQN)
+     */
+    protected $entityName = 'OpenCoders\Podb\Persistence\Entity\Translation';
+
     /**
      * @url GET /translations
      *
