@@ -22,6 +22,7 @@ $restler->addAPIClass('OpenCoders\Podb\Api\Languages', '');
 $restler->addAPIClass('OpenCoders\Podb\Api\Domains', '');
 $restler->addAPIClass('OpenCoders\Podb\Api\DataSets', '');
 $restler->addAPIClass('OpenCoders\Podb\Api\Translations', '');
+$restler->addAPIClass('OpenCoders\Podb\Api\Audit');
 
 $restler->addAPIClass('Resources');
 
