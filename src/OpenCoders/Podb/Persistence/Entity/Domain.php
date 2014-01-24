@@ -156,9 +156,6 @@ class Domain extends AbstractBaseEntity
             }
         }
 
-        $this->setLastUpdateBy($this->getSession()->getUser());
-        $this->setLastUpdateDate(new DateTime());
-
         return $this;
     }
 } 

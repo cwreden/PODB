@@ -176,7 +176,7 @@ class Language extends AbstractBaseEntity
         );
     }
 
-    public function update($data, $user = null)
+    public function update($data)
     {
         if ($data == null) {
             throw new PodbException('There is nothing to update.');
@@ -188,7 +188,5 @@ class Language extends AbstractBaseEntity
                 $this->setLocale($value);
             }
         }
-        $this->setLastUpdateBy($user);
-        $this->setLastUpdateDate(new DateTime());
     }
 } 

@@ -334,7 +334,6 @@ class User extends AbstractBaseEntity
                 $this->setState($value);
             }
         }
-        $this->setLastUpdateDate(new DateTime());
     }
 
     public function addProject(Project $project)

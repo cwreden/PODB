@@ -127,10 +127,10 @@ class DataSet extends AbstractBaseEntity
             'id' => $this->getId(),
             'domainId' => $this->getDomainId(),
             'msgId' => $this->getMsgId(),
-            'lastUpdatedDate' => $this->getLastUpdateDate(),
-            'lastUpdatedBy' => $this->getLastUpdateBy(),
-            'createdDate' => $this->getCreateDate(),
-            'createdBy' => $this->getCreatedBy(),
+//            'lastUpdatedDate' => $this->getLastUpdateDate(),
+//            'lastUpdatedBy' => $this->getLastUpdateBy(),
+//            'createdDate' => $this->getCreateDate(),
+//            'createdBy' => $this->getCreatedBy(),
         );
     }
 
