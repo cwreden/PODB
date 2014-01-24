@@ -12,7 +12,7 @@ use OpenCoders\Podb\Exception\PodbException;
  * @package OpenCoders\Podb\Persistence\Entity
  * @Entity(repositoryClass="OpenCoders\Podb\Persistence\Repository\UserRepository")
  * @Table(
- *      name="user",
+ *      name="User",
  *      uniqueConstraints={@UniqueConstraint(name="user_unique",columns={"username", "email"})}
  * )
  */
@@ -75,30 +75,6 @@ class User extends AbstractBaseEntity
      * @JoinTable(name="users_languages")
      */
     private $supportedLanguages;
-
-    /**
-     * @var
-     * @ManyToOne(targetEntity="User")
-     */
-    protected $createdBy;
-
-    /**
-     * @var
-     * @Column(type="datetime")
-     */
-    protected $createDate;
-
-    /**
-     * @var
-     * @ManyToOne(targetEntity="User")
-     */
-    protected $lastUpdateBy;
-
-    /**
-     * @var
-     * @Column(type="datetime")
-     */
-    protected $lastUpdateDate;
 
     public function __construct()
     {
@@ -254,15 +230,7 @@ class User extends AbstractBaseEntity
      */
     public function getCreatedBy()
     {
-        return $this->createdBy;
-    }
-
-    /**
-     * @param User $user
-     */
-    public function setCreatedBy(User $user)
-    {
-        $this->createdBy = $user;
+        throw new \Exception('Not implemented!');
     }
 
     /**
@@ -270,15 +238,7 @@ class User extends AbstractBaseEntity
      */
     public function getLastUpdatedBy()
     {
-        return $this->lastUpdateBy;
-    }
-
-    /**
-     * @param User $user
-     */
-    public function setLastUpdateBy(User $user)
-    {
-        $this->lastUpdateBy = $user;
+        throw new \Exception('Not implemented!');
     }
 
     /**
@@ -286,15 +246,7 @@ class User extends AbstractBaseEntity
      */
     public function getCreateDate()
     {
-        return $this->createDate ? clone $this->createDate : null;
-    }
-
-    /**
-     * @param DateTime $createDate
-     */
-    public function setCreateDate(DateTime $createDate = null)
-    {
-        $this->createDate = $createDate ? clone $createDate : null;
+        throw new \Exception('Not implemented!');
     }
 
     /**
@@ -302,15 +254,7 @@ class User extends AbstractBaseEntity
      */
     public function getLastUpdateDate()
     {
-        return $this->lastUpdateDate ? clone $this->lastUpdateDate : null;
-    }
-
-    /**
-     * @param DateTime $lastUpdateDate
-     */
-    public function setLastUpdateDate(DateTime $lastUpdateDate = null)
-    {
-        $this->lastUpdateDate = $lastUpdateDate ? clone $lastUpdateDate : null;
+        throw new \Exception('Not implemented!');
     }
 
     /**
@@ -342,8 +286,8 @@ class User extends AbstractBaseEntity
             'username' => $this->getUsername(),
             'email' => $this->getEmail(),
             'state' => $this->getState(),
-            'createDate' => $this->getCreateDate(),
-            'lastUpdateDate' => $this->getLastUpdateDate(),
+//            'createDate' => $this->getCreateDate(),
+//            'lastUpdateDate' => $this->getLastUpdateDate(),
         );
     }
 

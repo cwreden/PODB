@@ -21,7 +21,8 @@
     "require": {
         "php": ">=5.3.3",
         "doctrine/orm": "*",
-        "luracast/restler": "*"
+        "luracast/restler": "*",
+        "simplethings/entity-audit-bundle": "*"
     },
     "require-dev": {
         "phpunit/phpunit": "3.7.*"

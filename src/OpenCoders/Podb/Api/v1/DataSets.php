@@ -6,7 +6,12 @@ namespace OpenCoders\Podb\Api\v1;
 use OpenCoders\Podb\Api\AbstractBaseApi;
 use OpenCoders\Podb\Api\ApiUrl;
 
-class DataSets extends AbstractBaseApi{
+class DataSets extends AbstractBaseApi
+{
+    /**
+     * @var string EntityClassName (FQN)
+     */
+    protected $entityName = 'OpenCoders\Podb\Persistence\Entity\DataSet';
 
     /**
      * @url GET /datasets

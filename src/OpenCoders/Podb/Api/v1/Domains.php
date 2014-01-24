@@ -12,6 +12,10 @@ use OpenCoders\Podb\Persistence\Entity\Project;
 
 class Domains extends AbstractBaseApi
 {
+    /**
+     * @var string EntityClassName (FQN)
+     */
+    protected $entityName = 'OpenCoders\Podb\Persistence\Entity\Domain';
 
     /**
      * Returns a list of domains
@@ -132,8 +136,6 @@ class Domains extends AbstractBaseApi
     {
         $domain = new Domain();
         $domain->update($request_data);
-        $domain->setCreateDate(new DateTime());
-        $domain->setCreatedBy($this->getSession()->getUser());
 
         try {
             $em = $this->getEntityManager();

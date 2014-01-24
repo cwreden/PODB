@@ -39,51 +39,11 @@ class DataSet extends AbstractBaseEntity
     protected $msgId;
 
     /**
-     * @var
-     * @ManyToOne(targetEntity="User")
-     */
-    protected $createdBy;
-
-    /**
-     * @var
-     * @Column(type="datetime")
-     */
-    protected $createDate;
-
-    /**
-     * @var
-     * @ManyToOne(targetEntity="User")
-     */
-    protected $lastUpdateBy;
-
-    /**
-     * @var
-     * @Column(type="datetime")
-     */
-    protected $lastUpdateDate;
-
-    /**
-     * @param DateTime $createDate
-     */
-    public function setCreateDate(DateTime $createDate = null)
-    {
-        $this->createDate = $createDate ? clone $createDate : null;
-    }
-
-    /**
      * @return DateTime|null
      */
     public function getCreateDate()
     {
-        return $this->createDate ? clone $this->createDate : null;
-    }
-
-    /**
-     * @param string $userId
-     */
-    public function setCreatedBy($userId)
-    {
-        $this->createdBy = $userId;
+        throw new \Exception('Not implemented!');
     }
 
     /**
@@ -91,7 +51,7 @@ class DataSet extends AbstractBaseEntity
      */
     public function getCreatedBy()
     {
-        return $this->createdBy;
+        throw new \Exception('Not implemented!');
     }
 
     /**
@@ -127,27 +87,11 @@ class DataSet extends AbstractBaseEntity
     }
 
     /**
-     * @param string $userId
-     */
-    public function setLastUpdateBy($userId)
-    {
-        $this->lastUpdateBy = $userId;
-    }
-
-    /**
      * @return string
      */
     public function getLastUpdateBy()
     {
-        return $this->lastUpdateBy;
-    }
-
-    /**
-     * @param DateTime $lastUpdateDate
-     */
-    public function setLastUpdateDate(DateTime $lastUpdateDate = null)
-    {
-        $this->lastUpdateDate = $lastUpdateDate ? clone $lastUpdateDate : null;
+        throw new \Exception('Not implemented!');
     }
 
     /**
@@ -155,7 +99,7 @@ class DataSet extends AbstractBaseEntity
      */
     public function getLastUpdateDate()
     {
-        return $this->lastUpdateDate ? clone $this->lastUpdateDate : null;
+        throw new \Exception('Not implemented!');
     }
 
     /**

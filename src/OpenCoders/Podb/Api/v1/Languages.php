@@ -111,16 +111,9 @@ class Languages extends AbstractBaseApi
     public function post($request_data = NULL)
     {
         try {
-            $user = $this->getSession()->getUser();
-
             $language = new Language();
             $language->setLocale($request_data['locale']);
             $language->setName($request_data['name']);
-
-            $language->setCreatedBy($user);
-            $language->setCreateDate(new DateTime());
-            $language->setLastUpdateBy($user);
-            $language->setLastUpdateDate(new DateTime());
 
             $em = $this->getEntityManager();
             $em->persist($language);
