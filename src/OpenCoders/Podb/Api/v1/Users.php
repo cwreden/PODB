@@ -234,13 +234,11 @@ class Users extends AbstractBaseApi
             throw new RestException(400, 'Invalid ID ' . $id);
         }
 
-        $sm = new SessionManager();
-        $session = $sm->getSession();
         /** @var $user User */
         $user = $this->getUser($id);
 
         try {
-            $user->update($request_data, $session->getUser());
+            $user->update($request_data);
 
             // TODO kann das hier bleiben
             if (isset($request_data['supportedLanguages'])) {

@@ -146,7 +146,7 @@ class Languages extends AbstractBaseApi
         $language = $this->getRepository()->find($id);
 
         try {
-            $language->update($request_data, $this->getSession()->getUser());
+            $language->update($request_data);
             $this->getEntityManager()->flush($language);
         } catch (PodbException $e) {
             throw new RestException(400, $e->getMessage());
