@@ -22,19 +22,13 @@ class DataSet extends AbstractBaseEntity
 
     /**
      * @var
-     * @Column(type="string")
-     */
-    protected $name;
-
-    /**
-     * @var
      * @ManyToOne(targetEntity="Domain")
      */
     protected $domainId;
 
     /**
      * @var
-     * @Column(type="string")
+     * @Column(type="string", nullable=false)
      */
     protected $msgId;
 
@@ -138,23 +132,7 @@ class DataSet extends AbstractBaseEntity
     {
         return array(
             'id' => $this->getId(),
-            'name' => $this->getName(),
+            'msgId' => $this->getMsgId(),
         );
     }
-
-    /**
-     * @return string
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    /**
-     * @param string $name
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
-    }
-} 
+}
