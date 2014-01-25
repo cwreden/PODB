@@ -10,10 +10,6 @@ use OpenCoders\Podb\Exception\NothingToUpdatePodbException;
  * Class Project
  * @package OpenCoders\Podb\Persistence\Entity
  * @Entity(repositoryClass="OpenCoders\Podb\Persistence\Repository\ProjectRepository")
- * @Table(
- *      name="Project",
- *      uniqueConstraints={@UniqueConstraint(name="project_unique",columns={"name"})}
- * )
  */
 class Project extends AbstractBaseEntity
 {
@@ -28,7 +24,7 @@ class Project extends AbstractBaseEntity
 
     /**
      * @var
-     * @Column(type="string")
+     * @Column(type="string", unique=true, nullable=false)
      */
     protected $name;
 
@@ -45,9 +41,64 @@ class Project extends AbstractBaseEntity
      */
     protected $users;
 
+    /**
+     * @var
+     * @Column(type="boolean", nullable=false, options={"default" = 0})
+     */
+    protected $private = false;
+
+    /**
+     * @var
+     * @Column(type="text", nullable=true)
+     */
+    protected $description;
+
+    /**
+     * Project web page
+     *
+     * @var
+     * @Column(type="string", nullable=true)
+     */
+    private $url;
+
+    /**
+     *
+     */
     public function __construct()
     {
         $this->users = new ArrayCollection();
+    }
+
+    /**
+     * @param mixed $url
+     */
+    public function setUrl($url)
+    {
+        $this->url = $url;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUrl()
+    {
+        return $this->url;
+    }
+
+    /**
+     * @param mixed $description
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDescription()
+    {
+        return $this->description;
     }
 
     /**
@@ -147,6 +198,22 @@ class Project extends AbstractBaseEntity
     }
 
     /**
+     * @param mixed $private
+     */
+    public function setPrivate($private)
+    {
+        $this->private = $private;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPrivate()
+    {
+        return $this->private;
+    }
+
+    /**
      * @return array
      */
     public function asArray()
@@ -155,6 +222,9 @@ class Project extends AbstractBaseEntity
             'id' => $this->getId(),
             'name' => $this->getName(),
             'defaultLanguage' => $this->getDefaultLanguage(),
+            'active' => $this->getPrivate(),
+            'description' => $this->getDescription(),
+            'url_blog' => $this->getUrl()
 //            'users' => $this->getUsers(),
 //            'lastUpdatedDate' => $this->getLastUpdateDate(),
 //            'lastUpdatedBy' => $this->getLastUpdateBy(),
