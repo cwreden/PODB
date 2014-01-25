@@ -22,7 +22,7 @@ class Domain extends AbstractBaseEntity
 
     /**
      * @var
-     * @Column(type="string")
+     * @Column(type="string", unique=true, nullable=false)
      */
     protected $name;
 
@@ -33,11 +33,33 @@ class Domain extends AbstractBaseEntity
     protected $projectId;
 
     /**
+     * @var
+     * @Column(type="text", nullable=true)
+     */
+    protected $description;
+
+    /**
      * @return DateTime|null
      */
     public function getCreateDate()
     {
         throw new \Exception('Not implemented!');
+    }
+
+    /**
+     * @param mixed $description
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDescription()
+    {
+        return $this->description;
     }
 
     /**
@@ -120,6 +142,7 @@ class Domain extends AbstractBaseEntity
         return array(
             'id' => $this->getId(),
             'name' => $this->getName(),
+            'description' => $this->getDescription()
 //            'lastUpdatedDate' => $this->getLastUpdateDate(),
 //            'lastUpdatedBy' => $this->getLastUpdateBy(),
 //            'createdDate' => $this->getCreateDate(),
