@@ -52,7 +52,7 @@ class Translation
 
     /**
      * @var
-     * @Column(type="boolean", nullable=false)
+     * @Column(type="boolean", nullable=false, options={"default" = 0})
      */
     protected $fuzzy = false;
 
