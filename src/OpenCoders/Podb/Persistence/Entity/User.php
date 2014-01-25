@@ -11,10 +11,6 @@ use OpenCoders\Podb\Exception\PodbException;
  * Class User
  * @package OpenCoders\Podb\Persistence\Entity
  * @Entity(repositoryClass="OpenCoders\Podb\Persistence\Repository\UserRepository")
- * @Table(
- *      name="User",
- *      uniqueConstraints={@UniqueConstraint(name="user_unique",columns={"username", "email"})}
- * )
  */
 class User extends AbstractBaseEntity
 {
@@ -34,7 +30,7 @@ class User extends AbstractBaseEntity
 
     /**
      * @var
-     * @Column(type="string")
+     * @Column(type="string", unique=true, nullable=false)
      */
     private $username;
 
@@ -46,19 +42,19 @@ class User extends AbstractBaseEntity
 
     /**
      * @var
-     * @Column(type="integer")
+     * @Column(type="boolean", nullable=false, options={"default" = 0})
      */
-    private $state;
+    private $active;
 
     /**
      * @var
-     * @Column(type="string")
+     * @Column(type="string", unique=true, nullable=false)
      */
     private $email;
 
     /**
      * @var
-     * @Column(type="string")
+     * @Column(type="string", nullable=false)
      */
     private $password;
 
@@ -76,9 +72,94 @@ class User extends AbstractBaseEntity
      */
     private $supportedLanguages;
 
+    /**
+     * @var
+     * @Column(type="string", nullable=true)
+     */
+    private $gravatarEMail;
+
+    /**
+     * @var
+     * @Column(type="string", nullable=true)
+     */
+    private $publicEMail;
+
+    /**
+     * @var
+     * @Column(type="string", nullable=true)
+     */
+    private $company;
+
+    /**
+     *
+     */
     public function __construct()
     {
         $this->projects = new ArrayCollection();
+    }
+
+    /**
+     * @param mixed $company
+     */
+    public function setCompany($company)
+    {
+        $this->company = $company;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCompany()
+    {
+        return $this->company;
+    }
+
+    /**
+     * @param string $entityName
+     */
+    public function setEntityName($entityName)
+    {
+        $this->entityName = $entityName;
+    }
+
+    /**
+     * @return string
+     */
+    public function getEntityName()
+    {
+        return $this->entityName;
+    }
+
+    /**
+     * @param mixed $gravatarEMail
+     */
+    public function setGravatarEMail($gravatarEMail)
+    {
+        $this->gravatarEMail = $gravatarEMail;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getGravatarEMail()
+    {
+        return $this->gravatarEMail;
+    }
+
+    /**
+     * @param mixed $publicEMail
+     */
+    public function setPublicEMail($publicEMail)
+    {
+        $this->publicEMail = $publicEMail;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPublicEMail()
+    {
+        return $this->publicEMail;
     }
 
     /**
@@ -205,24 +286,24 @@ class User extends AbstractBaseEntity
     }
 
     /**
-     * Get state.
+     * Get active.
      *
      * @return int
      */
-    public function getState()
+    public function getActive()
     {
-        return $this->state;
+        return $this->active;
     }
 
     /**
-     * Set state.
+     * Set active.
      *
-     * @param int $state
+     * @param int $active
      * @return int
      */
-    public function setState($state)
+    public function setActive($active)
     {
-        $this->state = $state;
+        $this->active = $active;
     }
 
     /**
@@ -285,7 +366,7 @@ class User extends AbstractBaseEntity
             'displayname' => $this->getDisplayName(),
             'username' => $this->getUsername(),
             'email' => $this->getEmail(),
-            'state' => $this->getState(),
+            'active' => $this->getActive(),
 //            'createDate' => $this->getCreateDate(),
 //            'lastUpdateDate' => $this->getLastUpdateDate(),
         );
@@ -330,8 +411,8 @@ class User extends AbstractBaseEntity
                 $this->setEmail($value);
             } else if ($key == 'password') {
                 $this->setPassword(sha1($value));
-            } else if ($key == 'state') {
-                $this->setState($value);
+            } else if ($key == 'active') {
+                $this->setActive($value);
             }
         }
     }
