@@ -34,27 +34,27 @@ class Translation
 
     /**
      * @var
-     * @Column(type="string")
+     * @Column(type="string", nullable=false)
      */
     protected $msgStr;
 
     /**
      * @var
-     * @Column(type="string")
+     * @Column(type="string", nullable=true)
      */
     protected $msgStr1;
 
     /**
      * @var
-     * @Column(type="string")
+     * @Column(type="string", nullable=true)
      */
     protected $msgStr2;
 
     /**
      * @var
-     * @Column(type="boolean")
+     * @Column(type="boolean", nullable=false)
      */
-    protected $fuzzy;
+    protected $fuzzy = false;
 
     /**
      * @return DateTime|null
