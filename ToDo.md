@@ -14,3 +14,11 @@ PO-Dataset: ID, DomainID, msgID, ..., createdBy, createDate, lastUpdateBy, lastU
 Translation: ID, LanguageID, PODID, msgStr, msgStr1, msgStr2, fuzzy, createdBy, createDate, lastUpdateBy, lastUpdateDate
 
 Language: ID, Name, locale, createdBy, createDate, lastUpdateBy, lastUpdateDate
+
+
+NEW:
+====
+
+ActivationKey: UserId, Key(Hash), Termination, Active
+
+APIKey: UserId, Key(Hash), Active
