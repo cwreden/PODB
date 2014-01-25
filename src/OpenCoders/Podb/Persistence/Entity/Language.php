@@ -24,13 +24,13 @@ class Language extends AbstractBaseEntity
 
     /**
      * @var
-     * @Column(type="string")
+     * @Column(type="string", unique=true, nullable=false)
      */
     protected $name;
 
     /**
      * @var
-     * @Column(type="string")
+     * @Column(type="string", unique=true, nullable=false)
      */
     protected $locale;
 
