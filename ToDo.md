@@ -22,3 +22,5 @@ NEW:
 ActivationKey: UserId, Key(Hash), Termination, Active
 
 APIKey: UserId, Key(Hash), Active
+
+APIInformation/URLs => urlencode
