@@ -6,6 +6,7 @@ use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use OpenCoders\Podb\Exception\EmptyParameterException;
 use OpenCoders\Podb\Exception\PodbException;
+use OpenCoders\Podb\Persistence\Entity\Language;
 
 /**
  * Class User
@@ -42,15 +43,21 @@ class User extends AbstractBaseEntity
 
     /**
      * @var
-     * @Column(type="boolean", nullable=false, options={"default" = 0})
+     * @Column(type="boolean", nullable=false)
      */
-    private $active;
+    private $active = 0;
 
     /**
      * @var
      * @Column(type="string", unique=true, nullable=false)
      */
     private $email;
+
+    /**
+     * @var bool
+     * @Column(type="boolean", nullable=false)
+     */
+    private $emailValidated = false;
 
     /**
      * @var
@@ -93,9 +100,31 @@ class User extends AbstractBaseEntity
     /**
      *
      */
-    public function __construct()
+    public function __construct($data = null)
     {
         $this->projects = new ArrayCollection();
+        $this->supportedLanguages = new ArrayCollection();
+
+        if (isset($data['username'])) {
+            $this->setUsername($data['username']);
+        }
+        $this->setBulk($data);
+    }
+
+    /**
+     * @param boolean $emailValidated
+     */
+    public function setEmailValidated($emailValidated)
+    {
+        $this->emailValidated = $emailValidated;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getEmailValidated()
+    {
+        return $this->emailValidated;
     }
 
     /**
@@ -253,7 +282,28 @@ class User extends AbstractBaseEntity
      */
     public function setProjects($projects)
     {
-        $this->projects = $projects;
+        if ($projects instanceof ArrayCollection) {
+            $this->projects = $projects;
+        } else if ($projects == null) {
+            /** @var $project Project */
+            foreach ($this->getProjects() as $project) {
+                $this->removeProject($project);
+            }
+            $this->projects = new ArrayCollection();
+        } else if (is_string($projects) && $projects !== '') {
+            /** @var $project Project */
+            foreach ($this->getProjects() as $project) {
+                $this->removeProject($project);
+            }
+            $projectIds = explode(',', $projects);
+            foreach ($projectIds as $projectId) {
+                $project = $this->getEntityManager()->getRepository('OpenCoders\Podb\Persistence\Entity\Project')->find($projectId);
+                if ($project) {
+                    $this->addProject($project);
+                }
+            }
+        }
+
     }
 
     /**
@@ -343,7 +393,22 @@ class User extends AbstractBaseEntity
      */
     public function setSupportedLanguages($supportedLanguages)
     {
-        $this->supportedLanguages = $supportedLanguages;
+        if ($supportedLanguages instanceof ArrayCollection) {
+            $this->supportedLanguages = $supportedLanguages;
+        } else if ($supportedLanguages == null) {
+            $this->supportedLanguages = null;
+        } else if (is_string($supportedLanguages) && $supportedLanguages !== '') {
+
+            $supportedLanguageIds = explode(',', $supportedLanguages);
+            $supportedLanguages = new ArrayCollection();
+            foreach ($supportedLanguageIds as $languageId) {
+                $language = $this->getEntityManager()->getRepository('OpenCoders\Podb\Persistence\Entity\Language')->find($languageId);
+                if ($language) {
+                    $supportedLanguages->add($language);
+                }
+            }
+            $this->supportedLanguages = $supportedLanguages;
+        }
     }
 
     /**
@@ -404,17 +469,7 @@ class User extends AbstractBaseEntity
         if ($data == null) {
             throw new PodbException('There is nothing to update.');
         }
-        foreach ($data as $key => $value) {
-            if ($key == 'displayName') {
-                $this->setDisplayName($value);
-            } else if ($key == 'email') {
-                $this->setEmail($value);
-            } else if ($key == 'password') {
-                $this->setPassword(sha1($value));
-            } else if ($key == 'active') {
-                $this->setActive($value);
-            }
-        }
+        $this->setBulk($data);
     }
 
     public function addProject(Project $project)
@@ -436,5 +491,32 @@ class User extends AbstractBaseEntity
     public function checkPassword($pass)
     {
         return $this->password == $pass;
+    }
+
+    private function setBulk($data)
+    {
+        foreach ($data as $key => $value) {
+            if ($key == 'displayName') {
+                $this->setDisplayName($value);
+            } else if ($key == 'email') {
+                $this->setEmail($value);
+            } else if ($key == 'password') {
+                $this->setPassword(sha1($value));
+            } else if ($key == 'active') {
+                $this->setActive($value);
+            } else if ($key == 'gravatarEMail') {
+                $this->setGravatarEMail($value);
+            } else if ($key == 'company') {
+                $this->setCompany($value);
+            } else if ($key == 'publicEMail') {
+                $this->setPublicEMail($value);
+            } else if ($key == 'projects') {
+                $this->setProjects($value);
+            } else if ($key == 'supportedLanguages') {
+                $this->setSupportedLanguages($value);
+            } else if ($key == 'emailValidated') {
+                $this->setEmailValidated($value);
+            }
+        }
     }
 }

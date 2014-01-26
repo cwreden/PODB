@@ -2,15 +2,13 @@
 
 namespace OpenCoders\Podb\Api\v1;
 
-use DateTime;
-use Doctrine\Common\Collections\ArrayCollection;
 use Luracast\Restler\RestException;
 use OpenCoders\Podb\Api\AbstractBaseApi;
+use OpenCoders\Podb\Persistence\Entity\Language;
 use OpenCoders\Podb\Persistence\Entity\Project;
 use OpenCoders\Podb\Persistence\Entity\User;
 use OpenCoders\Podb\Exception\PodbException;
 use OpenCoders\Podb\Api\ApiUrl;
-use OpenCoders\Podb\Session\SessionManager;
 
 class Users extends AbstractBaseApi
 {
@@ -91,31 +89,29 @@ class Users extends AbstractBaseApi
 
     /**
      * @param $userName
+     *
      * @url GET /users/:userName/languages
      *
+     * @throws \Luracast\Restler\RestException
      * @return array
      */
     public function getLanguages($userName)
     {
+        $data = array();
+        $user = $this->getUser($userName);
 
-        $apiBaseUrl = ApiUrl::getBaseApiUrl();
+        if ($user == null) {
+            throw new RestException(404);
+        }
 
-        return array(
-            array(
-                'id' => 1,
-                'locale' => 'de_DE',
-                'label' => 'Deutsch',
-                'url' => $apiBaseUrl . "/languages/de_DE",
-                'url_projects' => $apiBaseUrl . "/languages/de_DE/projects"
-            ),
-            array(
-                'id' => 2,
-                'locale' => 'en_GB',
-                'label' => 'Deutsch',
-                'url' => $apiBaseUrl . "/languages/en_GB",
-                'url_projects' => $apiBaseUrl . "/languages/en_GB/projects"
-            ),
-        );
+        /**
+         * @var $language Language
+         */
+        foreach ($user->getSupportedLanguages() as $language) {
+            $data[] = $language->asShortArrayWithAPIInformation($this->apiVersion);
+        }
+
+        return $data;
     }
 
     /**
@@ -127,6 +123,7 @@ class Users extends AbstractBaseApi
     public function getTranslations($userName)
     {
 
+        throw new RestException(501);
         $baseUrl = ApiUrl::getBaseApiUrl();
 
         return array(
@@ -198,15 +195,8 @@ class Users extends AbstractBaseApi
      */
     public function post($request_data = NULL)
     {
-        $user = new User();
-        $user->setDisplayName($request_data['displayName']);
-        $user->setEmail($request_data['email']);
-        $user->setUsername($request_data['userName']);
-        $user->setPassword(sha1($request_data['password']));
-
-        $user->setState(0);
-
         try {
+            $user = new User($request_data);
             $em = $this->getEntityManager();
             $em->persist($user);
             $em->flush();
@@ -239,38 +229,9 @@ class Users extends AbstractBaseApi
 
         try {
             $user->update($request_data);
-
-            // TODO kann das hier bleiben
-            if (isset($request_data['supportedLanguages'])) {
-                $supportedLanguageIds = explode(',', $request_data['supportedLanguages']);
-                $supportedLanguages = new ArrayCollection();
-                foreach ($supportedLanguageIds as $languageId) {
-                    $language = $this->getEntityManager()->getRepository('OpenCoders\Podb\Persistence\Entity\User')->find($languageId);
-                    if ($language) {
-                        $supportedLanguages->add($language);
-                    }
-                }
-                $user->setSupportedLanguages($supportedLanguages);
-                var_dump($supportedLanguages->count());
-            }
-
-            // TODO kann das hier bleiben
-            if (isset($request_data['projects'])) {
-                $projects = $user->getProjects();
-                /** @var $project Project */
-                foreach ($projects as $project) {
-                    $user->removeProject($project);
-                }
-                $projectIds = explode(',', $request_data['projects']);
-                foreach ($projectIds as $projectId) {
-                    $project = $this->getEntityManager()->getRepository('OpenCoders\Podb\Persistence\Entity\Project')->find($projectId);
-                    if ($project) {
-                        $user->addProject($project);
-                    }
-                }
-            }
-
-            $this->getEntityManager()->flush($user);
+            $em = $this->getEntityManager();
+            $em->persist($user);
+            $em->flush();
         } catch (PodbException $e) {
             throw new RestException(400, $e->getMessage());
         }
