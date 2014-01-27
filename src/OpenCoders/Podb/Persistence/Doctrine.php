@@ -74,7 +74,6 @@ class Doctrine
         if (self::$am == null) {
             $auditConfig = new AuditConfiguration();
             $auditConfig->setAuditedEntityClasses(array(
-                'OpenCoders\Podb\Persistence\Entity\AuditedUser',
                 'OpenCoders\Podb\Persistence\Entity\User',
                 'OpenCoders\Podb\Persistence\Entity\Project',
                 'OpenCoders\Podb\Persistence\Entity\Language',
