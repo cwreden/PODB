@@ -67,10 +67,9 @@ class User extends AbstractBaseEntity
 
     /**
      * @var
-     * @ManyToMany(targetEntity="Project", mappedBy="users")
-     * @JoinTable(name="users_projects")
+     * @OneToMany(targetEntity="Project", mappedBy="owner")
      */
-    private $projects;
+    private $ownedProjects;
 
     /**
      * @var
@@ -102,13 +101,29 @@ class User extends AbstractBaseEntity
      */
     public function __construct($data = null)
     {
-        $this->projects = new ArrayCollection();
+        $this->ownedProjects = new ArrayCollection();
         $this->supportedLanguages = new ArrayCollection();
 
         if (isset($data['username'])) {
             $this->setUsername($data['username']);
         }
         $this->setBulk($data);
+    }
+
+    /**
+     * @param mixed $ownedProjects
+     */
+    public function setOwnedProjects($ownedProjects)
+    {
+        $this->ownedProjects = $ownedProjects;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getOwnedProjects()
+    {
+        return $this->ownedProjects;
     }
 
     /**
@@ -278,40 +293,11 @@ class User extends AbstractBaseEntity
     }
 
     /**
-     * @param mixed $projects
-     */
-    public function setProjects($projects)
-    {
-        if ($projects instanceof ArrayCollection) {
-            $this->projects = $projects;
-        } else if ($projects == null) {
-            /** @var $project Project */
-            foreach ($this->getProjects() as $project) {
-                $this->removeProject($project);
-            }
-            $this->projects = new ArrayCollection();
-        } else if (is_string($projects) && $projects !== '') {
-            /** @var $project Project */
-            foreach ($this->getProjects() as $project) {
-                $this->removeProject($project);
-            }
-            $projectIds = explode(',', $projects);
-            foreach ($projectIds as $projectId) {
-                $project = $this->getEntityManager()->getRepository('OpenCoders\Podb\Persistence\Entity\Project')->find($projectId);
-                if ($project) {
-                    $this->addProject($project);
-                }
-            }
-        }
-
-    }
-
-    /**
      * @return mixed
      */
     public function getProjects()
     {
-        return $this->projects;
+        throw new \Exception('Not implemented!');
     }
 
     /**
@@ -454,13 +440,14 @@ class User extends AbstractBaseEntity
      */
     public function getAPIInformation($apiVersion)
     {
-        $baseUrl = $this->getBaseAPIUrl();
+        $baseUrl = $this->getBaseAPIUrl() . '/' . $apiVersion . '/users/' . $this->getUsername();
 
         return array(
-            'url_user' => $baseUrl . '/' . $apiVersion . '/users/' . $this->getUsername(),
-            'url_projects' => $baseUrl . '/' . $apiVersion . '/users/' . $this->getUsername() . '/projects',
-            'url_languages' => $baseUrl . '/' . $apiVersion . '/users/' . $this->getUsername() . '/languages',
-            'url_translations' => $baseUrl . '/' . $apiVersion . '/users/' . $this->getUsername() . '/translations'
+            'url_user' => $baseUrl,
+            'url_projects' => $baseUrl . '/projects',
+            'url_own_projects' => $baseUrl . '/projects/own',
+            'url_languages' => $baseUrl . '/languages',
+            'url_translations' => $baseUrl . '/translations'
         );
     }
 
@@ -470,18 +457,6 @@ class User extends AbstractBaseEntity
             throw new PodbException('There is nothing to update.');
         }
         $this->setBulk($data);
-    }
-
-    public function addProject(Project $project)
-    {
-        $project->addUser($this);
-        $this->projects->add($project);
-    }
-
-    public function removeProject(Project $project)
-    {
-        $project->removeUser($this);
-        $this->projects->removeElement($project);
     }
 
     /**
@@ -510,8 +485,6 @@ class User extends AbstractBaseEntity
                 $this->setCompany($value);
             } else if ($key == 'publicEMail') {
                 $this->setPublicEMail($value);
-            } else if ($key == 'projects') {
-                $this->setProjects($value);
             } else if ($key == 'supportedLanguages') {
                 $this->setSupportedLanguages($value);
             } else if ($key == 'emailValidated') {

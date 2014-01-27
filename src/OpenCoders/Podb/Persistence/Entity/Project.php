@@ -36,10 +36,10 @@ class Project extends AbstractBaseEntity
 
     /**
      * @var
-     * @ManyToMany(targetEntity="User", inversedBy="projects")
-     * @JoinTable(name="users_projects")
+     * @ManyToOne(targetEntity="User", inversedBy="ownedProjects")
+     * @JoinColumn(name="user_id", referencedColumnName="id")
      */
-    protected $users;
+    protected $owner;
 
     /**
      * @var
@@ -66,7 +66,23 @@ class Project extends AbstractBaseEntity
      */
     public function __construct()
     {
-        $this->users = new ArrayCollection();
+
+    }
+
+    /**
+     * @param mixed $owner
+     */
+    public function setOwner($owner)
+    {
+        $this->owner = $owner;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getOwner()
+    {
+        return $this->owner;
     }
 
     /**
@@ -182,19 +198,11 @@ class Project extends AbstractBaseEntity
     }
 
     /**
-     * @param String[] $users
-     */
-    public function setUsers($users)
-    {
-        $this->users = $users;
-    }
-
-    /**
      * @return String[]
      */
     public function getUsers()
     {
-        return $this->users;
+        throw new \Exception('Not implemented!');
     }
 
     /**
@@ -225,7 +233,6 @@ class Project extends AbstractBaseEntity
             'active' => $this->getPrivate(),
             'description' => $this->getDescription(),
             'url_blog' => $this->getUrl()
-//            'users' => $this->getUsers(),
 //            'lastUpdatedDate' => $this->getLastUpdateDate(),
 //            'lastUpdatedBy' => $this->getLastUpdateBy(),
 //            'createdDate' => $this->getCreateDate(),
@@ -278,15 +285,5 @@ class Project extends AbstractBaseEntity
             } else if ($key == 'users') {
             }
         }
-    }
-
-    public function addUser($user)
-    {
-        $this->users->add($user);
-    }
-
-    public function removeUser($user)
-    {
-        $this->users->removeElement($user);
     }
 }

@@ -90,6 +90,32 @@ class Users extends AbstractBaseApi
     /**
      * @param $userName
      *
+     * @url GET /users/:userName/projects/own
+     *
+     * @throws \Luracast\Restler\RestException
+     * @return array
+     */
+    public function getOwnedProjects($userName)
+    {
+        $data = array();
+
+        $user = $this->getUser($userName);
+
+        if ($user == null) {
+            throw new RestException(404);
+        }
+
+        /** @var $project Project */
+        foreach ($user->getOwnedProjects() as $project) {
+            $data[] = $project->asShortArrayWithAPIInformation($this->apiVersion);
+        }
+
+        return $data;
+    }
+
+    /**
+     * @param $userName
+     *
      * @url GET /users/:userName/languages
      *
      * @throws \Luracast\Restler\RestException
