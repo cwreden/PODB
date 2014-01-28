@@ -6,7 +6,6 @@ use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use OpenCoders\Podb\Exception\EmptyParameterException;
 use OpenCoders\Podb\Exception\PodbException;
-use OpenCoders\Podb\Persistence\Entity\Language;
 
 /**
  * Class User
@@ -96,9 +95,6 @@ class User extends AbstractBaseEntity
      */
     private $company;
 
-    /**
-     *
-     */
     public function __construct($data = null)
     {
         $this->ownedProjects = new ArrayCollection();
@@ -293,6 +289,8 @@ class User extends AbstractBaseEntity
     }
 
     /**
+     * @throws \Exception
+     *
      * @return mixed
      */
     public function getProjects()
@@ -314,6 +312,7 @@ class User extends AbstractBaseEntity
      * Set displayName.
      *
      * @param string $displayName
+     *
      * @return void
      */
     public function setDisplayName($displayName)
@@ -335,6 +334,7 @@ class User extends AbstractBaseEntity
      * Set active.
      *
      * @param int $active
+     *
      * @return int
      */
     public function setActive($active)
@@ -343,6 +343,8 @@ class User extends AbstractBaseEntity
     }
 
     /**
+     * @throws \Exception
+     *
      * @return User
      */
     public function getCreatedBy()
@@ -351,6 +353,8 @@ class User extends AbstractBaseEntity
     }
 
     /**
+     * @throws \Exception
+     *
      * @return User
      */
     public function getLastUpdatedBy()
@@ -359,6 +363,8 @@ class User extends AbstractBaseEntity
     }
 
     /**
+     * @throws \Exception
+     *
      * @return DateTime|null
      */
     public function getCreateDate()
@@ -367,6 +373,8 @@ class User extends AbstractBaseEntity
     }
 
     /**
+     * @throws \Exception
+     *
      * @return DateTime|null
      */
     public function getLastUpdateDate()
@@ -398,6 +406,8 @@ class User extends AbstractBaseEntity
     }
 
     /**
+     * Returns supported languages of this user
+     *
      * @return mixed
      */
     public function getSupportedLanguages()
@@ -424,6 +434,8 @@ class User extends AbstractBaseEntity
     }
 
     /**
+     *
+     *
      * @return array
      */
     public function asShortArray()
@@ -435,7 +447,10 @@ class User extends AbstractBaseEntity
     }
 
     /**
+     * Returns an array with API Information (urls) about this user
+     *
      * @param $apiVersion
+     *
      * @return array
      */
     public function getAPIInformation($apiVersion)
@@ -451,6 +466,15 @@ class User extends AbstractBaseEntity
         );
     }
 
+    /**
+     * Updates a User by given data
+     *
+     * @param array $data
+     *
+     * @throws PodbException
+     *
+     * @return void
+     */
     public function update($data)
     {
         if ($data == null) {
@@ -460,7 +484,10 @@ class User extends AbstractBaseEntity
     }
 
     /**
+     * Returns true if given password is equal with stored password
+     *
      * @param string $pass
+     *
      * @return bool
      */
     public function checkPassword($pass)
@@ -468,6 +495,13 @@ class User extends AbstractBaseEntity
         return $this->password == $pass;
     }
 
+    /**
+     * Updates this user by given data
+     *
+     * @param array $data
+     *
+     * @return void
+     */
     private function setBulk($data)
     {
         foreach ($data as $key => $value) {

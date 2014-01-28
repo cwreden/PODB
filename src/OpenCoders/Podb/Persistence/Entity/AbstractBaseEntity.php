@@ -2,6 +2,7 @@
 
 namespace OpenCoders\Podb\Persistence\Entity;
 
+use Doctrine\ORM\EntityManager;
 use OpenCoders\Podb\Api\ApiUrl;
 use OpenCoders\Podb\Persistence\Doctrine;
 use OpenCoders\Podb\Session\Session;
@@ -81,6 +82,11 @@ abstract class AbstractBaseEntity
         return $this->sessionmanager->getSession();
     }
 
+    /**
+     * Returns the EntityManager
+     *
+     * @return EntityManager
+     */
     protected function getEntityManager()
     {
         return Doctrine::getEntityManager();
