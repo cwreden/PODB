@@ -3,8 +3,11 @@
 namespace OpenCoders\Podb\Api\v1;
 
 
+use Luracast\Restler\RestException;
 use OpenCoders\Podb\Api\AbstractBaseApi;
 use OpenCoders\Podb\Api\ApiUrl;
+use OpenCoders\Podb\Exception\PodbException;
+use OpenCoders\Podb\Persistence\Entity\DataSet;
 
 class DataSets extends AbstractBaseApi
 {
@@ -20,37 +23,17 @@ class DataSets extends AbstractBaseApi
      */
     public function getList()
     {
-        $apiBaseUrl = ApiUrl::getBaseApiUrl();
+        $data = array();
 
-        return array(
-            array(
-                'id' => 1,
-                'domain' => 'Fake-Domain-2',
-                'project' => 'Fake-Project-2',
-                'url' => $apiBaseUrl . "/{$this->apiVersion}/datasets/1",
-                'url_project' => $apiBaseUrl . "/{$this->apiVersion}/projects/Fake-Project-2",
-                'url_domain' => $apiBaseUrl . "/{$this->apiVersion}/domains/Fake-Project-2/Fake-Domain-2",
-                'url_translations' => $apiBaseUrl . "/{$this->apiVersion}/datasets/1/translations"
-            ),
-            array(
-                'id' => 2,
-                'domain' => 'Fake-Domain-1',
-                'project' => 'Fake-Project-1',
-                'url' => $apiBaseUrl . "/{$this->apiVersion}/datasets/2",
-                'url_project' => $apiBaseUrl . "/{$this->apiVersion}/projects/Fake-Project-1",
-                'url_domain' => $apiBaseUrl . "/{$this->apiVersion}/domains/Fake-Project-1/Fake-Domain-1",
-                'url_translations' => $apiBaseUrl . "/{$this->apiVersion}/datasets/2/translations"
-            ),
-            array(
-                'id' => 3,
-                'domain' => 'Fake-Domain-2',
-                'project' => 'Fake-Project-2',
-                'url' => $apiBaseUrl . "/{$this->apiVersion}/datasets/3",
-                'url_project' => $apiBaseUrl . "/{$this->apiVersion}/projects/Fake-Project-2",
-                'url_domain' => $apiBaseUrl . "/{$this->apiVersion}/domains/Fake-Project-2/Fake-Domain-2",
-                'url_translations' => $apiBaseUrl . "/{$this->apiVersion}/datasets/3/translations"
-            )
-        );
+        $repository = $this->getRepository();
+        $dataSets = $repository->findAll();
+
+        /** @var $dataSet DataSet */
+        foreach ($dataSets as $dataSet) {
+            $data[] = $dataSet->asShortArrayWithAPIInformation($this->apiVersion);
+        }
+
+        return $data;
     }
 
     /**
@@ -58,23 +41,17 @@ class DataSets extends AbstractBaseApi
      *
      * @url GET /datasets/:id
      *
+     * @throws \Luracast\Restler\RestException
      * @return array
      */
     public function get($id)
     {
-        $apiBaseUrl = ApiUrl::getBaseApiUrl();
+        $dataSet = $this->getDataSet($id);
 
-        return array(
-            'id' => $id,
-            'domain' => 'Fake-Domain-2',
-            'project' => 'Fake-Project-2',
-            'url' => $apiBaseUrl . "/{$this->apiVersion}/datasets/{$id}",
-            'url_project' => $apiBaseUrl . "/{$this->apiVersion}/projects/Fake-Project-2",
-            'url_domain' => $apiBaseUrl . "/{$this->apiVersion}/domains/Fake-Project-2/Fake-Domain-2",
-            'url_translations' => $apiBaseUrl . "/{$this->apiVersion}/datasets/{$id}/translations",
-            'created_at' => 1389051097,
-            'updated_at' => 1389051097
-        );
+        if ($dataSet == null) {
+            throw new RestException(404, "No data set found with identifier $id.");
+        }
+        return $dataSet->asArrayWithAPIInformation($this->apiVersion);
     }
 
     /**
@@ -108,11 +85,27 @@ class DataSets extends AbstractBaseApi
 
     /**
      * @param $request_data
+     *
      * @url POST /datasets
+     *
+     * @throws \Luracast\Restler\RestException
+     * @return array
      */
     public function post($request_data = NULL)
     {
+        try {
+            $dataSet = new DataSet();
+            $dataSet->setMsgId($request_data['msgId']);
+            $dataSet->setDomainId($request_data['domainId']);
 
+            $em = $this->getEntityManager();
+            $em->persist($dataSet);
+            $em->flush();
+        } catch (PodbException $e) {
+            throw new RestException(400, $e->getMessage());
+        };
+
+        return $dataSet->asArrayWithAPIInformation($this->apiVersion);
     }
 
     /**
@@ -122,15 +115,63 @@ class DataSets extends AbstractBaseApi
      */
     public function put($id, $request_data = NULL)
     {
+        if (!$this->isId($id)) {
+            throw new RestException(400, 'Invalid ID ' . $id);
+        }
 
+        /** @var $dataSet DataSet*/
+        $dataSet = $this->getRepository()->find($id);
+
+        try {
+            $dataSet->update($request_data);
+            $this->getEntityManager()->flush($dataSet);
+        } catch (PodbException $e) {
+            throw new RestException(400, $e->getMessage());
+        }
+
+        return $dataSet->asArrayWithAPIInformation($this->apiVersion);
     }
 
     /**
      * @param $id
+     *
      * @url DELETE /datasets/:id
+     *
+     * @throws \Luracast\Restler\RestException
+     * @return array
      */
     public function delete($id)
     {
+        if (!$this->isId($id)) {
+            throw new RestException(400, 'Invalid ID ' . $id);
+        }
 
+        $em = $this->getEntityManager();
+        $object = $em->getPartialReference($this->entityName, array('id' => $id));
+        $em->remove($object);
+        $em->flush();
+
+        return array(
+            'success' => true
+        );
+    }
+
+    /**
+     * @param $id
+     *
+     * @throws \OpenCoders\Podb\Exception\PodbException
+     * @return DataSet
+     */
+    private function getDataSet($id)
+    {
+        $repository = $this->getRepository();
+
+        /** @var $dataSet DataSet */
+        if ($this->isId($id)) {
+            $dataSet = $repository->find($id);
+        } else {
+            throw new PodbException('Invalid id.');
+        }
+        return $dataSet;
     }
 }
