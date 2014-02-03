@@ -12,7 +12,7 @@ abstract class AbstractBaseEntity
 {
 
     /**
-     * @var \OpenCoders\Podb\Session\SessionManager
+     * @var SessionManager
      */
     private $sessionmanager;
 
@@ -38,7 +38,8 @@ abstract class AbstractBaseEntity
     }
 
     /**
-     * @param $apiVersion
+     * @param int $apiVersion
+     *
      * @return array
      */
     public function getAPIInformation($apiVersion)
@@ -47,7 +48,8 @@ abstract class AbstractBaseEntity
     }
 
     /**
-     * @param $apiVersion
+     * @param int $apiVersion
+     *
      * @return array
      */
     public function asArrayWithAPIInformation($apiVersion)
@@ -56,7 +58,8 @@ abstract class AbstractBaseEntity
     }
 
     /**
-     * @param $apiVersion
+     * @param int $apiVersion
+     *
      * @return array
      */
     public function asShortArrayWithAPIInformation($apiVersion)

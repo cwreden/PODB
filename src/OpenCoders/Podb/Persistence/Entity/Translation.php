@@ -2,7 +2,6 @@
 
 namespace OpenCoders\Podb\Persistence\Entity;
 
-use DateTime;
 
 /**
  * Class Translation
@@ -57,7 +56,7 @@ class Translation
     protected $fuzzy = false;
 
     /**
-     * @return DateTime|null
+     * @throws \Exception
      */
     public function getCreateDate()
     {
@@ -65,7 +64,7 @@ class Translation
     }
 
     /**
-     * @return string
+     * @throws \Exception
      */
     public function getCreatedBy()
     {
@@ -121,7 +120,7 @@ class Translation
     }
 
     /**
-     * @return string
+     * @throws \Exception
      */
     public function getLastUpdateBy()
     {
@@ -129,7 +128,7 @@ class Translation
     }
 
     /**
-     * @return DateTime|null
+     * @throws \Exception
      */
     public function getLastUpdateDate()
     {
