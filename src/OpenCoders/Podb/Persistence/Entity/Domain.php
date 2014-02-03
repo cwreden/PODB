@@ -29,6 +29,7 @@ class Domain extends AbstractBaseEntity
     /**
      * @var
      * @ManyToOne(targetEntity="Project")
+     * @Column(nullable=false)
      */
     protected $projectId;
 
@@ -162,6 +163,16 @@ class Domain extends AbstractBaseEntity
         );
     }
 
+    public function getAPIInformation($apiVersion)
+    {
+        $apiBaseUrl = $this->getBaseApiUrl();
+        return array(
+            'url' => $apiBaseUrl . "/" . $apiVersion . "/domains/" . $this->getId(),
+            'url_project' => $apiBaseUrl . "/" . $apiVersion . "/projects/" . $this->getProjectId(),
+            'url_domains' => $apiBaseUrl . "/" . $apiVersion . "/domains/" . $this->getId() . '/datasets'
+        );
+    }
+
     /**
      *
      *
@@ -175,6 +186,10 @@ class Domain extends AbstractBaseEntity
             foreach ($data as $key => $value) {
                 if ($key == 'name') {
                     $this->setName($value);
+                } else if ($key == 'projectId') {
+                    $this->setProjectId($value);
+                } else if ($key == 'description') {
+                    $this->setDescription($value);
                 }
             }
         }

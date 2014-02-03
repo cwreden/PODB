@@ -286,4 +286,10 @@ class Project extends AbstractBaseEntity
             }
         }
     }
+
+    public function getDomains()
+    {
+        throw new \Exception('Not implemented.');
+        return array();
+    }
 }
