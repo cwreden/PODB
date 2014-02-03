@@ -130,9 +130,7 @@ class Users extends AbstractBaseApi
             throw new RestException(404);
         }
 
-        /**
-         * @var $language Language
-         */
+        /** @var $language Language */
         foreach ($user->getSupportedLanguages() as $language) {
             $data[] = $language->asShortArrayWithAPIInformation($this->apiVersion);
         }
@@ -141,8 +139,13 @@ class Users extends AbstractBaseApi
     }
 
     /**
-     * @param $userName
+     *
+     *
+     * @param string|int $userName Username or ID of the user
+     *
      * @url GET /users/:userName/translations
+     *
+     * @throws \Luracast\Restler\RestException
      *
      * @return array
      */
@@ -304,9 +307,11 @@ class Users extends AbstractBaseApi
         if ($this->isId($userName)) {
             $user = $repository->find($userName);
         } else {
-            $user = $repository->findOneBy(array(
-                'username' => $userName
-            ));
+            $user = $repository->findOneBy(
+                array(
+                    'username' => $userName
+                )
+            );
         }
         return $user;
     }
