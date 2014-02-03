@@ -62,14 +62,6 @@ class Project extends AbstractBaseEntity
     private $url;
 
     /**
-     *
-     */
-    public function __construct()
-    {
-
-    }
-
-    /**
      * @param mixed $owner
      */
     public function setOwner($owner)
