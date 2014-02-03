@@ -2,7 +2,6 @@
 
 namespace OpenCoders\Podb\Persistence\Entity;
 
-use DateTime;
 use OpenCoders\Podb\Exception\PodbException;
 
 /**
@@ -35,7 +34,7 @@ class DataSet extends AbstractBaseEntity
     protected $msgId;
 
     /**
-     * @return DateTime|null
+     * @throws \Exception
      */
     public function getCreateDate()
     {
@@ -43,7 +42,7 @@ class DataSet extends AbstractBaseEntity
     }
 
     /**
-     * @return string
+     * @throws \Exception
      */
     public function getCreatedBy()
     {
@@ -83,7 +82,7 @@ class DataSet extends AbstractBaseEntity
     }
 
     /**
-     * @return string
+     * @throws \Exception
      */
     public function getLastUpdateBy()
     {
@@ -91,7 +90,7 @@ class DataSet extends AbstractBaseEntity
     }
 
     /**
-     * @return DateTime|null
+     * @throws \Exception
      */
     public function getLastUpdateDate()
     {
@@ -130,6 +129,9 @@ class DataSet extends AbstractBaseEntity
         );
     }
 
+    /**
+     * @return array
+     */
     public function asShortArray()
     {
         return array(

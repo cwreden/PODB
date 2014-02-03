@@ -2,7 +2,6 @@
 
 namespace OpenCoders\Podb\Persistence\Entity;
 
-use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use OpenCoders\Podb\Exception\EmptyParameterException;
 use OpenCoders\Podb\Exception\PodbException;
@@ -205,7 +204,7 @@ class User extends AbstractBaseEntity
     /**
      * @param mixed $email
      *
-     * @throws \OpenCoders\Podb\Exception\PodbException
+     * @throws EmptyParameterException
      *
      * @return void
      */
@@ -245,7 +244,7 @@ class User extends AbstractBaseEntity
     /**
      * @param string $username
      *
-     * @throws \OpenCoders\Podb\Exception\PodbException
+     * @throws EmptyParameterException
      *
      * @return void
      */
@@ -268,7 +267,7 @@ class User extends AbstractBaseEntity
     /**
      * @param mixed $password
      *
-     * @throws \OpenCoders\Podb\Exception\PodbException
+     * @throws EmptyParameterException
      *
      * @return void
      */
@@ -291,7 +290,6 @@ class User extends AbstractBaseEntity
     /**
      * @throws \Exception
      *
-     * @return mixed
      */
     public function getProjects()
     {
@@ -345,7 +343,6 @@ class User extends AbstractBaseEntity
     /**
      * @throws \Exception
      *
-     * @return User
      */
     public function getCreatedBy()
     {
@@ -355,7 +352,6 @@ class User extends AbstractBaseEntity
     /**
      * @throws \Exception
      *
-     * @return User
      */
     public function getLastUpdatedBy()
     {
@@ -365,7 +361,6 @@ class User extends AbstractBaseEntity
     /**
      * @throws \Exception
      *
-     * @return DateTime|null
      */
     public function getCreateDate()
     {
@@ -375,7 +370,6 @@ class User extends AbstractBaseEntity
     /**
      * @throws \Exception
      *
-     * @return DateTime|null
      */
     public function getLastUpdateDate()
     {

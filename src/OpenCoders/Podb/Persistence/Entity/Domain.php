@@ -2,8 +2,6 @@
 
 namespace OpenCoders\Podb\Persistence\Entity;
 
-use DateTime;
-
 /**
  * Class Domain
  * @package OpenCoders\Podb\Persistence\Entity
@@ -40,7 +38,7 @@ class Domain extends AbstractBaseEntity
     protected $description;
 
     /**
-     * @return DateTime|null
+     * @throws \Exception
      */
     public function getCreateDate()
     {
@@ -48,7 +46,7 @@ class Domain extends AbstractBaseEntity
     }
 
     /**
-     * @param mixed $description
+     * @param string $description
      */
     public function setDescription($description)
     {
@@ -56,7 +54,7 @@ class Domain extends AbstractBaseEntity
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getDescription()
     {
@@ -64,7 +62,7 @@ class Domain extends AbstractBaseEntity
     }
 
     /**
-     * @return string
+     * @throws \Exception
      */
     public function getCreatedBy()
     {
@@ -88,7 +86,7 @@ class Domain extends AbstractBaseEntity
     }
 
     /**
-     * @return string
+     * @throws \Exception
      */
     public function getLastUpdateBy()
     {
@@ -96,7 +94,7 @@ class Domain extends AbstractBaseEntity
     }
 
     /**
-     * @return DateTime|null
+     * @throws \Exception
      */
     public function getLastUpdateDate()
     {
