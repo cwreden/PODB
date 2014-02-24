@@ -165,9 +165,11 @@ class Domain extends AbstractBaseEntity
     {
         $apiBaseUrl = $this->getBaseApiUrl();
         return array(
-            'url' => $apiBaseUrl . "/" . $apiVersion . "/domains/" . $this->getId(),
-            'url_project' => $apiBaseUrl . "/" . $apiVersion . "/projects/" . $this->getProjectId(),
-            'url_domains' => $apiBaseUrl . "/" . $apiVersion . "/domains/" . $this->getId() . '/datasets'
+            '_links' => array(
+                'self' => $apiBaseUrl . "/" . $apiVersion . "/domains/" . $this->getId(),
+                'project' => $apiBaseUrl . "/" . $apiVersion . "/projects/" . $this->getProjectId(),
+                'domains' => $apiBaseUrl . "/" . $apiVersion . "/domains/" . $this->getId() . '/datasets'
+            )
         );
     }
 

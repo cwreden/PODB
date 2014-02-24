@@ -249,11 +249,13 @@ class Project extends AbstractBaseEntity
     {
         $apiBaseUrl = $this->getBaseApiUrl();
         return array(
-            'url' => $apiBaseUrl . "/" . $apiVersion . "/projects/" . $this->getName(),
-            'url_html' => '', // @ToDo: Überlegen, was mit url_html gemeint war
-            'url_members' => $apiBaseUrl . "/" . $apiVersion . "/projects/" . $this->getName() . "/members",
-            'url_domains' => $apiBaseUrl . "/" . $apiVersion . "/projects/" . $this->getName() . "/domains",
-            'url_languages' => $apiBaseUrl . "/" . $apiVersion . "/projects/" . $this->getName() . "/languages"
+            '_links' => array(
+                'self' => $apiBaseUrl . "/" . $apiVersion . "/projects/" . $this->getName(),
+                'html' => '', // @ToDo: Überlegen, was mit url_html gemeint war
+                'members' => $apiBaseUrl . "/" . $apiVersion . "/projects/" . $this->getName() . "/members",
+                'domains' => $apiBaseUrl . "/" . $apiVersion . "/projects/" . $this->getName() . "/domains",
+                'languages' => $apiBaseUrl . "/" . $apiVersion . "/projects/" . $this->getName() . "/languages"
+            )
         );
     }
 
