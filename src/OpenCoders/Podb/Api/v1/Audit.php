@@ -2,7 +2,6 @@
 
 namespace OpenCoders\Podb\Api\v1;
 
-
 use Luracast\Restler\RestException;
 use OpenCoders\Podb\Api\AbstractBaseApi;
 use OpenCoders\Podb\Api\ApiUrl;
@@ -14,7 +13,8 @@ use OpenCoders\Podb\Persistence\Doctrine;
  *
  * @protected
  */
-class Audit extends AbstractBaseApi {
+class Audit extends AbstractBaseApi
+{
 
     private $pageSize = 25;
 
@@ -64,9 +64,7 @@ class Audit extends AbstractBaseApi {
         }
 
         $changedEntities = $auditReader->findEntitesChangedAtRevision($rev);
-
         $changes = array();
-
         foreach ($changedEntities as $changedEntity) {
             $refClass = new \ReflectionClass($changedEntity->getClassName());
             $className = $refClass->getShortName();
@@ -105,22 +103,24 @@ class Audit extends AbstractBaseApi {
         }
 
         $data = array();
-
         $fqn = $this->getFQN($className);
         $revisions = $this->getAuditReader()->findRevisions($fqn, $id);
 
         foreach ($revisions as $revision) {
+            $links = array_merge_recursive(
+                $this->getRevisionAPIInformation($revision->getRev(), $revision->getUsername()),
+                $this->getAPIDetailURL($className, $id, $revision->getRev())
+            );
+
             $data[] = array_merge(
                 array(
                     'id' => $revision->getRev(),
                     'timestamp' => $revision->getTimestamp(),
                     'username' => $revision->getUsername(),
                 ),
-                $this->getRevisionAPIInformation($revision->getRev(), $revision->getUsername()),
-                $this->getAPIDetailURL($className, $id, $revision->getRev())
+                $links
             );
         }
-
 
         return $data;
     }
@@ -158,9 +158,11 @@ class Audit extends AbstractBaseApi {
                 'className' => $className,
                 'data' => $data,
             ),
-            $this->getRevisionAPIInformation($rev, null),
-            $this->getAPIEntityURL($className, $id),
-            $this->getAPIDetailURL($className, $id, $rev)
+            array_merge_recursive(
+                $this->getRevisionAPIInformation($rev, null),
+                $this->getAPIEntityURL($className, $id),
+                $this->getAPIDetailURL($className, $id, $rev)
+            )
         );
     }
 
@@ -198,11 +200,13 @@ class Audit extends AbstractBaseApi {
         $baseUrl = $this->getBaseURL();
 
         $info = array(
-            'url_revision' => $baseUrl . '/' . $this->apiVersion . '/audit/revisions/' . $rev,
+            '_links' => array(
+                'revision' => $baseUrl . '/' . $this->apiVersion . '/audit/revisions/' . $rev,
+            )
         );
 
         if ($username) {
-            $info['url_user'] = $baseUrl . '/' . $this->apiVersion . '/users/' . $username;
+            $info['_links']['user'] = $baseUrl . '/' . $this->apiVersion . '/users/' . $username;
         }
 
         return $info;
@@ -219,7 +223,9 @@ class Audit extends AbstractBaseApi {
         $baseUrl = $this->getBaseURL();
 
         return array(
-            'url_audit_entity' => $baseUrl . '/' . $this->apiVersion . '/audit/entities/' . $className . '/' . $id
+            '_links' => array(
+                'audit_entity' => $baseUrl . '/' . $this->apiVersion . '/audit/entities/' . $className . '/' . $id
+            )
         );
     }
 
@@ -235,7 +241,9 @@ class Audit extends AbstractBaseApi {
         $baseUrl = $this->getBaseURL();
 
         return array(
-            'url_audit_detail' => $baseUrl . '/' . $this->apiVersion . '/audit/entities/' . $className . '/' . $id . '/' . $rev
+            '_links' => array(
+                'audit_detail' => $baseUrl . '/' . $this->apiVersion . '/audit/entities/' . $className . '/' . $id . '/' . $rev
+            )
         );
     }
 
