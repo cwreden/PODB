@@ -5,18 +5,22 @@
     "authors": [
         {
             "name": "André Meyerjürgens",
-            "email": "ameyerjuergens@gmail.com"
+            "email": "ameyerjuergens@gmail.com",
+            "homepage": "http://blog.daxtero.de",
+            "role": "Developer"
         },
         {
             "name": "Christian Wreden",
-            "email": "christian@wreden.eu"
+            "email": "christian@wreden.eu",
+            "homepage": "http://cwreden.de",
+            "role": "Developer"
         }
     ],
     "keywords": [
         "po",
         "editor"
     ],
-    "homepage": "",
+    "homepage": "https://github.com/OpenCoders/PODB",
     "minimum-stability": "stable",
     "require": {
         "php": ">=5.3.3",
