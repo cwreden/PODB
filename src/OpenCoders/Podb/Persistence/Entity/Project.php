@@ -2,8 +2,6 @@
 
 namespace OpenCoders\Podb\Persistence\Entity;
 
-use DateTime;
-use Doctrine\Common\Collections\ArrayCollection;
 use OpenCoders\Podb\Exception\NothingToUpdatePodbException;
 
 /**
@@ -62,14 +60,6 @@ class Project extends AbstractBaseEntity
     private $url;
 
     /**
-     *
-     */
-    public function __construct()
-    {
-
-    }
-
-    /**
      * @param mixed $owner
      */
     public function setOwner($owner)
@@ -118,7 +108,7 @@ class Project extends AbstractBaseEntity
     }
 
     /**
-     * @return DateTime|null
+     * @throws \Exception
      */
     public function getCreateDate()
     {
@@ -126,7 +116,7 @@ class Project extends AbstractBaseEntity
     }
 
     /**
-     * @return string
+     * @throws \Exception
      */
     public function getCreatedBy()
     {
@@ -166,7 +156,7 @@ class Project extends AbstractBaseEntity
     }
 
     /**
-     * @return string
+     * @throws \Exception
      */
     public function getLastUpdateBy()
     {
@@ -174,7 +164,7 @@ class Project extends AbstractBaseEntity
     }
 
     /**
-     * @return DateTime|null
+     * @throws \Exception
      */
     public function getLastUpdateDate()
     {
@@ -198,7 +188,7 @@ class Project extends AbstractBaseEntity
     }
 
     /**
-     * @return String[]
+     * @throws \Exception
      */
     public function getUsers()
     {
@@ -269,9 +259,12 @@ class Project extends AbstractBaseEntity
 
     /**
      * Updates the project model by given data
+     *
      * @param array $data
      *
-     * @throws \OpenCoders\Podb\Exception\NothingToUpdatePodbException
+     * @throws NothingToUpdatePodbException
+     *
+     * @returns void
      */
     public function update($data = null)
     {
@@ -285,5 +278,11 @@ class Project extends AbstractBaseEntity
             } else if ($key == 'users') {
             }
         }
+    }
+
+    public function getDomains()
+    {
+        throw new \Exception('Not implemented.');
+        return array();
     }
 }

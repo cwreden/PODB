@@ -2,6 +2,7 @@
 
 namespace OpenCoders\Podb\Api\v1;
 
+use Luracast\Restler\RestException;
 use OpenCoders\Podb\Api\AbstractBaseApi;
 use OpenCoders\Podb\Api\ApiUrl;
 
@@ -126,11 +127,27 @@ class Translations extends AbstractBaseApi
 
     /**
      * @param $id
+     *
      * @url DELETE /translations/:id
+     *
+     * @throws \Luracast\Restler\RestException
+     * @return array
      */
     public function delete($id)
     {
 
+        if (!$this->isId($id)) {
+            throw new RestException(400, 'Invalid ID ' . $id);
+        }
+
+        $em = $this->getEntityManager();
+        $user = $em->getPartialReference($this->entityName, array('id' => $id));
+        $em->remove($user);
+        $em->flush();
+
+        return array(
+            'success' => true
+        );
     }
 
 }

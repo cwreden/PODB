@@ -2,8 +2,6 @@
 
 namespace OpenCoders\Podb\Persistence\Entity;
 
-use DateTime;
-
 /**
  * Class Domain
  * @package OpenCoders\Podb\Persistence\Entity
@@ -29,6 +27,7 @@ class Domain extends AbstractBaseEntity
     /**
      * @var
      * @ManyToOne(targetEntity="Project")
+     * @Column(nullable=false)
      */
     protected $projectId;
 
@@ -39,7 +38,7 @@ class Domain extends AbstractBaseEntity
     protected $description;
 
     /**
-     * @return DateTime|null
+     * @throws \Exception
      */
     public function getCreateDate()
     {
@@ -47,7 +46,7 @@ class Domain extends AbstractBaseEntity
     }
 
     /**
-     * @param mixed $description
+     * @param string $description
      */
     public function setDescription($description)
     {
@@ -55,7 +54,7 @@ class Domain extends AbstractBaseEntity
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getDescription()
     {
@@ -63,7 +62,7 @@ class Domain extends AbstractBaseEntity
     }
 
     /**
-     * @return string
+     * @throws \Exception
      */
     public function getCreatedBy()
     {
@@ -87,7 +86,7 @@ class Domain extends AbstractBaseEntity
     }
 
     /**
-     * @return string
+     * @throws \Exception
      */
     public function getLastUpdateBy()
     {
@@ -95,7 +94,7 @@ class Domain extends AbstractBaseEntity
     }
 
     /**
-     * @return DateTime|null
+     * @throws \Exception
      */
     public function getLastUpdateDate()
     {
@@ -162,6 +161,16 @@ class Domain extends AbstractBaseEntity
         );
     }
 
+    public function getAPIInformation($apiVersion)
+    {
+        $apiBaseUrl = $this->getBaseApiUrl();
+        return array(
+            'url' => $apiBaseUrl . "/" . $apiVersion . "/domains/" . $this->getId(),
+            'url_project' => $apiBaseUrl . "/" . $apiVersion . "/projects/" . $this->getProjectId(),
+            'url_domains' => $apiBaseUrl . "/" . $apiVersion . "/domains/" . $this->getId() . '/datasets'
+        );
+    }
+
     /**
      *
      *
@@ -175,6 +184,10 @@ class Domain extends AbstractBaseEntity
             foreach ($data as $key => $value) {
                 if ($key == 'name') {
                     $this->setName($value);
+                } else if ($key == 'projectId') {
+                    $this->setProjectId($value);
+                } else if ($key == 'description') {
+                    $this->setDescription($value);
                 }
             }
         }

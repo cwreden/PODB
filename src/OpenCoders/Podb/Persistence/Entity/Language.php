@@ -2,7 +2,6 @@
 
 namespace OpenCoders\Podb\Persistence\Entity;
 
-use DateTime;
 use OpenCoders\Podb\Exception\EmptyParameterException;
 use OpenCoders\Podb\Exception\PodbException;
 
@@ -74,7 +73,7 @@ class Language extends AbstractBaseEntity
     }
 
     /**
-     * @return User
+     * @throws \Exception
      */
     public function getCreatedBy()
     {
@@ -82,7 +81,7 @@ class Language extends AbstractBaseEntity
     }
 
     /**
-     * @return DateTime|null
+     * @throws \Exception
      */
     public function getCreateDate()
     {
@@ -90,7 +89,7 @@ class Language extends AbstractBaseEntity
     }
 
     /**
-     * @return DateTime|null
+     * @throws \Exception
      */
     public function getLastUpdateDate()
     {
@@ -100,7 +99,7 @@ class Language extends AbstractBaseEntity
     /**
      * @param string $name
      *
-     * @throws \OpenCoders\Podb\Exception\EmptyParameterException
+     * @throws EmptyParameterException
      */
     public function setName($name)
     {
@@ -113,7 +112,7 @@ class Language extends AbstractBaseEntity
     /**
      * @param string $locale
      *
-     * @throws \OpenCoders\Podb\Exception\EmptyParameterException
+     * @throws EmptyParameterException
      */
     public function setLocale($locale)
     {
@@ -124,7 +123,7 @@ class Language extends AbstractBaseEntity
     }
 
     /**
-     * @return User
+     * @throws \Exception
      */
     public function getLastUpdateBy()
     {
@@ -174,6 +173,11 @@ class Language extends AbstractBaseEntity
         );
     }
 
+    /**
+     * @param int $apiVersion
+     *
+     * @return array
+     */
     public function getAPIInformation($apiVersion)
     {
         $apiBaseUrl = $this->getBaseAPIUrl();
@@ -184,7 +188,11 @@ class Language extends AbstractBaseEntity
         );
     }
 
-    public function update($data)
+    /**
+     * @param array $data
+     * @throws PodbException
+     */
+    public function update(array $data)
     {
         if ($data == null) {
             throw new PodbException('There is nothing to update.');

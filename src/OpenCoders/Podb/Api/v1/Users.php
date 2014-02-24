@@ -18,6 +18,8 @@ class Users extends AbstractBaseApi
     protected $entityName = 'OpenCoders\Podb\Persistence\Entity\User';
 
     /**
+     * Returns an array of shortened user information arrays
+     *
      * @url GET /users
      *
      * @return array
@@ -29,9 +31,7 @@ class Users extends AbstractBaseApi
         $repository = $this->getRepository();
         $users = $repository->findAll();
 
-        /**
-         * @var $user User
-         */
+        /** @var User $user */
         foreach ($users as $user) {
             $data[] = $user->asShortArrayWithAPIInformation($this->apiVersion);
         }
@@ -40,11 +40,13 @@ class Users extends AbstractBaseApi
     }
 
     /**
-     * @param $userName
+     * Returns a array with specific user information
+     *
+     * @param string|int $userName Username or ID of the user
      *
      * @url GET /users/:userName
      *
-     * @throws \Luracast\Restler\RestException
+     * @throws RestException
      *
      * @return array
      */
@@ -59,7 +61,9 @@ class Users extends AbstractBaseApi
     }
 
     /**
-     * @param $userName
+     * Returns an array of related projects of the user
+     *
+     * @param string|int $userName Username or ID of the user
      *
      * @url GET /users/:userName/projects
      *
@@ -77,9 +81,7 @@ class Users extends AbstractBaseApi
             throw new RestException(404);
         }
 
-        /**
-         * @var $project Project
-         */
+        /** @var $project Project */
         foreach ($user->getProjects() as $project) {
             $data[] = $project->asShortArrayWithAPIInformation($this->apiVersion);
         }
@@ -88,11 +90,14 @@ class Users extends AbstractBaseApi
     }
 
     /**
-     * @param $userName
+     * Returns an array of projects owned by the user
+     *
+     * @param string|int $userName Username or ID of the user
      *
      * @url GET /users/:userName/projects/own
      *
-     * @throws \Luracast\Restler\RestException
+     * @throws RestException
+     *
      * @return array
      */
     public function getOwnedProjects($userName)
@@ -114,11 +119,14 @@ class Users extends AbstractBaseApi
     }
 
     /**
-     * @param $userName
+     * Returns an array with related languages of this user
+     *
+     * @param string|int $userName Username or ID of the user
      *
      * @url GET /users/:userName/languages
      *
      * @throws \Luracast\Restler\RestException
+     *
      * @return array
      */
     public function getLanguages($userName)
@@ -130,9 +138,7 @@ class Users extends AbstractBaseApi
             throw new RestException(404);
         }
 
-        /**
-         * @var $language Language
-         */
+        /** @var $language Language */
         foreach ($user->getSupportedLanguages() as $language) {
             $data[] = $language->asShortArrayWithAPIInformation($this->apiVersion);
         }
@@ -141,8 +147,13 @@ class Users extends AbstractBaseApi
     }
 
     /**
-     * @param $userName
+     * Returns an array with related translations of this user
+     *
+     * @param string|int $userName Username or ID of the user
+     *
      * @url GET /users/:userName/translations
+     *
+     * @throws \Luracast\Restler\RestException
      *
      * @return array
      */
@@ -209,7 +220,9 @@ class Users extends AbstractBaseApi
     }
 
     /**
-     * @param $request_data
+     * Creates a new user object by given data
+     *
+     * @param array $request_data
      *
      * @url POST /users
      * @protected
@@ -219,7 +232,7 @@ class Users extends AbstractBaseApi
      *
      * @return array
      */
-    public function post($request_data = NULL)
+    public function post(array $request_data = NULL)
     {
         try {
             $user = new User($request_data);
@@ -234,17 +247,19 @@ class Users extends AbstractBaseApi
     }
 
     /**
-     * @param $id
-     * @param $request_data
+     * Updates a User Object
+     *
+     * @param int $id
+     * @param array $request_data
      *
      * @url PUT /users/:id
      * @protected
      *
-     * @throws \Luracast\Restler\RestException
+     * @throws RestException
      *
      * @return bool
      */
-    public function put($id, $request_data = NULL)
+    public function put($id, array $request_data = array())
     {
         if (!$this->isId($id)) {
             throw new RestException(400, 'Invalid ID ' . $id);
@@ -266,7 +281,9 @@ class Users extends AbstractBaseApi
     }
 
     /**
-     * @param $id
+     * Deletes the User by ID
+     *
+     * @param int $id
      *
      * @url DELETE /users/:id
      * @protected
@@ -292,7 +309,10 @@ class Users extends AbstractBaseApi
     }
 
     /**
-     * @param $userName
+     * Returns the User Object
+     *
+     * @param string|int $userName Username or ID of the user
+     *
      * @return User
      */
     private function getUser($userName)
@@ -304,9 +324,11 @@ class Users extends AbstractBaseApi
         if ($this->isId($userName)) {
             $user = $repository->find($userName);
         } else {
-            $user = $repository->findOneBy(array(
-                'username' => $userName
-            ));
+            $user = $repository->findOneBy(
+                array(
+                    'username' => $userName
+                )
+            );
         }
         return $user;
     }

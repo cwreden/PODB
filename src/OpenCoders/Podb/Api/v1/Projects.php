@@ -6,6 +6,7 @@ use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Luracast\Restler\RestException;
 use OpenCoders\Podb\Api\AbstractBaseApi;
+use OpenCoders\Podb\Persistence\Entity\Domain;
 use OpenCoders\Podb\Persistence\Entity\Project;
 use OpenCoders\Podb\Exception\PodbException;
 use OpenCoders\Podb\Api\ApiUrl;
@@ -89,27 +90,30 @@ class Projects extends AbstractBaseApi
 
     /**
      * @param $projectName
+     *
      * @url GET /projects/:projectName/domains
      *
+     * @throws \Luracast\Restler\RestException
      * @return array
      */
     public function getDomains($projectName)
     {
-        $apiBaseUrl = ApiUrl::getBaseApiUrl();
+        $data = array();
 
-        return array(
-            array(
-                'id' => 2,
-                'name' => 'Fake-Domain-2',
-                'project' => 'Fake-Project-2',
-                'url' => $apiBaseUrl . "/{$this->apiVersion}/domains/Fake-Project-2/Fake-Domain-2",
-                'url_project' => $apiBaseUrl . "/{$this->apiVersion}/projects/Fake-Project-2",
-                'url_translated_languages' => $apiBaseUrl . "/{$this->apiVersion}/domains/Fake-Project-2/Fake-Domain-2/translated_languages",
-                'url_datasets' => $apiBaseUrl . "/{$this->apiVersion}/domains/Fake-Project-2/Fake-Domain-2/datasets",
-                'created_at' => 1389051097,
-                'updated_at' => 1389051097
-            )
-        );
+        $project = $this->getProject($projectName);
+
+        if ($project == null) {
+            throw new RestException(404);
+        }
+
+        /**
+         * @var $domain Domain
+         */
+        foreach ($project->getDomains() as $domain) {
+            $data[] = $domain->asShortArrayWithAPIInformation($this->apiVersion);
+        }
+
+        return $data;
     }
 
     /**

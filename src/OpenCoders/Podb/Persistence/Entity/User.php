@@ -2,7 +2,6 @@
 
 namespace OpenCoders\Podb\Persistence\Entity;
 
-use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use OpenCoders\Podb\Exception\EmptyParameterException;
 use OpenCoders\Podb\Exception\PodbException;
@@ -107,7 +106,7 @@ class User extends AbstractBaseEntity
     }
 
     /**
-     * @param mixed $ownedProjects
+     * @param ArrayCollection $ownedProjects
      */
     public function setOwnedProjects($ownedProjects)
     {
@@ -139,7 +138,7 @@ class User extends AbstractBaseEntity
     }
 
     /**
-     * @param mixed $company
+     * @param string $company
      */
     public function setCompany($company)
     {
@@ -147,7 +146,7 @@ class User extends AbstractBaseEntity
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getCompany()
     {
@@ -171,7 +170,7 @@ class User extends AbstractBaseEntity
     }
 
     /**
-     * @param mixed $gravatarEMail
+     * @param string $gravatarEMail
      */
     public function setGravatarEMail($gravatarEMail)
     {
@@ -179,7 +178,7 @@ class User extends AbstractBaseEntity
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getGravatarEMail()
     {
@@ -187,7 +186,7 @@ class User extends AbstractBaseEntity
     }
 
     /**
-     * @param mixed $publicEMail
+     * @param string $publicEMail
      */
     public function setPublicEMail($publicEMail)
     {
@@ -195,7 +194,7 @@ class User extends AbstractBaseEntity
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getPublicEMail()
     {
@@ -203,9 +202,9 @@ class User extends AbstractBaseEntity
     }
 
     /**
-     * @param mixed $email
+     * @param string $email
      *
-     * @throws \OpenCoders\Podb\Exception\PodbException
+     * @throws EmptyParameterException
      *
      * @return void
      */
@@ -218,7 +217,7 @@ class User extends AbstractBaseEntity
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getEmail()
     {
@@ -226,7 +225,7 @@ class User extends AbstractBaseEntity
     }
 
     /**
-     * @param mixed $id
+     * @param int $id
      * @return void
      */
     public function setId($id)
@@ -235,7 +234,7 @@ class User extends AbstractBaseEntity
     }
 
     /**
-     * @return mixed
+     * @return int
      */
     public function getId()
     {
@@ -245,7 +244,7 @@ class User extends AbstractBaseEntity
     /**
      * @param string $username
      *
-     * @throws \OpenCoders\Podb\Exception\PodbException
+     * @throws EmptyParameterException
      *
      * @return void
      */
@@ -266,9 +265,9 @@ class User extends AbstractBaseEntity
     }
 
     /**
-     * @param mixed $password
+     * @param string $password
      *
-     * @throws \OpenCoders\Podb\Exception\PodbException
+     * @throws EmptyParameterException
      *
      * @return void
      */
@@ -291,7 +290,6 @@ class User extends AbstractBaseEntity
     /**
      * @throws \Exception
      *
-     * @return mixed
      */
     public function getProjects()
     {
@@ -345,7 +343,6 @@ class User extends AbstractBaseEntity
     /**
      * @throws \Exception
      *
-     * @return User
      */
     public function getCreatedBy()
     {
@@ -355,7 +352,6 @@ class User extends AbstractBaseEntity
     /**
      * @throws \Exception
      *
-     * @return User
      */
     public function getLastUpdatedBy()
     {
@@ -365,7 +361,6 @@ class User extends AbstractBaseEntity
     /**
      * @throws \Exception
      *
-     * @return DateTime|null
      */
     public function getCreateDate()
     {
@@ -375,7 +370,6 @@ class User extends AbstractBaseEntity
     /**
      * @throws \Exception
      *
-     * @return DateTime|null
      */
     public function getLastUpdateDate()
     {
@@ -383,7 +377,7 @@ class User extends AbstractBaseEntity
     }
 
     /**
-     * @param mixed $supportedLanguages
+     * @param ArrayCollection|string $supportedLanguages
      */
     public function setSupportedLanguages($supportedLanguages)
     {
@@ -408,7 +402,7 @@ class User extends AbstractBaseEntity
     /**
      * Returns supported languages of this user
      *
-     * @return mixed
+     * @return ArrayCollection
      */
     public function getSupportedLanguages()
     {

@@ -2,7 +2,7 @@
 
 namespace OpenCoders\Podb\Persistence\Entity;
 
-use DateTime;
+use OpenCoders\Podb\Exception\PodbException;
 
 /**
  * Class DataSet
@@ -23,6 +23,7 @@ class DataSet extends AbstractBaseEntity
     /**
      * @var
      * @ManyToOne(targetEntity="Domain")
+     * @Column(nullable=false)
      */
     protected $domainId;
 
@@ -33,7 +34,7 @@ class DataSet extends AbstractBaseEntity
     protected $msgId;
 
     /**
-     * @return DateTime|null
+     * @throws \Exception
      */
     public function getCreateDate()
     {
@@ -41,7 +42,7 @@ class DataSet extends AbstractBaseEntity
     }
 
     /**
-     * @return string
+     * @throws \Exception
      */
     public function getCreatedBy()
     {
@@ -81,7 +82,7 @@ class DataSet extends AbstractBaseEntity
     }
 
     /**
-     * @return string
+     * @throws \Exception
      */
     public function getLastUpdateBy()
     {
@@ -89,7 +90,7 @@ class DataSet extends AbstractBaseEntity
     }
 
     /**
-     * @return DateTime|null
+     * @throws \Exception
      */
     public function getLastUpdateDate()
     {
@@ -128,11 +129,39 @@ class DataSet extends AbstractBaseEntity
         );
     }
 
+    /**
+     * @return array
+     */
     public function asShortArray()
     {
         return array(
             'id' => $this->getId(),
             'msgId' => $this->getMsgId(),
         );
+    }
+
+    public function getAPIInformation($apiVersion)
+    {
+        $apiBaseUrl = $this->getBaseAPIUrl();
+
+        return array(
+            'url' => $apiBaseUrl . '/' . $apiVersion . '/datasets/' . $this->getId(),
+            'url_domain' => $apiBaseUrl . '/' . $apiVersion . '/domains/' . $this->getDomainId(),
+            'url_translations' => $apiBaseUrl . '/' . $apiVersion . '/datasets/' . $this->getId() . '/translations',
+        );
+    }
+
+    public function update($data)
+    {
+        if ($data == null) {
+            throw new PodbException('There is nothing to update.');
+        }
+        foreach ($data as $key => $value) {
+            if ($key == 'msgId') {
+                $this->setMsgId($value);
+            } else if ($key == 'domainId') {
+                $this->setDomainId($value);
+            }
+        }
     }
 }
