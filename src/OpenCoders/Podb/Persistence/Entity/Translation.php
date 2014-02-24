@@ -8,7 +8,7 @@ namespace OpenCoders\Podb\Persistence\Entity;
  * @package OpenCoders\Podb\Persistence\Entity
  * @Entity(repositoryClass="OpenCoders\Podb\Persistence\Repository\TranslationRepository")
  */
-class Translation
+class Translation extends AbstractBaseEntity
 {
 
     /**
@@ -227,6 +227,18 @@ class Translation
         return array(
             'id' => $this->getId(),
             'msgStr' => $this->getMsgStr(),
+        );
+    }
+
+    /**
+     * @param string $apiVersion
+     * @return array
+     */
+    public function getApiInformation($apiVersion)
+    {
+        $apiBaseUrl = $this->getBaseApiUrl();
+        return array(
+            'url' => $apiBaseUrl . '/' . $apiVersion . '/datasets/' . $this->getId()
         );
     }
 

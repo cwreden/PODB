@@ -5,6 +5,7 @@ namespace OpenCoders\Podb\Api\v1;
 use Luracast\Restler\RestException;
 use OpenCoders\Podb\Api\AbstractBaseApi;
 use OpenCoders\Podb\Api\ApiUrl;
+use OpenCoders\Podb\Persistence\Entity\Translation;
 
 class Translations extends AbstractBaseApi
 {
@@ -21,89 +22,34 @@ class Translations extends AbstractBaseApi
      */
     public function getList()
     {
-        $baseUrl = ApiUrl::getBaseApiUrl();
+        $response = array();
+        $translations = $this->getRepository()->findAll();
 
-        return array(
-            array(
-                'id' => 123456789,
-                'language' => 'en_US',
-                'msg_str' => 'test',
-                'msg_str1' => '',
-                'msg_str2' => '',
-                'fuzzy' => true,
-                'created_at' => 12345678,
-                'modified_at' => 12345678,
-                'url_dataset' => $baseUrl . "/{$this->apiVersion}/datasets/123456789",
-                'url_created_by' => $baseUrl . "/{$this->apiVersion}/users/dax",
-                'url_modified_by' => $baseUrl . "/{$this->apiVersion}/users/dax",
-            ),
-            array(
-                'id' => 123456789,
-                'language' => 'en_US',
-                'msg_str' => 'test',
-                'msg_str1' => '',
-                'msg_str2' => '',
-                'fuzzy' => true,
-                'created_at' => 12345678,
-                'modified_at' => 12345678,
-                'url_dataset' => $baseUrl . "/{$this->apiVersion}/datasets/123456789",
-                'url_created_by' => $baseUrl . "/{$this->apiVersion}/users/dax",
-                'url_modified_by' => $baseUrl . "/{$this->apiVersion}/users/dax",
-            ),
-            array(
-                'id' => 123456789,
-                'language' => 'en_US',
-                'msg_str' => 'test',
-                'msg_str1' => '',
-                'msg_str2' => '',
-                'fuzzy' => true,
-                'created_at' => 12345678,
-                'modified_at' => 12345678,
-                'url_dataset' => $baseUrl . "/{$this->apiVersion}/datasets/123456789",
-                'url_created_by' => $baseUrl . "/{$this->apiVersion}/users/dax",
-                'url_modified_by' => $baseUrl . "/{$this->apiVersion}/users/dax",
-            ),
-            array(
-                'id' => 123456789,
-                'language' => 'en_US',
-                'msg_str' => 'test',
-                'msg_str1' => '',
-                'msg_str2' => '',
-                'fuzzy' => true,
-                'created_at' => 12345678,
-                'modified_at' => 12345678,
-                'url_dataset' => $baseUrl . "/{$this->apiVersion}/datasets/123456789",
-                'url_created_by' => $baseUrl . "/{$this->apiVersion}/users/dax",
-                'url_modified_by' => $baseUrl . "/{$this->apiVersion}/users/dax",
-            ),
-        );
+        /** @var $translation Translation */
+        foreach ($translations as $translation) {
+            $response[] = $translation->asShortArrayWithAPIInformation($this->getApiVersion());
+        }
+
+        return $response;
     }
 
     /**
      * @param $id
+     *
      * @url GET /translations/:id
      *
+     * @throws \Luracast\Restler\RestException
      * @return array
      */
     public function get($id)
     {
-        $baseUrl = ApiUrl::getBaseApiUrl();
+        $translation = $this->getTranslation($id);
 
-        return array(
-            array(
-                'id' => 123456789,
-                'language' => 'en_US',
-                'msg_str' => 'test',
-                'msg_str1' => '',
-                'msg_str2' => '',
-                'fuzzy' => true,
-                'created_at' => 12345678,
-                'modified_at' => 12345678,
-                'url_dataset' => $baseUrl . "/{$this->apiVersion}/datasets/123456789",
-                'url_created_by' => $baseUrl . "/{$this->apiVersion}/users/dax",
-                'url_modified_by' => $baseUrl . "/{$this->apiVersion}/users/dax",
-            ),
-        );
+        if (!$translation) {
+            throw new RestException(404, 'translation not found.');
+        }
+
+        return $translation->asArrayWithAPIInformation($this->getApiVersion());
     }
 
     /**
@@ -148,6 +94,17 @@ class Translations extends AbstractBaseApi
         return array(
             'success' => true
         );
+    }
+
+    /**
+     * @param $id
+     * @return Translation
+     */
+    private function getTranslation($id)
+    {
+        /** @var $translation Translation */
+        $translation = $this->getRepository()->find($id);
+        return $translation;
     }
 
 }
