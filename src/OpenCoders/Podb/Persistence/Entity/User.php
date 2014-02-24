@@ -390,7 +390,9 @@ class User extends AbstractBaseEntity
             $supportedLanguageIds = explode(',', $supportedLanguages);
             $supportedLanguages = new ArrayCollection();
             foreach ($supportedLanguageIds as $languageId) {
-                $language = $this->getEntityManager()->getRepository('OpenCoders\Podb\Persistence\Entity\Language')->find($languageId);
+                $language = $this->getEntityManager()->getRepository(
+                    'OpenCoders\Podb\Persistence\Entity\Language'
+                )->find($languageId);
                 if ($language) {
                     $supportedLanguages->add($language);
                 }
@@ -449,14 +451,16 @@ class User extends AbstractBaseEntity
      */
     public function getAPIInformation($apiVersion)
     {
-        $baseUrl = $this->getBaseAPIUrl() . '/' . $apiVersion . '/users/' . $this->getUsername();
+        $urlToUser = $this->getBaseAPIUrl() . '/' . $apiVersion . '/users/' . $this->getUsername();
 
         return array(
-            'url_user' => $baseUrl,
-            'url_projects' => $baseUrl . '/projects',
-            'url_own_projects' => $baseUrl . '/projects/own',
-            'url_languages' => $baseUrl . '/languages',
-            'url_translations' => $baseUrl . '/translations'
+            '_links' => array(
+                'self' => $urlToUser,
+                'projects' => $urlToUser . '/projects',
+                'own_projects' => $urlToUser . '/projects/own',
+                'languages' => $urlToUser . '/languages',
+                'translations' => $urlToUser . '/translations'
+            )
         );
     }
 

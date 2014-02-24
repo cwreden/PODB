@@ -183,8 +183,10 @@ class Language extends AbstractBaseEntity
         $apiBaseUrl = $this->getBaseAPIUrl();
 
         return array(
-            'url' => $apiBaseUrl . '/' . $apiVersion . '/languages/' . $this->getLocale(),
+            '_links' => array(
+                'self' => $apiBaseUrl . '/' . $apiVersion . '/languages/' . $this->getLocale(),
 //            'url_projects' => $apiBaseUrl . '/' . $apiVersion . '/languages/' . $this->getLocale() . '/projects'
+            )
         );
     }
 

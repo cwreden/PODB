@@ -145,9 +145,11 @@ class DataSet extends AbstractBaseEntity
         $apiBaseUrl = $this->getBaseAPIUrl();
 
         return array(
-            'url' => $apiBaseUrl . '/' . $apiVersion . '/datasets/' . $this->getId(),
-            'url_domain' => $apiBaseUrl . '/' . $apiVersion . '/domains/' . $this->getDomainId(),
-            'url_translations' => $apiBaseUrl . '/' . $apiVersion . '/datasets/' . $this->getId() . '/translations',
+            '_links' => array(
+                'self' => $apiBaseUrl . '/' . $apiVersion . '/datasets/' . $this->getId(),
+                'domain' => $apiBaseUrl . '/' . $apiVersion . '/domains/' . $this->getDomainId(),
+                'translations' => $apiBaseUrl . '/' . $apiVersion . '/datasets/' . $this->getId() . '/translations',
+            )
         );
     }
 
