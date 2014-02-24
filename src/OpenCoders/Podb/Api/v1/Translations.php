@@ -5,6 +5,7 @@ namespace OpenCoders\Podb\Api\v1;
 use Luracast\Restler\RestException;
 use OpenCoders\Podb\Api\AbstractBaseApi;
 use OpenCoders\Podb\Api\ApiUrl;
+use OpenCoders\Podb\Exception\PodbException;
 use OpenCoders\Podb\Persistence\Entity\Translation;
 
 class Translations extends AbstractBaseApi
@@ -89,11 +90,41 @@ class Translations extends AbstractBaseApi
     /**
      * @param $id
      * @param $request_data
+     *
      * @url PUT /translations/:id
+     *
+     * @throws \Luracast\Restler\RestException
+     * @return array
      */
     public function put($id, $request_data = NULL)
     {
+        if (!is_int($id)) {
+            throw new RestException(400, 'Cannot update. Translation with given ID ' . $id . ' does not exists');
+        }
 
+        /** @var Translation $translation */
+        $translation = $this->getRepository()->find($id);
+
+        try {
+            if (isset($request_data['fuzzy'])) {
+                $translation->setFuzzy($request_data['fuzzy']);
+            }
+            if (isset($request_data['msgStr'])) {
+                $translation->setMsgStr($request_data['msgStr']);
+            }
+            if (isset($request_data['msgStr1'])) {
+                $translation->setMsgStr1($request_data['msgStr1']);
+            }
+            if (isset($request_data['msgStr2'])) {
+                $translation->setMsgStr2($request_data['msgStr2']);
+            }
+
+            $this->getEntityManager()->persist($translation);
+            $this->getEntityManager()->flush();
+        } catch (PodbException $e) {
+            throw new RestException(400, $e->getMessage());
+        }
+        return $translation->asArrayWithAPIInformation($this->getApiVersion());
     }
 
     /**
