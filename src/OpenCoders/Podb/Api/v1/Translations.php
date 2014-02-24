@@ -54,11 +54,36 @@ class Translations extends AbstractBaseApi
 
     /**
      * @param $request_data
+     *
      * @url POST /translations
+     *
+     * @throws \Luracast\Restler\RestException
+     * @return array
      */
     public function post($request_data = NULL)
     {
+        try {
+            $translation = new Translation();
 
+            $translation->setDataSetId($request_data['dataSetId']);
+            $translation->setLanguageId($request_data['languageId']);
+            $translation->setMsgStr($request_data['msgStr']);
+            if (isset($request_data['msgStr1'])) {
+                $translation->setMsgStr1($request_data['msgStr1']);
+            }
+            if (isset($request_data['msgStr2'])) {
+                $translation->setMsgStr2($request_data['msgStr2']);
+            }
+            $translation->setFuzzy($request_data['fuzzy']);
+
+            $em = $this->getEntityManager();
+            $em->persist($translation);
+            $em->flush();
+        } catch (\Exception $e) {
+            throw new RestException(400, $e->getMessage());
+        };
+
+        return $translation->asArrayWithAPIInformation($this->apiVersion);
     }
 
     /**
@@ -87,8 +112,8 @@ class Translations extends AbstractBaseApi
         }
 
         $em = $this->getEntityManager();
-        $user = $em->getPartialReference($this->entityName, array('id' => $id));
-        $em->remove($user);
+        $translation = $em->getPartialReference($this->entityName, array('id' => $id));
+        $em->remove($translation);
         $em->flush();
 
         return array(
