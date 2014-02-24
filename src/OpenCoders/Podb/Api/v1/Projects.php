@@ -2,7 +2,6 @@
 
 namespace OpenCoders\Podb\Api\v1;
 
-use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Luracast\Restler\RestException;
 use OpenCoders\Podb\Api\AbstractBaseApi;
