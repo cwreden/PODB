@@ -14,10 +14,10 @@ angular.module('PODB', ['restangular', 'ngRoute'])
                 templateUrl: '/template/users/list.html',
                 controller: 'UserListController'
             })
-            .when('/login', {
-                templateUrl: '/template/login.html',
-                controller: 'LoginController'
-            })
+//            .when('/login', {
+//                templateUrl: '/template/login.html',
+//                controller: 'LoginController'
+//            })
             .otherwise({
                 redirectTo: '/dashboard'
             });
