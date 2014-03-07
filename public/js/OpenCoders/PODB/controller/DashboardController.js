@@ -1,6 +1,6 @@
 'use Strict';
 
 angular.module('PODB')
-    .controller('DashboardController', function($scope, Restangular) {
-        console.log('Dash...');
-    });
+    .controller('DashboardController', ['$scope', 'Restangular', function($scope, Restangular) {
+
+    }]);
