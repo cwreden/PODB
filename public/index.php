@@ -58,4 +58,26 @@ $app->get('/test', function () use ($app) {
     return $app['twig']->render('test.twig', array('testValue' => 'trolllo'));
 });
 
+/**
+ * Test implementation
+ */
+$app->post('/login', function () use ($app) {
+    sleep(3);
+
+    return new Symfony\Component\HttpFoundation\JsonResponse(array(
+        'success' => true,
+        'displayName' => 'Max'
+    ));
+});
+
+/**
+ * Test implementation
+ */
+$app->get('/logout', function () use ($app) {
+    sleep(3);
+    return new Symfony\Component\HttpFoundation\JsonResponse(array(
+       'success' => true
+   ));
+});
+
 $app->run();

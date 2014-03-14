@@ -1,5 +1,8 @@
 'use Strict';
 
+/**
+ * @Deprecated
+ */
 angular.module('PODB')
     .controller('LoginController', ['$scope', 'currentUser', function($scope, currentUser) {
         $scope.currentUser = currentUser;
