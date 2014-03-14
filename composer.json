@@ -25,10 +25,12 @@
     "require": {
         "php": ">=5.3.3",
         "doctrine/orm": "*",
-        "luracast/restler": "*",
         "simplethings/entity-audit-bundle": "*",
-        "zendframework/zend-permissions-acl": "*",
-        "silex/silex": "*"
+        "luracast/restler": "*",
+        "silex/silex": "v1.1.2",
+        "twig/twig": "*",
+        "monolog/monolog": "1.7.0",
+        "zendframework/zend-permissions-acl": "*"
     },
     "require-dev": {
         "phpunit/phpunit": "3.7.*"
