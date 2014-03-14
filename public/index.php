@@ -13,14 +13,14 @@ $app->register(
     new \Silex\Provider\TwigServiceProvider(),
     array(
         'twig.path' => APPLICATION_ROOT . '/src/Views',
-        'twig.options' => array('cache' => APPLICATION_ROOT . '/data/twig'),// TODO
+        'twig.options' => array('cache' => APPLICATION_ROOT . '/data/twig'),
     )
 );
 
 $app->register(
     new \Silex\Provider\MonologServiceProvider(),
     array(
-        'monolog.logfile' => APPLICATION_ROOT . "/data/application.log" // TODO
+        'monolog.logfile' => APPLICATION_ROOT . "/data/application.log"
     )
 );
 
