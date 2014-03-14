@@ -25,7 +25,9 @@ $app->register(
 );
 
 
-
+/**
+ * @Debug
+ */
 $app->get('/', function () use ($app) {
     if ($app['session']->get('locked') === true) {
         return include('pages/examples/lockscreen.html');
@@ -33,14 +35,27 @@ $app->get('/', function () use ($app) {
     return include('index.html');
 });
 
+/**
+ * @Debug
+ */
 $app->get('/lock', function () use ($app) {
     $app['session']->set('locked', true);
     return true;
 });
 
+/**
+ * @Debug
+ */
 $app->get('/unlock', function () use ($app) {
     $app['session']->set('locked', false);
     return true;
+});
+
+/**
+ * @Debug
+ */
+$app->get('/test', function () use ($app) {
+    return $app['twig']->render('test.twig', array('testValue' => 'trolllo'));
 });
 
 $app->run();
