@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('PODB')
-    .service('currentUser', ['$http', function($http) {
+    .service('currentUser', ['$http', '$location', function($http, $location) {
         var me = this;
         this.isLoggedIn = false;
         this.processingLogIn = false;
@@ -36,6 +36,7 @@ angular.module('PODB')
                 .success(function () {
                     me.processingLogOut = false;
                     me.isLoggedIn = false;
+                    $location.path( "/dashboard" );
                 }).error(function () {
                     me.processingLogOut = false;
                     me.isLoggedIn = true;
