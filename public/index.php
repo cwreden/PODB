@@ -1,5 +1,7 @@
 <?php
 
+use Symfony\Component\HttpFoundation\JsonResponse;
+
 define ("APPLICATION_ROOT", realpath(__DIR__."/.."));
 
 require_once __DIR__ . '/../vendor/autoload.php';
@@ -26,13 +28,13 @@ $app->register(
 
 
 /**
- * @Debug
+ * @TODO extract controller
  */
 $app->get('/', function () use ($app) {
     if ($app['session']->get('locked') === true) {
-        return include('pages/examples/lockscreen.html');
+        return $app['twig']->render('lockscreen.html');
     }
-    return include('index.html');
+    return $app['twig']->render('base.html');
 });
 
 /**
@@ -55,7 +57,8 @@ $app->get('/unlock', function () use ($app) {
  * @Debug
  */
 $app->get('/test', function () use ($app) {
-    return $app['twig']->render('test.twig', array('testValue' => 'trolllo'));
+    $app['session']->start();
+    return new JsonResponse($_SESSION);
 });
 
 /**
@@ -64,7 +67,7 @@ $app->get('/test', function () use ($app) {
 $app->post('/login', function () use ($app) {
     sleep(3);
 
-    return new Symfony\Component\HttpFoundation\JsonResponse(array(
+    return new JsonResponse(array(
         'success' => true,
         'displayName' => 'Max'
     ));
