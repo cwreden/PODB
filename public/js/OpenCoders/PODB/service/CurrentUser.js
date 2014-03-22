@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('PODB')
-    .service('currentUser', ['$http', '$location', function($http, $location) {
+    .service('currentUser', ['$http', '$location', 'apiBaseUrl', function($http, $location, apiBaseUrl) {
         var me = this;
         this.isLoggedIn = false;
         this.processingLogIn = false;
@@ -12,11 +12,9 @@ angular.module('PODB')
 
         this.login = function() {
             me.processingLogIn = true;
-            $http.post('/login', {
-                params: {
-                    username: this.username,
-                    password: this.password
-                }
+            $http.post(apiBaseUrl + '/authentication/login', {
+                username: this.username,
+                password: this.password
             })
                 .success(function (response) {
                     me.displayName = response.displayName;
@@ -32,7 +30,7 @@ angular.module('PODB')
 
         this.logout = function () {
             me.processingLogOut = true;
-            $http.get('/logout')
+            $http.post(apiBaseUrl + '/authentication/logout')
                 .success(function () {
                     me.processingLogOut = false;
                     me.isLoggedIn = false;
@@ -44,7 +42,31 @@ angular.module('PODB')
         };
 
         this.checkLoginState = function () {
+            me.processingLogIn = true;
+            $http.get(apiBaseUrl + '/authentication/isLoggedIn')
+                .success(function (response) {
+                    me.processingLogIn = false;
+                    me.isLoggedIn = response.isLoggedIn;
+                    me.displayName = response.displayName;
+                    me.username = response.username;
+                })
+                .error(function () {
+                    me.processingLogIn = false;
+                    me.isLoggedIn = false;
+                });
+        };
 
+        this.openProfile = function () {
+            if (me.username != null) {
+                $location.path('/user/' + me.username);
+            }
+        };
+
+        this.lock = function () {
+            $http.post(apiBaseUrl + '/authentication/lock')
+                .success(function (response) {
+                    $location.url('/');
+                });
         };
 
         this.checkLoginState();

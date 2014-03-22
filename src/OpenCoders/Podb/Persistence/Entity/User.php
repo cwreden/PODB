@@ -94,6 +94,9 @@ class User extends AbstractBaseEntity
      */
     private $company;
 
+    /**
+     * @param null $data TODO refactor: no set attributes at instancing
+     */
     public function __construct($data = null)
     {
         $this->ownedProjects = new ArrayCollection();
@@ -484,13 +487,13 @@ class User extends AbstractBaseEntity
     /**
      * Returns true if given password is equal with stored password
      *
-     * @param string $pass
+     * @param $password string
      *
      * @return bool
      */
-    public function checkPassword($pass)
+    public function checkPassword($password)
     {
-        return $this->password == $pass;
+        return $this->password == sha1($password);
     }
 
     /**

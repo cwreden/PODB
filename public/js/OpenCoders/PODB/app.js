@@ -31,6 +31,8 @@ var podb = angular.module('PODB', ['restangular', 'ngRoute'])
         }
     ]);
 
+podb.constant('apiBaseUrl', '/api/v1');
+
 podb.run(['$location', '$rootScope', function($location, $rootScope) {
 
     $rootScope.$on('$routeChangeSuccess', function (event, current, previous) {

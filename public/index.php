@@ -31,7 +31,8 @@ $app->register(
  * @TODO extract controller
  */
 $app->get('/', function () use ($app) {
-    if ($app['session']->get('locked') === true) {
+    $app['session']->start();
+    if (isset($_SESSION['attributes']) && isset($_SESSION['attributes']['locked']) && $_SESSION['attributes']['locked'] === true) {
         return $app['twig']->render('lockscreen.html');
     }
     return $app['twig']->render('base.html');
@@ -61,26 +62,10 @@ $app->get('/test', function () use ($app) {
     return new JsonResponse($_SESSION);
 });
 
-/**
- * Test implementation
- */
-$app->post('/login', function () use ($app) {
-    sleep(3);
-
-    return new JsonResponse(array(
-        'success' => true,
-        'displayName' => 'Max'
-    ));
-});
-
-/**
- * Test implementation
- */
-$app->get('/logout', function () use ($app) {
-    sleep(3);
-    return new Symfony\Component\HttpFoundation\JsonResponse(array(
-       'success' => true
-   ));
+$app->get('/clean', function () use ($app) {
+    $app['session']->clear();
+    unset($_SESSION['attributes']);
+    return new JsonResponse($_SESSION);
 });
 
 $app->run();
