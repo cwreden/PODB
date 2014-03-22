@@ -309,6 +309,30 @@ class Users extends AbstractBaseApi
     }
 
     /**
+     * @param array $request_data
+     *
+     * @throws \Luracast\Restler\RestException
+     * @url POST /user/register
+     *
+     * @return array
+     */
+    public function register(array $request_data = NULL)
+    {
+        try {
+            $user = new User($request_data);
+            $em = $this->getEntityManager();
+            $em->persist($user);
+            $em->flush();
+        } catch (PodbException $e){
+            throw new RestException(400, $e->getMessage());
+        };
+
+        return array(
+           'success' => true
+        );
+    }
+
+    /**
      * Returns the User Object
      *
      * @param string|int $userName Username or ID of the user
