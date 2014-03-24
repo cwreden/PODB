@@ -20,3 +20,4 @@ config/rateLimit.config.php
 config/podb.config.php
 tmp
 atlassian*
+public/lib/
