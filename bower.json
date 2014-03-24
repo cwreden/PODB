@@ -1,0 +1,26 @@
+{
+  "name": "PODB",
+  "version": "0.0.0",
+  "homepage": "https://github.com/OpenCoders/PODB",
+  "description": "PO-Database",
+  "keywords": [
+    "po",
+    "translation"
+  ],
+  "authors": [
+    "Christian Wreden",
+    "André Meyerjürgens"
+  ],
+  "license": "GNU AFFERO GENERAL PUBLIC LICENSE Version 3",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angularjs": "*"
+  }
+}
