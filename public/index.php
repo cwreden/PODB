@@ -32,7 +32,7 @@ $app->register(
  */
 $app->get('/', function () use ($app) {
     $app['session']->start();
-    if (isset($_SESSION['attributes']) && isset($_SESSION['attributes']['locked']) && $_SESSION['attributes']['locked'] === true) {
+    if (isset($_SESSION['attributes']) && isset($_SESSION['attributes']['locked']) && $_SESSION['attributes']['locked'] === true || $app['session']->get('locked')) {
         return $app['twig']->render('lockscreen.html');
     }
     return $app['twig']->render('base.html');
