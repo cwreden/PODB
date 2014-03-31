@@ -421,15 +421,12 @@ class User extends AbstractBaseEntity
      */
     public function asArray()
     {
-        return array(
-            'id' => $this->getId(),
-            'displayname' => $this->getDisplayName(),
-            'username' => $this->getUsername(),
-            'email' => $this->getEmail(),
-            'active' => $this->getActive(),
-//            'createDate' => $this->getCreateDate(),
-//            'lastUpdateDate' => $this->getLastUpdateDate(),
-        );
+        $data = $this->asShortArray();
+
+        $data['email'] = $this->getEmail();
+        $data['active'] = $this->getActive();
+
+        return $data;
     }
 
     /**
@@ -442,6 +439,7 @@ class User extends AbstractBaseEntity
         return array(
             'id' => $this->getId(),
             'displayname' => $this->getDisplayName(),
+            'username' => $this->getUsername(),
         );
     }
 
