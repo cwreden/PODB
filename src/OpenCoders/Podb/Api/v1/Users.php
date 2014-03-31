@@ -82,7 +82,7 @@ class Users extends AbstractBaseApi
         }
 
         /** @var $project Project */
-        foreach ($user->getProjects() as $project) {
+        foreach ($user->getContributedProjects() as $project) {
             $data[] = $project->asShortArrayWithAPIInformation($this->apiVersion);
         }
 
@@ -94,7 +94,7 @@ class Users extends AbstractBaseApi
      *
      * @param string|int $userName Username or ID of the user
      *
-     * @url GET /users/:userName/projects/own
+     * @url GET /users/:userName/own/projects
      *
      * @throws RestException
      *

@@ -40,6 +40,8 @@ abstract class AbstractBaseEntity
     /**
      * @param int $apiVersion
      *
+     * TODO extract api information out of entities
+     *
      * @return array
      */
     public function getAPIInformation($apiVersion)

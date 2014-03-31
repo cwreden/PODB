@@ -13,6 +13,7 @@ use OpenCoders\Podb\Exception\PodbException;
  */
 class User extends AbstractBaseEntity
 {
+    // region attributes
 
     /**
      * @var string EntityClassName (FQN)
@@ -71,6 +72,13 @@ class User extends AbstractBaseEntity
 
     /**
      * @var
+     * @ManyToMany(targetEntity="Project", inversedBy="contributors")
+     * @JoinTable(name="users_projects")
+     */
+    private $contributedProjects;
+
+    /**
+     * @var
      * @ManyToMany(targetEntity="Language", inversedBy="supportedBy")
      * @JoinTable(name="users_languages")
      */
@@ -94,12 +102,15 @@ class User extends AbstractBaseEntity
      */
     private $company;
 
+    // endregion
+
     /**
      * @param null $data TODO refactor: no set attributes at instancing
      */
     public function __construct($data = null)
     {
         $this->ownedProjects = new ArrayCollection();
+        $this->contributedProjects = new ArrayCollection();
         $this->supportedLanguages = new ArrayCollection();
 
         if (isset($data['username'])) {
@@ -291,12 +302,11 @@ class User extends AbstractBaseEntity
     }
 
     /**
-     * @throws \Exception
-     *
+     * @return ArrayCollection
      */
-    public function getProjects()
+    public function getContributedProjects()
     {
-        throw new \Exception('Not implemented!');
+        return $this->contributedProjects;
     }
 
     /**
@@ -458,7 +468,7 @@ class User extends AbstractBaseEntity
             '_links' => array(
                 'self' => $urlToUser,
                 'projects' => $urlToUser . '/projects',
-                'own_projects' => $urlToUser . '/projects/own',
+                'own_projects' => $urlToUser . '/own/projects',
                 'languages' => $urlToUser . '/languages',
                 'translations' => $urlToUser . '/translations'
             )
@@ -468,6 +478,7 @@ class User extends AbstractBaseEntity
     /**
      * Updates a User by given data
      *
+     * @deprecated
      * @param array $data
      *
      * @throws PodbException
@@ -497,6 +508,7 @@ class User extends AbstractBaseEntity
     /**
      * Updates this user by given data
      *
+     * @deprecated
      * @param array $data
      *
      * @return void

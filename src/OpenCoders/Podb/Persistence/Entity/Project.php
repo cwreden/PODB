@@ -2,6 +2,7 @@
 
 namespace OpenCoders\Podb\Persistence\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use OpenCoders\Podb\Exception\NothingToUpdatePodbException;
 
 /**
@@ -11,6 +12,7 @@ use OpenCoders\Podb\Exception\NothingToUpdatePodbException;
  */
 class Project extends AbstractBaseEntity
 {
+    // region attributes
 
     /**
      * @var
@@ -41,6 +43,13 @@ class Project extends AbstractBaseEntity
 
     /**
      * @var
+     * @ManyToMany(targetEntity="User", mappedBy="contributedProjects")
+     * @JoinTable(name="users_projects")
+     */
+    protected $contributors;
+
+    /**
+     * @var
      * @Column(type="boolean", nullable=false, options={"default" = 0})
      */
     protected $private = false;
@@ -59,6 +68,15 @@ class Project extends AbstractBaseEntity
      */
     private $url;
 
+    // endregion
+
+    function __construct()
+    {
+        $this->contributors = new ArrayCollection();
+    }
+
+    // region Getter & Setter
+
     /**
      * @param mixed $owner
      */
@@ -76,7 +94,7 @@ class Project extends AbstractBaseEntity
     }
 
     /**
-     * @param mixed $url
+     * @param $url
      */
     public function setUrl($url)
     {
@@ -92,7 +110,7 @@ class Project extends AbstractBaseEntity
     }
 
     /**
-     * @param mixed $description
+     * @param $description
      */
     public function setDescription($description)
     {
@@ -140,7 +158,7 @@ class Project extends AbstractBaseEntity
     }
 
     /**
-     * @param string $id
+     * @param $id string
      */
     public function setId($id)
     {
@@ -190,9 +208,9 @@ class Project extends AbstractBaseEntity
     /**
      * @throws \Exception
      */
-    public function getUsers()
+    public function getContributors()
     {
-        throw new \Exception('Not implemented!');
+        return $this->contributors;
     }
 
     /**
@@ -204,11 +222,21 @@ class Project extends AbstractBaseEntity
     }
 
     /**
-     * @return mixed
+     * @return bool
      */
     public function getPrivate()
     {
         return $this->private;
+    }
+
+    /**
+     * @return array
+     * @throws \Exception
+     */
+    public function getDomains()
+    {
+        throw new \Exception('Not implemented.');
+        return $this->domains;
     }
 
     /**
@@ -259,8 +287,12 @@ class Project extends AbstractBaseEntity
         );
     }
 
+    // endregion
+
     /**
      * Updates the project model by given data
+     *
+     * @deprecated
      *
      * @param array $data
      *
@@ -280,11 +312,5 @@ class Project extends AbstractBaseEntity
             } else if ($key == 'users') {
             }
         }
-    }
-
-    public function getDomains()
-    {
-        throw new \Exception('Not implemented.');
-        return array();
     }
 }

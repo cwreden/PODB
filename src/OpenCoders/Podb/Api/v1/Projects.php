@@ -80,7 +80,7 @@ class Projects extends AbstractBaseApi
         /**
          * @var $user User
          */
-        foreach ($project->getUsers() as $user) {
+        foreach ($project->getContributors() as $user) {
             $data[] = $user->asShortArrayWithAPIInformation($this->apiVersion);
         }
 
