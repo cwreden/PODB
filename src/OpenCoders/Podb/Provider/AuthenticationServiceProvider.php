@@ -31,21 +31,6 @@ class AuthenticationServiceProvider implements ServiceProviderInterface
      */
     public function boot(Application $app)
     {
-        /**
-         * @Debug
-         */
-        $app->get('/lock', function () use ($app) {
-            $app['session']->set('locked', true);
-            return true;
-        });
-
-        /**
-         * @Debug
-         */
-        $app->get('/unlock', function () use ($app) {
-            $app['session']->set('locked', false);
-            return true;
-        });
-
+        // TODO: Implement boot() method.
     }
 }

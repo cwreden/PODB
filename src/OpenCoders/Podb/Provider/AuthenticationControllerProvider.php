@@ -19,6 +19,24 @@ class AuthenticationControllerProvider implements ControllerProviderInterface
      */
     public function connect(Application $app)
     {
-        // TODO: Implement connect() method.
+        $controllers = $app['controllers_factory'];
+
+        /**
+         * @Debug
+         */
+        $controllers->get('/lock', function () use ($app) {
+            $app['session']->set('locked', true);
+            return true;
+        });
+
+        /**
+         * @Debug
+         */
+        $controllers->get('/unlock', function () use ($app) {
+            $app['session']->set('locked', false);
+            return true;
+        });
+
+        return $controllers;
     }
 }

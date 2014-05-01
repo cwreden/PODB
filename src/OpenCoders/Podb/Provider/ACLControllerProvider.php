@@ -19,6 +19,8 @@ class ACLControllerProvider implements ControllerProviderInterface
      */
     public function connect(Application $app)
     {
-        // TODO: Implement connect() method.
+        $controllers = $app['controllers_factory'];
+
+        return $controllers;
     }
 }
