@@ -5,6 +5,11 @@ namespace OpenCoders\Podb\Session;
 
 use OpenCoders\Podb\config\ConfigManager;
 
+/**
+ * Class SessionManager
+ * @deprecated
+ * @package OpenCoders\Podb\Session
+ */
 class SessionManager {
 
     /**

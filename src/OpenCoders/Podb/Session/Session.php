@@ -5,6 +5,11 @@ namespace OpenCoders\Podb\Session;
 use OpenCoders\Podb\Persistence\Doctrine;
 use OpenCoders\Podb\Persistence\Entity\User;
 
+/**
+ * Class Session
+ * @deprecated
+ * @package OpenCoders\Podb\Session
+ */
 class Session
 {
 
