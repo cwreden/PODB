@@ -15,6 +15,7 @@ use OpenCoders\Podb\Provider\LanguageServiceProvider;
 use OpenCoders\Podb\Provider\ACLServiceProvider;
 use OpenCoders\Podb\Provider\ProjectControllerProvider;
 use OpenCoders\Podb\Provider\ProjectServiceProvider;
+use OpenCoders\Podb\Provider\RequestRateLimitServiceProvider;
 use OpenCoders\Podb\Provider\TranslationControllerProvider;
 use OpenCoders\Podb\Provider\TranslationServiceProvider;
 use OpenCoders\Podb\Provider\UserControllerProvider;
@@ -55,6 +56,7 @@ $app->register(new TranslationServiceProvider());
 $app->register(new AuditServiceProvider());
 $app->register(new ACLServiceProvider());
 $app->register(new AuthenticationServiceProvider());
+$app->register(new RequestRateLimitServiceProvider());
 
 $app->mount('', new IndexControllerProvider());
 $app->mount('/user', new UserControllerProvider());
