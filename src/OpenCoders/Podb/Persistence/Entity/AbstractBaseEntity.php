@@ -79,7 +79,7 @@ abstract class AbstractBaseEntity
 
     /**
      * Returns the actual Session
-     *
+     * TODO wird dies genutzt???
      * @return Session
      */
     protected function getSession()

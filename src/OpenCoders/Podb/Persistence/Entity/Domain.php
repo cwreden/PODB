@@ -4,6 +4,7 @@ namespace OpenCoders\Podb\Persistence\Entity;
 
 /**
  * Class Domain
+ * @deprecated
  * @package OpenCoders\Podb\Persistence\Entity
  * @Entity(repositoryClass="OpenCoders\Podb\Persistence\Repository\DomainRepository")
  */
