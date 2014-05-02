@@ -1,6 +1,6 @@
 <?php
 
-namespace OpenCoders\Podb\Provider;
+namespace OpenCoders\Podb\Provider\REST\v1;
 
 
 use Silex\Application;
@@ -24,7 +24,7 @@ class AuthenticationControllerProvider implements ControllerProviderInterface
         /**
          * @Debug
          */
-        $controllers->get('/lock', function () use ($app) {
+        $controllers->get('/auth/lock', function () use ($app) {
             $app['session']->set('locked', true);
             return true;
         });
@@ -32,7 +32,7 @@ class AuthenticationControllerProvider implements ControllerProviderInterface
         /**
          * @Debug
          */
-        $controllers->get('/unlock', function () use ($app) {
+        $controllers->get('/auth/unlock', function () use ($app) {
             $app['session']->set('locked', false);
             return true;
         });

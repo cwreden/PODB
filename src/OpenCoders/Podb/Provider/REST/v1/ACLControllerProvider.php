@@ -1,13 +1,13 @@
 <?php
 
-namespace OpenCoders\Podb\Provider;
+namespace OpenCoders\Podb\Provider\REST\v1;
 
 
 use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\ControllerProviderInterface;
 
-class ProjectControllerProvider implements ControllerProviderInterface
+class ACLControllerProvider implements ControllerProviderInterface
 {
 
     /**
@@ -20,6 +20,10 @@ class ProjectControllerProvider implements ControllerProviderInterface
     public function connect(Application $app)
     {
         $controllers = $app['controllers_factory'];
+
+        $controllers->get('/acl', function () {
+            throw new \Exception('Not implemented!');
+        });
 
         return $controllers;
     }
