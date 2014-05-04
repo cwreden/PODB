@@ -107,7 +107,7 @@ class User extends AbstractBaseEntity
     /**
      * @param null $data TODO refactor: no set attributes at instancing
      */
-    public function __construct($data = null)
+    public function __construct($data = array())
     {
         $this->ownedProjects = new ArrayCollection();
         $this->contributedProjects = new ArrayCollection();
