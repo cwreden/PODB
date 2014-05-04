@@ -42,6 +42,9 @@ abstract class AbstractBaseEntity
      *
      * TODO extract api information out of entities
      *
+     * TODO muss ausgelagert werden in eine helper klasse
+     * @deprecated
+     *
      * @return array
      */
     public function getAPIInformation($apiVersion)
@@ -52,6 +55,9 @@ abstract class AbstractBaseEntity
     /**
      * @param int $apiVersion
      *
+     * TODO muss ausgelagert werden in eine helper klasse
+     * @deprecated
+     *
      * @return array
      */
     public function asArrayWithAPIInformation($apiVersion)
@@ -61,6 +67,9 @@ abstract class AbstractBaseEntity
 
     /**
      * @param int $apiVersion
+     *
+     * TODO muss ausgelagert werden in eine helper klasse
+     * @deprecated
      *
      * @return array
      */
