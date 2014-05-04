@@ -3,6 +3,9 @@
 namespace OpenCoders\Podb\Provider;
 
 
+use OpenCoders\Podb\Persistence\Doctrine;
+use OpenCoders\Podb\REST\v1\UserController;
+use OpenCoders\Podb\Service\UserService;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 
@@ -19,9 +22,9 @@ class UserServiceProvider implements ServiceProviderInterface
      */
     public function register(Application $app)
     {
-//        $app['users'] = $app->share(function ($app) {
-//            return new UserRepository();
-//        };
+        $app['user'] = $app->share(function ($app) {
+            return new UserService($app['entityManager']);
+        });
     }
 
     /**
