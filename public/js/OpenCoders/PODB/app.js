@@ -3,7 +3,7 @@
 var podb = angular.module('PODB', ['restangular', 'ngRoute'])
     .config(['RestangularProvider', '$routeProvider',
         function (RestangularProvider, $routeProvider) {
-            RestangularProvider.setBaseUrl('/api/v1');
+            RestangularProvider.setBaseUrl('/rest/v1');
 
             $routeProvider
                 .when('/dashboard', {
