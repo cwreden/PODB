@@ -3,11 +3,20 @@
 namespace OpenCoders\Podb\Provider;
 
 
+use OpenCoders\Podb\Configuration\ConfigurationService;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * Class RequestRateLimitServiceProvider
+ * @package OpenCoders\Podb\Provider
+ *
+ * TODO check logged in state
+ * TODO exclude routes or check only selected routes
+ * TODO optimize exception
+ */
 class RequestRateLimitServiceProvider implements ServiceProviderInterface
 {
 
@@ -34,20 +43,64 @@ class RequestRateLimitServiceProvider implements ServiceProviderInterface
     public function boot(Application $app)
     {
         $app->before(function () use ($app) {
-//            var_dump($app['session']->get('rateCounter'));
+            /** @var ConfigurationService $configurationService */
+            $configurationService = $app['configuration'];
+            $rateLimitConfig = $configurationService->getRateLimit();
+
+            $limit = $rateLimitConfig['limit'];
+//            if ($session->isAuthenticated()) {
+//                $limit = $rateLimitConfig['authenticatedLimit'];
+//            }
+            if ($limit == 0) {
+                return;
+            }
+
+            $session = $app['session'];
+            $rate = $session->get('rateLimit');
+
+            if (!isset($rate)) {
+                $rate = array('reset_at' => (time() + $rateLimitConfig['resetInterval']), 'used' => 0);
+                $session->set('rateLimit', $rate);
+            }
+
+            $actualTime = time();
+            if ($rate['reset_at'] - $actualTime <= 0) {
+                $rate['reset_at'] = ($actualTime + $rateLimitConfig['resetInterval']);
+                $rate['used'] = 0;
+                $session->set('rateLimit', $rate);
+            }
+
+
+            if ($rate['used'] >= $limit) {
+                throw new \Exception('Max rate limit extended!');
+            }
         });
 
         $app->after(function (Request $request, Response $response) use ($app) {
-//            $session = $app['session'];
-//            $counter = (int) $session->get('rateCounter');
-//
-//            if (!is_int($counter)) {
-//                $counter = 0;
+            /** @var ConfigurationService $configurationService */
+            $configurationService = $app['configuration'];
+            $rateLimitConfig = $configurationService->getRateLimit();
+
+            $session = $app['session'];
+            $rate = $session->get('rateLimit');
+
+            $rate['used']++;
+            $session->set('rateLimit', $rate);
+
+            $limit = $rateLimitConfig['limit'];
+//            if ($session->isAuthenticated()) {
+//                $limit = $rateLimitConfig['authenticatedLimit'];
 //            }
-//            $counter++;
-//
-//            $session->set('rateCounter', $counter);
-//            $response->headers->add(array('rateCounter' => $counter));
+            $remaining = $limit - $rate['used'];
+            if ($remaining < 0) {
+                $remaining = 0;
+            }
+
+            $response->headers->add(array(
+                'X-RateLimit-Limit' => $limit,
+                'X-RateLimit-Remaining' => $remaining,
+                'X-RateLimit-Reset' => $rate['reset_at'],
+            ));
         });
     }
 }

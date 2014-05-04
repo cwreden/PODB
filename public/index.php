@@ -43,6 +43,7 @@ $app->register(
 );
 
 // Services
+$app->register(new \OpenCoders\Podb\Provider\Service\ConfigurationServiceProvider());
 $app->register(new UserServiceProvider());
 $app->register(new ProjectServiceProvider());
 $app->register(new LanguageServiceProvider());
