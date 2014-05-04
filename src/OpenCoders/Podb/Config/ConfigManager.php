@@ -2,7 +2,11 @@
 
 namespace OpenCoders\Podb\config;
 
-
+/**
+ * Class ConfigManager
+ * @package OpenCoders\Podb\config
+ * @deprecated
+ */
 class ConfigManager {
 
     /**
