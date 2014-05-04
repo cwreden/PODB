@@ -38,16 +38,16 @@ class RequestRateLimitServiceProvider implements ServiceProviderInterface
         });
 
         $app->after(function (Request $request, Response $response) use ($app) {
-            $session = $app['session'];
-            $counter = (int) $session->get('rateCounter');
-
-            if (!is_int($counter)) {
-                $counter = 0;
-            }
-            $counter++;
-
-            $session->set('rateCounter', $counter);
-            $response->headers->add(array('rateCounter' => $counter));
+//            $session = $app['session'];
+//            $counter = (int) $session->get('rateCounter');
+//
+//            if (!is_int($counter)) {
+//                $counter = 0;
+//            }
+//            $counter++;
+//
+//            $session->set('rateCounter', $counter);
+//            $response->headers->add(array('rateCounter' => $counter));
         });
     }
 }
