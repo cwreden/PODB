@@ -1,24 +1,16 @@
 <?php
 
-use OpenCoders\Podb\Provider\ACLControllerProvider;
-use OpenCoders\Podb\Provider\AuditControllerProvider;
+use OpenCoders\Podb\Persistence\Doctrine;
 use OpenCoders\Podb\Provider\AuditServiceProvider;
-use OpenCoders\Podb\Provider\AuthenticationControllerProvider;
 use OpenCoders\Podb\Provider\AuthenticationServiceProvider;
-use OpenCoders\Podb\Provider\CategoryControllerProvider;
 use OpenCoders\Podb\Provider\CategoryServiceProvider;
-use OpenCoders\Podb\Provider\DataSetControllerProvider;
 use OpenCoders\Podb\Provider\DataSetServiceProvider;
 use OpenCoders\Podb\Provider\IndexControllerProvider;
-use OpenCoders\Podb\Provider\LanguageControllerProvider;
 use OpenCoders\Podb\Provider\LanguageServiceProvider;
 use OpenCoders\Podb\Provider\ACLServiceProvider;
-use OpenCoders\Podb\Provider\ProjectControllerProvider;
 use OpenCoders\Podb\Provider\ProjectServiceProvider;
 use OpenCoders\Podb\Provider\RequestRateLimitServiceProvider;
-use OpenCoders\Podb\Provider\TranslationControllerProvider;
 use OpenCoders\Podb\Provider\TranslationServiceProvider;
-use OpenCoders\Podb\Provider\UserControllerProvider;
 use OpenCoders\Podb\Provider\UserServiceProvider;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
@@ -30,6 +22,10 @@ $app = new Silex\Application();
 $app['debug'] = true;
 
 $app->register(new Silex\Provider\SessionServiceProvider());
+$app->register(new Silex\Provider\ServiceControllerServiceProvider());
+$app->register(new Silex\Provider\UrlGeneratorServiceProvider());
+// TODO Doctrine via silex
+//$app->register(new Silex\Provider\DoctrineServiceProvider());
 
 $app->register(
     new \Silex\Provider\TwigServiceProvider(),
@@ -46,7 +42,7 @@ $app->register(
     )
 );
 
-
+// Services
 $app->register(new UserServiceProvider());
 $app->register(new ProjectServiceProvider());
 $app->register(new LanguageServiceProvider());
@@ -58,17 +54,24 @@ $app->register(new ACLServiceProvider());
 $app->register(new AuthenticationServiceProvider());
 $app->register(new RequestRateLimitServiceProvider());
 
+// Page
 $app->mount('', new IndexControllerProvider());
-$app->mount('/user', new UserControllerProvider());
-$app->mount('/project', new ProjectControllerProvider());
-$app->mount('/language', new LanguageControllerProvider());
-$app->mount('/category', new CategoryControllerProvider());
-$app->mount('/dataSet', new DataSetControllerProvider());
-$app->mount('/translation', new TranslationControllerProvider());
-$app->mount('/audit', new AuditControllerProvider());
-$app->mount('/acl', new ACLControllerProvider());
-$app->mount('/auth', new AuthenticationControllerProvider());
 
+// REST
+$app->mount('/rest/v1', new \OpenCoders\Podb\Provider\REST\v1\UserControllerProvider());
+$app->mount('/rest/v1', new \OpenCoders\Podb\Provider\REST\v1\ProjectControllerProvider());
+$app->mount('/rest/v1', new \OpenCoders\Podb\Provider\REST\v1\LanguageControllerProvider());
+$app->mount('/rest/v1', new \OpenCoders\Podb\Provider\REST\v1\CategoryControllerProvider());
+$app->mount('/rest/v1', new \OpenCoders\Podb\Provider\REST\v1\DataSetControllerProvider());
+$app->mount('/rest/v1', new \OpenCoders\Podb\Provider\REST\v1\TranslationControllerProvider());
+$app->mount('/rest/v1', new \OpenCoders\Podb\Provider\REST\v1\AuditControllerProvider());
+$app->mount('/rest/v1', new \OpenCoders\Podb\Provider\REST\v1\ACLControllerProvider());
+$app->mount('/rest/v1', new \OpenCoders\Podb\Provider\REST\v1\AuthenticationControllerProvider());
+
+
+$app['entityManager'] = $app->share(function () {
+    return Doctrine::getEntityManager();
+});
 
 /**
  * @Debug
