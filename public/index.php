@@ -74,6 +74,13 @@ $app['entityManager'] = $app->share(function () {
     return Doctrine::getEntityManager();
 });
 
+$app->error(function (Exception $e, $code) {
+    if ($e->getCode() !== 0) {
+        $code = $e->getCode();
+    }
+    return new \Symfony\Component\HttpFoundation\Response('ERROR HANDLER: '.$e->getMessage(), $code);
+});
+
 /**
  * @Debug
  */
