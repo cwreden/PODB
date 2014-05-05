@@ -8,6 +8,7 @@ use Silex\Application;
 use Silex\ServiceProviderInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 /**
  * Class RequestRateLimitServiceProvider
@@ -46,16 +47,17 @@ class RequestRateLimitServiceProvider implements ServiceProviderInterface
             /** @var ConfigurationService $configurationService */
             $configurationService = $app['configuration'];
             $rateLimitConfig = $configurationService->getRateLimit();
+            /** @var SessionInterface $session */
+            $session = $app['session'];
 
             $limit = $rateLimitConfig['limit'];
-//            if ($session->isAuthenticated()) {
-//                $limit = $rateLimitConfig['authenticatedLimit'];
-//            }
+            if ($session->get('authenticated') === true) {
+                $limit = $rateLimitConfig['authenticatedLimit'];
+            }
             if ($limit == 0) {
                 return;
             }
 
-            $session = $app['session'];
             $rate = $session->get('rateLimit');
 
             if (!isset($rate)) {
@@ -70,9 +72,17 @@ class RequestRateLimitServiceProvider implements ServiceProviderInterface
                 $session->set('rateLimit', $rate);
             }
 
+            $remaining = $limit - $rate['used'];
+            if ($remaining < 0) {
+                $remaining = 0;
+            }
 
             if ($rate['used'] >= $limit) {
-                throw new \Exception('Max rate limit extended!');
+                $app->abort(403, 'Max rate limit exceeded!', array(
+                    'X-RateLimit-Limit' => $limit,
+                    'X-RateLimit-Remaining' => $remaining,
+                    'X-RateLimit-Reset' => $rate['reset_at'],
+                ));
             }
         });
 
@@ -80,7 +90,7 @@ class RequestRateLimitServiceProvider implements ServiceProviderInterface
             /** @var ConfigurationService $configurationService */
             $configurationService = $app['configuration'];
             $rateLimitConfig = $configurationService->getRateLimit();
-
+            /** @var SessionInterface $session */
             $session = $app['session'];
             $rate = $session->get('rateLimit');
 
@@ -88,9 +98,13 @@ class RequestRateLimitServiceProvider implements ServiceProviderInterface
             $session->set('rateLimit', $rate);
 
             $limit = $rateLimitConfig['limit'];
-//            if ($session->isAuthenticated()) {
-//                $limit = $rateLimitConfig['authenticatedLimit'];
-//            }
+            if ($session->get('authenticated') === true) {
+                $limit = $rateLimitConfig['authenticatedLimit'];
+            }
+            if ($limit == 0) {
+                return;
+            }
+
             $remaining = $limit - $rate['used'];
             if ($remaining < 0) {
                 $remaining = 0;
