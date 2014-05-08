@@ -2,7 +2,6 @@
 
 use OpenCoders\Podb\Persistence\Doctrine;
 use OpenCoders\Podb\Provider\AuditServiceProvider;
-use OpenCoders\Podb\Provider\AuthenticationServiceProvider;
 use OpenCoders\Podb\Provider\CategoryServiceProvider;
 use OpenCoders\Podb\Provider\DataSetServiceProvider;
 use OpenCoders\Podb\Provider\IndexControllerProvider;
@@ -11,7 +10,6 @@ use OpenCoders\Podb\Provider\ACLServiceProvider;
 use OpenCoders\Podb\Provider\ProjectServiceProvider;
 use OpenCoders\Podb\Provider\RequestRateLimitServiceProvider;
 use OpenCoders\Podb\Provider\TranslationServiceProvider;
-use OpenCoders\Podb\Provider\UserServiceProvider;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 define ("APPLICATION_ROOT", realpath(__DIR__."/.."));
@@ -44,7 +42,7 @@ $app->register(
 
 // Services
 $app->register(new \OpenCoders\Podb\Provider\Service\ConfigurationServiceProvider());
-$app->register(new UserServiceProvider());
+$app->register(new \OpenCoders\Podb\Provider\Service\UserServiceProvider());
 $app->register(new ProjectServiceProvider());
 $app->register(new LanguageServiceProvider());
 $app->register(new CategoryServiceProvider());
@@ -52,7 +50,7 @@ $app->register(new DataSetServiceProvider());
 $app->register(new TranslationServiceProvider());
 $app->register(new AuditServiceProvider());
 $app->register(new ACLServiceProvider());
-$app->register(new AuthenticationServiceProvider());
+$app->register(new \OpenCoders\Podb\Provider\Service\AuthenticationServiceProvider());
 $app->register(new RequestRateLimitServiceProvider());
 $app->register(new \OpenCoders\Podb\Provider\Service\ErrorHandlerServiceProvider());
 

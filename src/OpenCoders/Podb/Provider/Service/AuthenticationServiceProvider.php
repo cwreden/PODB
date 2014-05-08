@@ -1,15 +1,13 @@
 <?php
 
-namespace OpenCoders\Podb\Provider;
+namespace OpenCoders\Podb\Provider\Service;
 
 
-use OpenCoders\Podb\Persistence\Doctrine;
-use OpenCoders\Podb\REST\v1\UserController;
-use OpenCoders\Podb\Service\UserService;
+use OpenCoders\Podb\Service\AuthenticationService;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 
-class UserServiceProvider implements ServiceProviderInterface
+class AuthenticationServiceProvider implements ServiceProviderInterface
 {
 
     /**
@@ -22,8 +20,8 @@ class UserServiceProvider implements ServiceProviderInterface
      */
     public function register(Application $app)
     {
-        $app['user'] = $app->share(function ($app) {
-            return new UserService($app['entityManager']);
+        $app['authentication'] = $app->share(function ($app) {
+            return new AuthenticationService($app['session'], $app['user']);
         });
     }
 

@@ -250,6 +250,8 @@ class UserController extends BaseController
      *
      * @param \Symfony\Component\HttpFoundation\Request $request
      *
+     * TODO post parameter / content???
+     *
      * @throws \Exception
      * @return JsonResponse
      */

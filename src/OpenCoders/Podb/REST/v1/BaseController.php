@@ -4,6 +4,7 @@ namespace OpenCoders\Podb\REST\v1;
 
 
 use Silex\Application;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Routing\Generator\UrlGenerator;
 
 class BaseController
@@ -38,14 +39,16 @@ class BaseController
     /**
      * Verified user login, throw exception if not logged in.
      *
-     * TODO implement
+     * @deprecated
      *
+     * @throws HttpException
      * @return bool
      */
     protected function ensureSession()
     {
-//        $session = $this->app['session'];
-        return true;
+        if (!$this->app['session']->get('authenticated')) {
+            throw new HttpException(401, 'Authentication required!');
+        }
     }
 
     /**
@@ -55,4 +58,4 @@ class BaseController
     {
         return $this->app['url_generator'];
     }
-} 
+}
