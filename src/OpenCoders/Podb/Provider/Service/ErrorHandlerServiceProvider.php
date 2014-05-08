@@ -21,7 +21,7 @@ class ErrorHandlerServiceProvider implements ServiceProviderInterface
      */
     public function register(Application $app)
     {
-        $app->error(function (Exception $e, $code) {
+        $app->error(function (Exception $e, $code) use ($app) {
             $errorData = array(
                 'errorClass' => get_class($e),
                 'errorCode' => $e->getCode(),
@@ -33,6 +33,10 @@ class ErrorHandlerServiceProvider implements ServiceProviderInterface
             }
             if ($e->getCode() !== 0) {
                 $code = $e->getCode();
+            }
+            if ($app['debug'] === true) {
+                $errorData['errorFile'] = $e->getFile();
+                $errorData['errorLine'] = $e->getLine();
             }
 
             return new JsonResponse($errorData, $code);
