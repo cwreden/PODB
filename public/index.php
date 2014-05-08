@@ -89,6 +89,13 @@ $app->error(function (Exception $e, $code) {
     ), $code);
 });
 
+// Put payload to request part
+$app->before(function (\Symfony\Component\HttpFoundation\Request $request) {
+    if ($request->getContentType() === 'json') {
+        $request->request->add(json_decode($request->getContent(), true));
+    }
+});
+
 /**
  * @Debug
  */
