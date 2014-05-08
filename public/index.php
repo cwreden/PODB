@@ -54,6 +54,7 @@ $app->register(new AuditServiceProvider());
 $app->register(new ACLServiceProvider());
 $app->register(new AuthenticationServiceProvider());
 $app->register(new RequestRateLimitServiceProvider());
+$app->register(new \OpenCoders\Podb\Provider\Service\ErrorHandlerServiceProvider());
 
 // Page
 $app->mount('', new IndexControllerProvider());
@@ -73,20 +74,6 @@ $app->mount('/rest/v1', new \OpenCoders\Podb\Provider\REST\v1\AuthenticationCont
 // TODO DoctrineServiceProvider
 $app['entityManager'] = $app->share(function () {
     return Doctrine::getEntityManager();
-});
-
-// TODO error handling
-$app->error(function (Exception $e, $code) {
-    if ($e->getCode() !== 0) {
-        $code = $e->getCode();
-    }
-    $e = new Exception($e->getMessage(), $e->getCode(), $e);
-    return new \Symfony\Component\HttpFoundation\JsonResponse(array(
-        'errorClass' => get_class($e),
-        'errorSubClass' => get_class($e->getPrevious()),
-        'errorCode' => $e->getCode(),
-        'errorMessage' => $e->getMessage()
-    ), $code);
 });
 
 // Put payload to request part
