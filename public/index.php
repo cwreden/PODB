@@ -70,15 +70,23 @@ $app->mount('/rest/v1', new \OpenCoders\Podb\Provider\REST\v1\ACLControllerProvi
 $app->mount('/rest/v1', new \OpenCoders\Podb\Provider\REST\v1\AuthenticationControllerProvider());
 
 
+// TODO DoctrineServiceProvider
 $app['entityManager'] = $app->share(function () {
     return Doctrine::getEntityManager();
 });
 
+// TODO error handling
 $app->error(function (Exception $e, $code) {
     if ($e->getCode() !== 0) {
         $code = $e->getCode();
     }
-    return new \Symfony\Component\HttpFoundation\Response('ERROR HANDLER: '.$e->getMessage(), $code);
+    $e = new Exception($e->getMessage(), $e->getCode(), $e);
+    return new \Symfony\Component\HttpFoundation\JsonResponse(array(
+        'errorClass' => get_class($e),
+        'errorSubClass' => get_class($e->getPrevious()),
+        'errorCode' => $e->getCode(),
+        'errorMessage' => $e->getMessage()
+    ), $code);
 });
 
 /**
