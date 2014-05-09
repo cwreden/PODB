@@ -1,8 +1,9 @@
 <?php
 
-namespace OpenCoders\Podb\Provider;
+namespace OpenCoders\Podb\Provider\Service;
 
 
+use OpenCoders\Podb\Service\ProjectService;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 
@@ -19,7 +20,9 @@ class ProjectServiceProvider implements ServiceProviderInterface
      */
     public function register(Application $app)
     {
-        // TODO: Implement register() method.
+        $app['project'] = $app->share(function ($app) {
+            return new ProjectService($app['entityManager']);
+        });
     }
 
     /**
