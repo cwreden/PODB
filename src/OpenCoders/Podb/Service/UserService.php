@@ -12,7 +12,7 @@ class UserService
     /**
      * @var string EntityClassName (FQN)
      */
-    protected $entityName = 'OpenCoders\Podb\Persistence\Entity\User';
+    const ENTITY_NAME = 'OpenCoders\Podb\Persistence\Entity\User';
 
     /**
      * @var EntityManager
@@ -151,7 +151,7 @@ class UserService
     public function remove($id)
     {
         $em = $this->getEntityManager();
-        $user = $em->getPartialReference($this->entityName, array('id' => $id));
+        $user = $em->getPartialReference(self::ENTITY_NAME, array('id' => $id));
         $em->remove($user);
     }
 
@@ -162,7 +162,7 @@ class UserService
      */
     protected function getRepository()
     {
-        $repository = $this->getEntityManager()->getRepository($this->entityName);
+        $repository = $this->getEntityManager()->getRepository(self::ENTITY_NAME);
         return $repository;
     }
 
@@ -175,5 +175,4 @@ class UserService
     {
         return $this->em;
     }
-
 } 
