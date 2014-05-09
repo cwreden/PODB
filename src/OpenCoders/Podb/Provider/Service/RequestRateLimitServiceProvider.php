@@ -1,6 +1,6 @@
 <?php
 
-namespace OpenCoders\Podb\Provider;
+namespace OpenCoders\Podb\Provider\Service;
 
 
 use OpenCoders\Podb\Configuration\ConfigurationService;
