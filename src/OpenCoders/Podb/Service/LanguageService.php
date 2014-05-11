@@ -74,7 +74,7 @@ class LanguageService extends BaseEntityService
     }
 
     /**
-     * Update user
+     * Update language
      *
      * @param $id
      * @param $attributes

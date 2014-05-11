@@ -129,7 +129,7 @@ class LanguageController extends BaseController
     }
 
     /**
-     * Creates a new user object by given data
+     * Creates a new language object by given data
      *
      * @param \Symfony\Component\HttpFoundation\Request $request
      *
@@ -162,7 +162,7 @@ class LanguageController extends BaseController
     }
 
     /**
-     * Updates a User Object
+     * Updates a language Object
      *
      * @param int $id
      * @param \Symfony\Component\HttpFoundation\Request $request
