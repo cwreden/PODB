@@ -2,6 +2,7 @@
 
 namespace OpenCoders\Podb\Persistence\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use OpenCoders\Podb\Exception\EmptyParameterException;
 use OpenCoders\Podb\Exception\PodbException;
 
@@ -12,6 +13,7 @@ use OpenCoders\Podb\Exception\PodbException;
  */
 class Language extends AbstractBaseEntity
 {
+    // region attributes
 
     /**
      * @var
@@ -41,19 +43,27 @@ class Language extends AbstractBaseEntity
     protected $supportedBy;
 
     /**
+     * @var
+     * @OneToMany(targetEntity="Project", mappedBy="default_language")
+     */
+    protected $projects;
+
+    // endregion
+
+    function __construct()
+    {
+        $this->supportedBy = new ArrayCollection();
+        $this->projects = new ArrayCollection();
+    }
+
+    // region getter and setter
+
+    /**
      * @return
      */
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * @param mixed $id
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
     }
 
     /**
@@ -145,6 +155,8 @@ class Language extends AbstractBaseEntity
     {
         return $this->supportedBy;
     }
+
+    // endregion
 
     /**
      * @return array

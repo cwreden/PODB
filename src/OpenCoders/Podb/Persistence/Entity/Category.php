@@ -1,6 +1,7 @@
 <?php
 
 namespace OpenCoders\Podb\Persistence\Entity;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Class Category
@@ -28,16 +29,30 @@ class Category extends AbstractBaseEntity
 
     /**
      * @var
-     * @ManyToOne(targetEntity="Project")
+     * @ManyToOne(targetEntity="Project", inversedBy="categories")
+     * @JoinColumn(name="project_id", referencedColumnName="id")
      * @Column(nullable=false)
      */
     protected $project;
 
     /**
      * @var
-     * @ManyToOne(targetEntity="Category")
+     * @ManyToOne(targetEntity="Category", inversedBy="subCategories")
+     * @JoinColumn(name="category_id", referencedColumnName="id")
      */
     protected $category;
+
+    /**
+     * @var
+     * @OneToMany(targetEntity="Category", mappedBy="category")
+     */
+    protected $subCategories;
+
+    /**
+     * @var
+     * @OneToMany(targetEntity="DataSet", mappedBy="category")
+     */
+    protected $dataSets;
 
     /**
      * @var
@@ -46,6 +61,12 @@ class Category extends AbstractBaseEntity
     protected $description;
 
     // endregion attributes
+
+    function __construct()
+    {
+        $this->subCategories = new ArrayCollection();
+        $this->dataSets = new ArrayCollection();
+    }
 
     // region getter and setter
 
@@ -73,14 +94,6 @@ class Category extends AbstractBaseEntity
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * @param mixed $id
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
     }
 
     /**

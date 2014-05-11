@@ -105,7 +105,7 @@ class User extends AbstractBaseEntity
     // endregion
 
     /**
-     * @param null $data TODO refactor: no set attributes at instancing
+     * @param array|null $data TODO refactor: no set attributes at instancing
      */
     public function __construct($data = array())
     {
@@ -118,6 +118,8 @@ class User extends AbstractBaseEntity
         }
         $this->setBulk($data);
     }
+
+    // region getter and setter
 
     /**
      * @param ArrayCollection $ownedProjects
@@ -236,15 +238,6 @@ class User extends AbstractBaseEntity
     public function getEmail()
     {
         return $this->email;
-    }
-
-    /**
-     * @param int $id
-     * @return void
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
     }
 
     /**
@@ -423,6 +416,8 @@ class User extends AbstractBaseEntity
     {
         return $this->supportedLanguages;
     }
+
+    // endregion
 
     /**
      * Returns all user data as an array

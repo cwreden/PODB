@@ -2,6 +2,7 @@
 
 namespace OpenCoders\Podb\Persistence\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use OpenCoders\Podb\Exception\PodbException;
 
 /**
@@ -11,6 +12,7 @@ use OpenCoders\Podb\Exception\PodbException;
  */
 class DataSet extends AbstractBaseEntity
 {
+    // region attributes
 
     /**
      * @var
@@ -22,16 +24,32 @@ class DataSet extends AbstractBaseEntity
 
     /**
      * @var
-     * @ManyToOne(targetEntity="Domain")
+     * @ManyToOne(targetEntity="Category")
+     * @JoinColumn(name="category_id", referencedColumnName="id")
      * @Column(nullable=false)
      */
-    protected $domainId;
+    protected $category;
 
     /**
      * @var
      * @Column(type="string", nullable=false)
      */
     protected $msgId;
+
+    /**
+     * @var
+     * @OneToMany(targetEntity="Translation", mappedBy="dataSet")
+     */
+    protected $dataSets;
+
+    // endregion
+
+    function __construct()
+    {
+        $this->dataSets = new ArrayCollection();
+    }
+
+    // region getter and setter
 
     /**
      * @throws \Exception
@@ -50,27 +68,19 @@ class DataSet extends AbstractBaseEntity
     }
 
     /**
-     * @param string $domainId
+     * @param string $category
      */
-    public function setDomainId($domainId)
+    public function setCategory($category)
     {
-        $this->domainId = $domainId;
+        $this->category = $category;
     }
 
     /**
      * @return string
      */
-    public function getDomainId()
+    public function getCategory()
     {
-        return $this->domainId;
-    }
-
-    /**
-     * @param string $id
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
+        return $this->category;
     }
 
     /**
@@ -113,6 +123,8 @@ class DataSet extends AbstractBaseEntity
         return $this->msgId;
     }
 
+    // endregion
+
     /**
      * @return array
      */
@@ -120,7 +132,7 @@ class DataSet extends AbstractBaseEntity
     {
         return array(
             'id' => $this->getId(),
-            'domainId' => $this->getDomainId(),
+//            'categoryId' => $this->getCategoryId(),
             'msgId' => $this->getMsgId(),
 //            'lastUpdatedDate' => $this->getLastUpdateDate(),
 //            'lastUpdatedBy' => $this->getLastUpdateBy(),
@@ -147,7 +159,6 @@ class DataSet extends AbstractBaseEntity
         return array(
             '_links' => array(
                 'self' => $apiBaseUrl . '/' . $apiVersion . '/datasets/' . $this->getId(),
-                'domain' => $apiBaseUrl . '/' . $apiVersion . '/domains/' . $this->getDomainId(),
                 'translations' => $apiBaseUrl . '/' . $apiVersion . '/datasets/' . $this->getId() . '/translations',
             )
         );
@@ -161,8 +172,6 @@ class DataSet extends AbstractBaseEntity
         foreach ($data as $key => $value) {
             if ($key == 'msgId') {
                 $this->setMsgId($value);
-            } else if ($key == 'domainId') {
-                $this->setDomainId($value);
             }
         }
     }

@@ -10,6 +10,7 @@ namespace OpenCoders\Podb\Persistence\Entity;
  */
 class Translation extends AbstractBaseEntity
 {
+    // region attributes
 
     /**
      * @var
@@ -22,14 +23,18 @@ class Translation extends AbstractBaseEntity
     /**
      * @var
      * @ManyToOne(targetEntity="DataSet")
+     * @JoinColumn(name="dataSet_id", referencedColumnName="id")
+     * @Column(nullable=false)
      */
-    protected $dataSetId;
+    protected $dataSet;
 
     /**
      * @var
      * @ManyToOne(targetEntity="Language")
+     * @JoinColumn(name="language_id", referencedColumnName="id")
+     * @Column(nullable=false)
      */
-    protected $languageId;
+    protected $language;
 
     /**
      * @var
@@ -54,6 +59,10 @@ class Translation extends AbstractBaseEntity
      * @Column(type="boolean", nullable=false, options={"default" = 0})
      */
     protected $fuzzy = false;
+
+    // endregion
+
+    // region getter and setter
 
     /**
      * @throws \Exception
@@ -88,14 +97,6 @@ class Translation extends AbstractBaseEntity
     }
 
     /**
-     * @param string $id
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-    }
-
-    /**
      * @return string
      */
     public function getId()
@@ -104,19 +105,19 @@ class Translation extends AbstractBaseEntity
     }
 
     /**
-     * @param string $languageId
+     * @param string $language
      */
-    public function setLanguageId($languageId)
+    public function setLanguage($language)
     {
-        $this->languageId = $languageId;
+        $this->language = $language;
     }
 
     /**
      * @return string
      */
-    public function getLanguageId()
+    public function getLanguage()
     {
-        return $this->languageId;
+        return $this->language;
     }
 
     /**
@@ -184,20 +185,22 @@ class Translation extends AbstractBaseEntity
     }
 
     /**
-     * @param string $dataSetId
+     * @param string $dataSet
      */
-    public function setDataSetId($dataSetId)
+    public function setDataSet($dataSet)
     {
-        $this->dataSetId = $dataSetId;
+        $this->dataSet = $dataSet;
     }
 
     /**
      * @return string
      */
-    public function getDataSetId()
+    public function getDataSet()
     {
-        return $this->dataSetId;
+        return $this->dataSet;
     }
+
+    // endregion
 
     /**
      * @return array
@@ -206,8 +209,8 @@ class Translation extends AbstractBaseEntity
     {
         return array(
             'id' => $this->getId(),
-            'dateSetId' => $this->getDataSetId(),
-            'languageId' => $this->getLanguageId(),
+//            'dateSetId' => $this->getDataSet(),
+//            'languageId' => $this->getLanguage(),
             'msgStr' => $this->getMsgStr(),
             'msgStr1' => $this->getMsgStr1(),
             'msgStr2' => $this->getMsgStr2(),

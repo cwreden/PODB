@@ -31,6 +31,8 @@ class Project extends AbstractBaseEntity
     /**
      * @var
      * @ManyToOne(targetEntity="Language")
+     * @JoinColumn(name="default_language_id", referencedColumnName="id")
+     * @Column(nullable=false)
      */
     protected $default_language;
 
@@ -38,6 +40,7 @@ class Project extends AbstractBaseEntity
      * @var
      * @ManyToOne(targetEntity="User", inversedBy="ownedProjects")
      * @JoinColumn(name="user_id", referencedColumnName="id")
+     * @Column(nullable=false)
      */
     protected $owner;
 
@@ -68,11 +71,18 @@ class Project extends AbstractBaseEntity
      */
     private $url;
 
+    /**
+     * @var
+     * @OneToMany(targetEntity="Category", mappedBy="project")
+     */
+    protected $categories;
+
     // endregion
 
     function __construct()
     {
         $this->contributors = new ArrayCollection();
+        $this->categories = new ArrayCollection();
     }
 
     // region Getter & Setter
@@ -158,14 +168,6 @@ class Project extends AbstractBaseEntity
     }
 
     /**
-     * @param $id string
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-    }
-
-    /**
      * @return string
      */
     public function getId()
@@ -231,16 +233,6 @@ class Project extends AbstractBaseEntity
 
     /**
      * @return array
-     * @throws \Exception
-     */
-    public function getDomains()
-    {
-        throw new \Exception('Not implemented.');
-        return $this->domains;
-    }
-
-    /**
-     * @return array
      */
     public function asArray()
     {
@@ -281,7 +273,6 @@ class Project extends AbstractBaseEntity
                 'self' => $apiBaseUrl . "/" . $apiVersion . "/projects/" . $this->getName(),
                 'html' => '', // @ToDo: Überlegen, was mit url_html gemeint war
                 'members' => $apiBaseUrl . "/" . $apiVersion . "/projects/" . $this->getName() . "/members",
-                'domains' => $apiBaseUrl . "/" . $apiVersion . "/projects/" . $this->getName() . "/domains",
                 'languages' => $apiBaseUrl . "/" . $apiVersion . "/projects/" . $this->getName() . "/languages"
             )
         );

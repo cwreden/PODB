@@ -77,7 +77,7 @@ class Doctrine
                 'OpenCoders\Podb\Persistence\Entity\User',
                 'OpenCoders\Podb\Persistence\Entity\Project',
                 'OpenCoders\Podb\Persistence\Entity\Language',
-                'OpenCoders\Podb\Persistence\Entity\Domain',
+                'OpenCoders\Podb\Persistence\Entity\Category',
                 'OpenCoders\Podb\Persistence\Entity\DataSet',
                 'OpenCoders\Podb\Persistence\Entity\Translation',
             ));
