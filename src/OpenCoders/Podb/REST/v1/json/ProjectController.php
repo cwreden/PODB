@@ -4,12 +4,15 @@ namespace OpenCoders\Podb\REST\v1\json;
 
 
 use Exception;
+use OpenCoders\Podb\Exception\PodbException;
 use OpenCoders\Podb\Persistence\Entity\Project;
 use OpenCoders\Podb\Persistence\Entity\User;
 use OpenCoders\Podb\REST\v1\BaseController;
+use OpenCoders\Podb\Service\AuthenticationService;
 use OpenCoders\Podb\Service\ProjectService;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 
 class ProjectController extends BaseController
 {
@@ -18,10 +21,16 @@ class ProjectController extends BaseController
      */
     private $projectService;
 
-    function __construct(Application $app, ProjectService $projectService)
+    /**
+     * @var AuthenticationService
+     */
+    private $authenticationService;
+
+    function __construct(Application $app, ProjectService $projectService, AuthenticationService $authenticationService)
     {
         parent::__construct($app);
         $this->projectService = $projectService;
+        $this->authenticationService = $authenticationService;
     }
 
     /**
@@ -91,7 +100,7 @@ class ProjectController extends BaseController
      *
      * @return JsonResponse
      */
-    public function getOwners($projectName)
+    public function getOwner($projectName)
     {
         if ($this->isId($projectName)) {
             $project = $this->projectService->get($projectName);
@@ -103,23 +112,18 @@ class ProjectController extends BaseController
             throw new Exception("No project found with identifier $projectName.", 404);
         }
 
-        $owners = $project->getContributors();
+        $owner = $project->getOwner();
         $urlGenerator = $this->getUrlGenerator();
-        $data = array();
+        $urlParams = array('userName' => $owner->getUsername());
 
-        /** @var User $owner */
-        foreach ($owners as $owner) {
-            $urlParams = array('userName' => $owner->getUsername());
-            $data[] = array(
-                'id' => $owner->getId(),
-                'displayname' => $owner->getDisplayName(),
-                'username' => $owner->getUsername(),
-                '_links' => array(
-                    'self' => $urlGenerator->generate('rest.v1.json.user.get', $urlParams),
-                )
-            );
-        }
-        return new JsonResponse($data);
+        return new JsonResponse(array(
+            'id' => $owner->getId(),
+            'displayname' => $owner->getDisplayName(),
+            'username' => $owner->getUsername(),
+            '_links' => array(
+                'self' => $urlGenerator->generate('rest.v1.json.user.get', $urlParams),
+            )
+        ));
     }
 
     /**
@@ -178,5 +182,96 @@ class ProjectController extends BaseController
     {
         // TODO Not implemented
         return new JsonResponse();
+    }
+
+    /**
+     * Creates a new user object by given data
+     *
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     *
+     * @throws \Exception
+     * @return JsonResponse
+     */
+    public function post(Request $request)
+    {
+        $this->authenticationService->ensureSession();
+        $attributes = $request->request->all();
+        try {
+            $project = $this->projectService->create($attributes);
+            $this->projectService->flush();
+        } catch (\Exception $e) {
+            throw new Exception($e->getMessage(), 400);
+        };
+
+        $urlParams = array('projectName' => $project->getName());
+        $urlGenerator = $this->getUrlGenerator();
+
+        return new JsonResponse(array(
+            'id' => $project->getId(),
+            'name' => $project->getName(),
+            '_links' => array(
+                'self' => $urlGenerator->generate('rest.v1.json.project.get', $urlParams),
+            )
+        ));
+    }
+
+    /**
+     * Updates a User Object
+     *
+     * @param int $id
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @throws \Exception
+     *
+     * @return bool
+     */
+    public function put($id, Request $request)
+    {
+        $this->authenticationService->ensureSession();
+        if (!$this->isId($id)) {
+            throw new Exception('Invalid ID ' . $id, 400);
+        }
+
+        $attributes = $request->request->all();
+        try {
+            $project = $this->projectService->update($id, $attributes);
+            $this->projectService->flush();
+        } catch (PodbException $e) {
+            // TODO
+            throw new Exception($e->getMessage(), 400);
+        }
+
+        $urlParams = array('projectName' => $project->getName());
+        $urlGenerator = $this->getUrlGenerator();
+
+        return new JsonResponse(array(
+            'id' => $project->getId(),
+            'name' => $project->getName(),
+            '_links' => array(
+                'self' => $urlGenerator->generate('rest.v1.json.project.get', $urlParams),
+            )
+        ));
+    }
+
+    /**
+     * Delete Project by ID
+     *
+     * @param int $id
+     *
+     * @throws \Exception
+     * @return JsonResponse
+     */
+    public function delete($id)
+    {
+        $this->authenticationService->ensureSession();
+        if (!$this->isId($id)) {
+            throw new Exception('Invalid ID ' . $id, 400);
+        }
+
+        $this->projectService->remove($id);
+        $this->projectService->flush();
+
+        return new JsonResponse(array(
+            'success' => true
+        ));
     }
 } 

@@ -71,7 +71,10 @@ $app['entityManager'] = $app->share(function () {
     return Doctrine::getEntityManager();
 });
 
-// Put payload to request part
+/**
+ * Put payload to request part
+ * TODO extract in service
+ */
 $app->before(function (\Symfony\Component\HttpFoundation\Request $request) {
     if ($request->getContentType() === 'json') {
         $request->request->add(json_decode($request->getContent(), true));

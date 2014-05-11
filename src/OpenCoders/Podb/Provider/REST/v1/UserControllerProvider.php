@@ -21,7 +21,7 @@ class UserControllerProvider implements ControllerProviderInterface
     public function connect(Application $app)
     {
         $app['rest.v1.json.user_controller'] = $app->share(function ($app) {
-            return new UserController($app, $app['user']);
+            return new UserController($app, $app['user'], $app['authentication']);
         });
 
         /** @var ControllerCollection $controllers */
@@ -30,9 +30,11 @@ class UserControllerProvider implements ControllerProviderInterface
         $controllers->get('/user', 'rest.v1.json.user_controller:getList')->bind('rest.v1.json.user.list');
         $controllers->get('/user/{userName}', 'rest.v1.json.user_controller:get')->bind('rest.v1.json.user.get');
         $controllers->get('/user/{userName}/projects', 'rest.v1.json.user_controller:getProjects')->bind('rest.v1.json.user.project.list');
-        $controllers->get('/user/{userName}/own/projects', 'rest.v1.json.user_controller:getOwnedProjects')->bind('rest.v1.json.user.own.project.list');
+        $controllers->get('/user/{userName}/own/projects', 'rest.v1.json.user_controller:getOwnedProjects')
+            ->bind('rest.v1.json.user.own.project.list');
         $controllers->get('/user/{userName}/languages', 'rest.v1.json.user_controller:getLanguages')->bind('rest.v1.json.user.language.list');
-        $controllers->get('/user/{userName}/translations', 'rest.v1.json.user_controller:getTranslations')->bind('rest.v1.json.user.translation.list');
+        $controllers->get('/user/{userName}/translations', 'rest.v1.json.user_controller:getTranslations')
+            ->bind('rest.v1.json.user.translation.list');
 
         $controllers->post('/user', 'rest.v1.json.user_controller:post')->bind('rest.v1.json.user.create');
         $controllers->put('/user/{id}', 'rest.v1.json.user_controller:put')->bind('rest.v1.json.user.update');

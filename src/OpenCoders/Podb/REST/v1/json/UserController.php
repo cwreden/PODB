@@ -9,6 +9,7 @@ use OpenCoders\Podb\Persistence\Entity\Language;
 use OpenCoders\Podb\Persistence\Entity\Project;
 use OpenCoders\Podb\Persistence\Entity\User;
 use OpenCoders\Podb\REST\v1\BaseController;
+use OpenCoders\Podb\Service\AuthenticationService;
 use OpenCoders\Podb\Service\UserService;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -21,10 +22,16 @@ class UserController extends BaseController
      */
     private $userService;
 
-    function __construct(Application $app, UserService $userService)
+    /**
+     * @var AuthenticationService
+     */
+    private $authenticationService;
+
+    function __construct(Application $app, UserService $userService, AuthenticationService $authenticationService)
     {
         parent::__construct($app);
         $this->userService = $userService;
+        $this->authenticationService = $authenticationService;
     }
 
     /**
@@ -250,15 +257,13 @@ class UserController extends BaseController
      *
      * @param \Symfony\Component\HttpFoundation\Request $request
      *
-     * TODO post parameter / content???
-     *
      * @throws \Exception
      * @return JsonResponse
      */
     public function post(Request $request)
     {
-        $this->ensureSession();
-        $attributes = json_decode($request->getContent(), true);
+        $this->authenticationService->ensureSession();
+        $attributes = $request->request->all();
         try {
             $user = $this->userService->create($attributes);
             $this->userService->flush();
@@ -266,7 +271,17 @@ class UserController extends BaseController
             throw new Exception($e->getMessage(), 400);
         };
 
-        return new JsonResponse($user->asArrayWithAPIInformation($this->apiVersion));
+        $urlGenerator = $this->getUrlGenerator();
+        $urlParams = array('userName' => $user->getUsername());
+
+        return new JsonResponse(array(
+            'id' => $user->getId(),
+            'displayname' => $user->getDisplayName(),
+            'username' => $user->getUsername(),
+            '_links' => array(
+                'self' => $urlGenerator->generate('rest.v1.json.user.get', $urlParams),
+            )
+        ));
     }
 
     /**
@@ -280,21 +295,31 @@ class UserController extends BaseController
      */
     public function put($id, Request $request)
     {
-        $this->ensureSession();
+        $this->authenticationService->ensureSession();
         if (!$this->isId($id)) {
             throw new Exception('Invalid ID ' . $id, 400);
         }
 
-        $attributes = json_decode($request->getContent(), true);
+        $attributes = $request->request->all();
         try {
-            /** @var $user User */
             $user = $this->userService->update($id, $attributes);
             $this->userService->flush();
         } catch (PodbException $e) {
+            // TODO
             throw new Exception($e->getMessage(), 400);
         }
 
-        return new JsonResponse($user->asArrayWithAPIInformation($this->apiVersion));
+        $urlGenerator = $this->getUrlGenerator();
+        $urlParams = array('userName' => $user->getUsername());
+
+        return new JsonResponse(array(
+            'id' => $user->getId(),
+            'displayname' => $user->getDisplayName(),
+            'username' => $user->getUsername(),
+            '_links' => array(
+                'self' => $urlGenerator->generate('rest.v1.json.user.get', $urlParams),
+            )
+        ));
     }
 
     /**
@@ -307,7 +332,7 @@ class UserController extends BaseController
      */
     public function delete($id)
     {
-        $this->ensureSession();
+        $this->authenticationService->ensureSession();
         if (!$this->isId($id)) {
             throw new Exception('Invalid ID ' . $id, 400);
         }

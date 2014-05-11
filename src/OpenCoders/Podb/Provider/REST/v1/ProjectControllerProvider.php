@@ -21,7 +21,7 @@ class ProjectControllerProvider implements ControllerProviderInterface
     public function connect(Application $app)
     {
         $app['rest.v1.json.project_controller'] = $app->share(function ($app) {
-            return new ProjectController($app, $app['project']);
+            return new ProjectController($app, $app['project'], $app['authentication']);
         });
 
         /** @var ControllerCollection $controllers */
@@ -29,7 +29,7 @@ class ProjectControllerProvider implements ControllerProviderInterface
 
         $controllers->get('/project', 'rest.v1.json.project_controller:getList')->bind('rest.v1.json.project.list');
         $controllers->get('/project/{projectName}', 'rest.v1.json.project_controller:get')->bind('rest.v1.json.project.get');
-        $controllers->get('/project/{projectName}/owners', 'rest.v1.json.project_controller:getOwners')
+        $controllers->get('/project/{projectName}/owner', 'rest.v1.json.project_controller:getOwner')
             ->bind('rest.v1.json.project.owner.list');
         $controllers->get('/project/{projectName}/contributors', 'rest.v1.json.project_controller:getContributors')
             ->bind('rest.v1.json.project.contributor.list');
@@ -38,7 +38,9 @@ class ProjectControllerProvider implements ControllerProviderInterface
         $controllers->get('/project/{projectName}/languages', 'rest.v1.json.project_controller:getLanguages')
             ->bind('rest.v1.json.project.language.list');
 
-        // TODO POST PATCH DELETE
+        $controllers->post('/project', 'rest.v1.json.project_controller:post')->bind('rest.v1.json.project.create');
+        $controllers->put('/project/{id}', 'rest.v1.json.project_controller:put')->bind('rest.v1.json.project.update');
+        $controllers->delete('/project/{id}', 'rest.v1.json.project_controller:delete')->bind('rest.v1.json.project.delete');
 
         return $controllers;
     }
