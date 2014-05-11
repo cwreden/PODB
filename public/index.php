@@ -5,9 +5,7 @@ use OpenCoders\Podb\Provider\AuditServiceProvider;
 use OpenCoders\Podb\Provider\CategoryServiceProvider;
 use OpenCoders\Podb\Provider\DataSetServiceProvider;
 use OpenCoders\Podb\Provider\IndexControllerProvider;
-use OpenCoders\Podb\Provider\LanguageServiceProvider;
 use OpenCoders\Podb\Provider\ACLServiceProvider;
-use OpenCoders\Podb\Provider\TranslationServiceProvider;
 
 define ("APPLICATION_ROOT", realpath(__DIR__."/.."));
 
@@ -41,10 +39,10 @@ $app->register(
 $app->register(new \OpenCoders\Podb\Provider\Service\ConfigurationServiceProvider());
 $app->register(new \OpenCoders\Podb\Provider\Service\UserServiceProvider());
 $app->register(new \OpenCoders\Podb\Provider\Service\ProjectServiceProvider());
-$app->register(new LanguageServiceProvider());
+$app->register(new \OpenCoders\Podb\Provider\Service\LanguageServiceProvider());
 $app->register(new CategoryServiceProvider());
 $app->register(new DataSetServiceProvider());
-$app->register(new TranslationServiceProvider());
+$app->register(new \OpenCoders\Podb\Provider\Service\TranslationServiceProvider());
 $app->register(new AuditServiceProvider());
 $app->register(new ACLServiceProvider());
 $app->register(new \OpenCoders\Podb\Provider\Service\AuthenticationServiceProvider());
