@@ -1,8 +1,9 @@
 <?php
 
-namespace OpenCoders\Podb\Provider;
+namespace OpenCoders\Podb\Provider\Service;
 
 
+use OpenCoders\Podb\Service\LanguageService;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 
@@ -19,7 +20,9 @@ class LanguageServiceProvider implements ServiceProviderInterface
      */
     public function register(Application $app)
     {
-        // TODO: Implement register() method.
+        $app['language'] = $app->share(function ($app) {
+            return new LanguageService($app['entityManager']);
+        });
     }
 
     /**
