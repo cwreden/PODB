@@ -73,18 +73,18 @@ class LanguageController extends BaseController
         }
 
         if ($language == null) {
-            throw new Exception("No project found with identifier $locale.", 404);
+            throw new Exception("No language found with identifier $locale.", 404);
         }
         $urlGenerator = $this->getUrlGenerator();
-        $urlParams = array('projectName' => $language->getName());
+        $urlParams = array('locale' => $language->getLocale());
 
         return new JsonResponse(array(
             'id' => $language->getId(),
             'name' => $language->getName(),
             'locale' => $language->getLocale(),
             '_links' => array(
-                'self' => $urlGenerator->generate('rest.v1.json.project.get', $urlParams),
-                'supporter' => $urlGenerator->generate('rest.v1.json.project.supporter.list', $urlParams),
+                'self' => $urlGenerator->generate('rest.v1.json.language.get', $urlParams),
+                'supporter' => $urlGenerator->generate('rest.v1.json.language.supporter.list', $urlParams),
             )
         ));
     }
@@ -105,7 +105,7 @@ class LanguageController extends BaseController
         }
 
         if ($language == null) {
-            throw new Exception("No project found with identifier $locale.", 404);
+            throw new Exception("No language found with identifier $locale.", 404);
         }
 
         $supporters = $language->getSupportedBy();
@@ -155,8 +155,8 @@ class LanguageController extends BaseController
             'name' => $language->getName(),
             'locale' => $language->getLocale(),
             '_links' => array(
-                'self' => $urlGenerator->generate('rest.v1.json.project.get', $urlParams),
-                'supporter' => $urlGenerator->generate('rest.v1.json.project.supporter.list', $urlParams),
+                'self' => $urlGenerator->generate('rest.v1.json.language.get', $urlParams),
+                'supporter' => $urlGenerator->generate('rest.v1.json.language.supporter.list', $urlParams),
             )
         ));
     }
@@ -194,8 +194,8 @@ class LanguageController extends BaseController
             'name' => $language->getName(),
             'locale' => $language->getLocale(),
             '_links' => array(
-                'self' => $urlGenerator->generate('rest.v1.json.project.get', $urlParams),
-                'supporter' => $urlGenerator->generate('rest.v1.json.project.supporter.list', $urlParams),
+                'self' => $urlGenerator->generate('rest.v1.json.language.get', $urlParams),
+                'supporter' => $urlGenerator->generate('rest.v1.json.language.supporter.list', $urlParams),
             )
         ));
     }
