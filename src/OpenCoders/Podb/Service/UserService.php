@@ -4,24 +4,18 @@ namespace OpenCoders\Podb\Service;
 
 
 use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\EntityRepository;
 use OpenCoders\Podb\Persistence\Entity\User;
 
-class UserService
+class UserService extends BaseEntityService
 {
     /**
      * @var string EntityClassName (FQN)
      */
     const ENTITY_NAME = 'OpenCoders\Podb\Persistence\Entity\User';
 
-    /**
-     * @var EntityManager
-     */
-    private $em;
-
-    function __construct($em)
+    function __construct(EntityManager $entityManager)
     {
-        $this->em = $em;
+        parent::__construct($entityManager, self::ENTITY_NAME);
     }
 
     /**
@@ -98,14 +92,6 @@ class UserService
     }
 
     /**
-     * Synchronize with database
-     */
-    public function flush()
-    {
-        $this->getEntityManager()->flush();
-    }
-
-    /**
      * Update user
      *
      * @param $id
@@ -142,37 +128,4 @@ class UserService
 
         return $user;
     }
-
-    /**
-     * Delete user
-     *
-     * @param $id
-     */
-    public function remove($id)
-    {
-        $em = $this->getEntityManager();
-        $user = $em->getPartialReference(self::ENTITY_NAME, array('id' => $id));
-        $em->remove($user);
-    }
-
-    /**
-     * Returns the ProjectsRepository
-     * TODO needed? or extract!
-     * @return EntityRepository
-     */
-    protected function getRepository()
-    {
-        $repository = $this->getEntityManager()->getRepository(self::ENTITY_NAME);
-        return $repository;
-    }
-
-    /**
-     * Returns the Singleton Instance of the EntityManger
-     * TODO needed? or extract!
-     * @return \Doctrine\ORM\EntityManager
-     */
-    protected function getEntityManager()
-    {
-        return $this->em;
-    }
-} 
+}
