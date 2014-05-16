@@ -17,7 +17,7 @@ use Symfony\Component\HttpFoundation\Request;
 class LanguageController extends BaseController
 {
     /**
-     * @var
+     * @var LanguageService
      */
     private $languageService;
 

@@ -3,6 +3,7 @@
 namespace OpenCoders\Podb\Provider\REST\v1;
 
 
+use OpenCoders\Podb\REST\v1\json\CategoryController;
 use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\ControllerProviderInterface;
@@ -19,11 +20,19 @@ class CategoryControllerProvider implements ControllerProviderInterface
      */
     public function connect(Application $app)
     {
+        $app['rest.v1.json.category_controller'] = $app->share(function ($app) {
+            return new CategoryController($app, $app['category'], $app['authentication']);
+        });
+
+        /** @var ControllerCollection $controllers */
         $controllers = $app['controllers_factory'];
 
-        $controllers->get('/category', function () {
-            throw new \Exception('Not implemented!');
-        });
+        $controllers->get('/category', 'rest.v1.json.category_controller:getList')->bind('rest.v1.json.category.list');
+        $controllers->get('/category/{id}', 'rest.v1.json.category_controller:get')->bind('rest.v1.json.category.get');
+
+        $controllers->post('/category', 'rest.v1.json.category_controller:post')->bind('rest.v1.json.category.create');
+        $controllers->put('/category/{id}', 'rest.v1.json.category_controller:put')->bind('rest.v1.json.category.update');
+        $controllers->delete('/category/{id}', 'rest.v1.json.category_controller:delete')->bind('rest.v1.json.category.delete');
 
         return $controllers;
     }

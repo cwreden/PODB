@@ -23,7 +23,7 @@ class Category extends AbstractBaseEntity
 
     /**
      * @var
-     * @Column(type="string", unique=true, nullable=false)
+     * @Column(type="string", nullable=false)
      */
     protected $name;
 
