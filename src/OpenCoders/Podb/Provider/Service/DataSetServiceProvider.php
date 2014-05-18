@@ -21,7 +21,7 @@ class DataSetServiceProvider implements ServiceProviderInterface
     public function register(Application $app)
     {
         $app['dataSet'] = $app->share(function ($app) {
-            return new DataSetService($app['entityManager']);
+            return new DataSetService($app['entityManager'], $app['category']);
         });
     }
 

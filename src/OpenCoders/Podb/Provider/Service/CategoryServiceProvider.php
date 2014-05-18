@@ -21,7 +21,7 @@ class CategoryServiceProvider implements ServiceProviderInterface
     public function register(Application $app)
     {
         $app['category'] = $app->share(function ($app) {
-            return new CategoryService($app['entityManager']);
+            return new CategoryService($app['entityManager'], $app['project']);
         });
     }
 

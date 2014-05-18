@@ -29,6 +29,7 @@ class CategoryControllerProvider implements ControllerProviderInterface
 
         $controllers->get('/category', 'rest.v1.json.category_controller:getList')->bind('rest.v1.json.category.list');
         $controllers->get('/category/{id}', 'rest.v1.json.category_controller:get')->bind('rest.v1.json.category.get');
+        $controllers->get('/category/{id}/dataSet', 'rest.v1.json.category_controller:getDataSets')->bind('rest.v1.json.category.dataSet.list');
 
         $controllers->post('/category', 'rest.v1.json.category_controller:post')->bind('rest.v1.json.category.create');
         $controllers->put('/category/{id}', 'rest.v1.json.category_controller:put')->bind('rest.v1.json.category.update');

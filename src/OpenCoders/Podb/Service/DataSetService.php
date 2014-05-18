@@ -4,6 +4,7 @@ namespace OpenCoders\Podb\Service;
 
 
 use Doctrine\ORM\EntityManager;
+use OpenCoders\Podb\Exception\MissingParameterException;
 use OpenCoders\Podb\Persistence\Entity\DataSet;
 
 class DataSetService extends BaseEntityService
@@ -13,9 +14,15 @@ class DataSetService extends BaseEntityService
      */
     const ENTITY_NAME = 'OpenCoders\Podb\Persistence\Entity\DataSet';
 
-    function __construct(EntityManager $entityManager)
+    /**
+     * @var CategoryService
+     */
+    private $categoryService;
+
+    function __construct(EntityManager $entityManager, CategoryService $categoryService)
     {
         parent::__construct($entityManager, self::ENTITY_NAME);
+        $this->categoryService = $categoryService;
     }
 
     /**
@@ -39,15 +46,22 @@ class DataSetService extends BaseEntityService
 
     /**
      * @param $attributes
+     * @throws \OpenCoders\Podb\Exception\MissingParameterException
      * @return DataSet
      */
     public function create($attributes)
     {
         $dataSet = new DataSet();
 
+        if (!isset($attributes['category'])) {
+            throw new MissingParameterException('category');
+        } elseif (!isset($attributes['msgId'])) {
+            throw new MissingParameterException('msgId');
+        }
+
         foreach ($attributes as $key => $value) {
             if ($key == 'category') {
-                $dataSet->setCategory($value);
+                $dataSet->setCategory($this->categoryService->get($value));
             } else if ($key == 'msgId') {
                 $dataSet->setMsgId($value);
             }
@@ -72,7 +86,7 @@ class DataSetService extends BaseEntityService
 
         foreach ($attributes as $key => $value) {
             if ($key == 'category') {
-                $dataSet->setCategory($value);
+                $dataSet->setCategory($this->categoryService->get($value));
             } else if ($key == 'msgId') {
                 $dataSet->setMsgId($value);
             }

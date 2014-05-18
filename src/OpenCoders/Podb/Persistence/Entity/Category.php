@@ -128,7 +128,15 @@ class Category extends AbstractBaseEntity
     }
 
     /**
-     * @return mixed
+     * @return DataSet[]
+     */
+    public function getDataSets()
+    {
+        return $this->dataSets;
+    }
+
+    /**
+     * @return Project
      */
     public function getProject()
     {

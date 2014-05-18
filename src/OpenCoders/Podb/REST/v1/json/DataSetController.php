@@ -50,6 +50,7 @@ class DataSetController extends BaseController
                 'msgId' => $dataSet->getMsgId(),
                 '_links' => array(
                     'self' => $urlGenerator->generate('rest.v1.json.dataSet.get', $urlParams),
+                    'category' => $urlGenerator->generate('rest.v1.json.category.get', array('id' => $dataSet->getCategory()->getId()))
                 )
             );
         }

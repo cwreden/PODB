@@ -75,7 +75,7 @@ class DataSet extends AbstractBaseEntity
     }
 
     /**
-     * @return string
+     * @return Category
      */
     public function getCategory()
     {

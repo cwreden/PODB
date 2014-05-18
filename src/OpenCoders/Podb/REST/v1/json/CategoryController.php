@@ -80,9 +80,46 @@ class CategoryController extends BaseController
             'name' => $category->getName(),
             'description' => $category->getDescription(),
             '_links' => array(
-                'self' => $urlGenerator->generate('rest.v1.json.category.get', $urlParams)
+                'self' => $urlGenerator->generate('rest.v1.json.category.get', $urlParams),
+                'project' => $urlGenerator->generate('rest.v1.json.project.get', array('projectName' => $category->getProject()->getName())),
+                'dataSets' => $urlGenerator->generate('rest.v1.json.category.dataSet.list', $urlParams)
             )
         ));
+    }
+
+    /**
+     * @param $id
+     * @throws \Doctrine\ORM\EntityNotFoundException
+     * @throws \InvalidArgumentException
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     */
+    public function getDataSets($id)
+    {
+        if (!$this->isId($id)) {
+            throw new \InvalidArgumentException('Invalid ID');
+        }
+        $category = $this->categoryService->get($id);
+        if ($category === null) {
+            throw new EntityNotFoundException();
+        }
+        $dataSets = $category->getDataSets();
+
+        $urlGenerator = $this->getUrlGenerator();
+        $categoryUrlParams = array('id' => $category->getId());
+
+        $result = array();
+        foreach ($dataSets as $dataSet) {
+            $result[] = array(
+                'id' => $dataSet->getId(),
+                'msgId' => $dataSet->getMsgId(),
+                '_links' => array(
+                    'self' => $urlGenerator->generate('rest.v1.json.dataSet.get', array('id' => $dataSet->getId())),
+                    'category' => $urlGenerator->generate('rest.v1.json.category.get', $categoryUrlParams)
+                )
+            );
+        }
+
+        return new JsonResponse($result);
     }
 
     /**
@@ -104,7 +141,6 @@ class CategoryController extends BaseController
             throw new Exception($e->getMessage(), 400);
         };
 
-        $urlParams = array('id' => $category->getId());
         $urlGenerator = $this->getUrlGenerator();
 
         return new JsonResponse(array(
@@ -112,7 +148,8 @@ class CategoryController extends BaseController
             'name' => $category->getName(),
             'description' => $category->getDescription(),
             '_links' => array(
-                'self' => $urlGenerator->generate('rest.v1.json.category.get', $urlParams)
+                'self' => $urlGenerator->generate('rest.v1.json.category.get', array('id' => $category->getId())),
+                'project' => $urlGenerator->generate('rest.v1.json.project.get', array('projectName' => $category->getProject()->getName()))
             )
         ));
     }
@@ -142,7 +179,6 @@ class CategoryController extends BaseController
             throw new Exception($e->getMessage(), 400);
         }
 
-        $urlParams = array('id' => $category->getId());
         $urlGenerator = $this->getUrlGenerator();
 
         return new JsonResponse(array(
@@ -150,7 +186,8 @@ class CategoryController extends BaseController
             'name' => $category->getName(),
             'description' => $category->getDescription(),
             '_links' => array(
-                'self' => $urlGenerator->generate('rest.v1.json.category.get', $urlParams)
+                'self' => $urlGenerator->generate('rest.v1.json.category.get', array('id' => $category->getId())),
+                'project' => $urlGenerator->generate('rest.v1.json.project.get', array('projectName' => $category->getProject()->getName()))
             )
         ));
     }

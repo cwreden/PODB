@@ -4,6 +4,7 @@ namespace OpenCoders\Podb\Service;
 
 
 use Doctrine\ORM\EntityManager;
+use OpenCoders\Podb\Exception\MissingParameterException;
 use OpenCoders\Podb\Persistence\Entity\Project;
 
 class ProjectService extends BaseEntityService
@@ -59,11 +60,18 @@ class ProjectService extends BaseEntityService
 
     /**
      * @param $attributes
+     * @throws \OpenCoders\Podb\Exception\MissingParameterException
      * @return Project
      */
     public function create($attributes)
     {
         $project = new Project();
+
+        if (!isset($attributes['default_language'])) {
+            throw new MissingParameterException('default_language');
+        } elseif (!isset($attributes['owner'])) {
+            throw new MissingParameterException('owner');
+        }
 
         foreach ($attributes as $key => $value) {
             if ($key === 'name') {
