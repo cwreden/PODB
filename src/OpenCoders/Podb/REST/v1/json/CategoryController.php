@@ -105,7 +105,6 @@ class CategoryController extends BaseController
         $dataSets = $category->getDataSets();
 
         $urlGenerator = $this->getUrlGenerator();
-        $categoryUrlParams = array('id' => $category->getId());
 
         $result = array();
         foreach ($dataSets as $dataSet) {
@@ -113,8 +112,7 @@ class CategoryController extends BaseController
                 'id' => $dataSet->getId(),
                 'msgId' => $dataSet->getMsgId(),
                 '_links' => array(
-                    'self' => $urlGenerator->generate('rest.v1.json.dataSet.get', array('id' => $dataSet->getId())),
-                    'category' => $urlGenerator->generate('rest.v1.json.category.get', $categoryUrlParams)
+                    'self' => $urlGenerator->generate('rest.v1.json.dataSet.get', array('id' => $dataSet->getId()))
                 )
             );
         }
