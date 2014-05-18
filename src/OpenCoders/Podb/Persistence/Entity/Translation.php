@@ -22,9 +22,8 @@ class Translation extends AbstractBaseEntity
 
     /**
      * @var
-     * @ManyToOne(targetEntity="DataSet")
+     * @ManyToOne(targetEntity="DataSet", inversedBy="dataSets")
      * @JoinColumn(name="dataSet_id", referencedColumnName="id")
-     * @Column(nullable=false)
      */
     protected $dataSet;
 

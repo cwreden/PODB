@@ -24,9 +24,8 @@ class DataSet extends AbstractBaseEntity
 
     /**
      * @var
-     * @ManyToOne(targetEntity="Category")
+     * @ManyToOne(targetEntity="Category", inversedBy="dataSets")
      * @JoinColumn(name="category_id", referencedColumnName="id")
-     * @Column(nullable=false)
      */
     protected $category;
 

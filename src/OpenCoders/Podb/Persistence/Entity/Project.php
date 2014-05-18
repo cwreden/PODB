@@ -30,9 +30,8 @@ class Project extends AbstractBaseEntity
 
     /**
      * @var
-     * @ManyToOne(targetEntity="Language")
+     * @ManyToOne(targetEntity="Language", inversedBy="projects")
      * @JoinColumn(name="default_language_id", referencedColumnName="id")
-     * @Column(nullable=false)
      */
     protected $default_language;
 
@@ -40,7 +39,6 @@ class Project extends AbstractBaseEntity
      * @var
      * @ManyToOne(targetEntity="User", inversedBy="ownedProjects")
      * @JoinColumn(name="user_id", referencedColumnName="id")
-     * @Column(nullable=false)
      */
     protected $owner;
 

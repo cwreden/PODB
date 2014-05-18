@@ -31,7 +31,6 @@ class Category extends AbstractBaseEntity
      * @var
      * @ManyToOne(targetEntity="Project", inversedBy="categories")
      * @JoinColumn(name="project_id", referencedColumnName="id")
-     * @Column(nullable=false)
      */
     protected $project;
 
