@@ -76,10 +76,8 @@ class AuthenticationController extends BaseController
         );
         if ($responseData['isLoggedIn']) {
             $currentUser = $this->authenticationService->getCurrentUser();
-            $responseData = array(
-                'username' => $currentUser->getUsername(),
-                'displayName' => $currentUser->getDisplayName()
-            );
+            $responseData['username'] = $currentUser->getUsername();
+            $responseData['displayName'] = $currentUser->getDisplayName();
         }
 
         return new JsonResponse($responseData);
