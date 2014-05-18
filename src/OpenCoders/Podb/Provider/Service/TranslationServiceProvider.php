@@ -21,7 +21,7 @@ class TranslationServiceProvider implements ServiceProviderInterface
     public function register(Application $app)
     {
         $app['translation'] = $app->share(function ($app) {
-            return new TranslationService($app['entityManager']);
+            return new TranslationService($app['entityManager'], $app['dataSet'], $app['language']);
         });
     }
 

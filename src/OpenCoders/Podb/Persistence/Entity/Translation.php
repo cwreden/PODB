@@ -31,7 +31,6 @@ class Translation extends AbstractBaseEntity
      * @var
      * @ManyToOne(targetEntity="Language")
      * @JoinColumn(name="language_id", referencedColumnName="id")
-     * @Column(nullable=false)
      */
     protected $language;
 
@@ -104,7 +103,7 @@ class Translation extends AbstractBaseEntity
     }
 
     /**
-     * @param string $language
+     * @param Language $language
      */
     public function setLanguage($language)
     {
@@ -112,7 +111,7 @@ class Translation extends AbstractBaseEntity
     }
 
     /**
-     * @return string
+     * @return Language
      */
     public function getLanguage()
     {
@@ -184,7 +183,7 @@ class Translation extends AbstractBaseEntity
     }
 
     /**
-     * @param string $dataSet
+     * @param DataSet $dataSet
      */
     public function setDataSet($dataSet)
     {
@@ -192,7 +191,7 @@ class Translation extends AbstractBaseEntity
     }
 
     /**
-     * @return string
+     * @return DataSet
      */
     public function getDataSet()
     {

@@ -39,16 +39,24 @@ class DataSet extends AbstractBaseEntity
      * @var
      * @OneToMany(targetEntity="Translation", mappedBy="dataSet")
      */
-    protected $dataSets;
+    protected $translations;
 
     // endregion
 
     function __construct()
     {
-        $this->dataSets = new ArrayCollection();
+        $this->translations = new ArrayCollection();
     }
 
     // region getter and setter
+
+    /**
+     * @return mixed
+     */
+    public function getTranslations()
+    {
+        return $this->translations;
+    }
 
     /**
      * @throws \Exception

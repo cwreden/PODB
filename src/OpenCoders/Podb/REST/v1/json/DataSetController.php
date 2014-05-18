@@ -7,6 +7,7 @@ use Doctrine\ORM\EntityNotFoundException;
 use Exception;
 use OpenCoders\Podb\Exception\PodbException;
 use OpenCoders\Podb\Persistence\Entity\DataSet;
+use OpenCoders\Podb\Persistence\Entity\Translation;
 use OpenCoders\Podb\REST\v1\BaseController;
 use OpenCoders\Podb\Service\AuthenticationService;
 use OpenCoders\Podb\Service\DataSetService;
@@ -78,9 +79,39 @@ class DataSetController extends BaseController
             'msgId' => $dataSet->getMsgId(),
             '_links' => array(
                 'self' => $urlGenerator->generate('rest.v1.json.dataSet.get', $urlParams),
-                'category' => $urlGenerator->generate('rest.v1.json.category.get', array('id' => $dataSet->getCategory())),
+                'category' => $urlGenerator->generate('rest.v1.json.category.get', array('id' => $dataSet->getCategory()->getId())),
+                'translations' => $urlGenerator->generate('rest.v1.json.dataSet.translation.list', $urlParams)
             )
         ));
+    }
+
+    /**
+     * @param $id
+     * @throws \Doctrine\ORM\EntityNotFoundException
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     */
+    public function getTranslations($id)
+    {
+        $dataSet = $this->dataSetService->get($id);
+
+        if ($dataSet == null) {
+            throw new EntityNotFoundException("No dataSet found with identifier $id.", 404);
+        }
+        $urlGenerator = $this->getUrlGenerator();
+
+        $result = array();
+        /** @var Translation $translation */
+        foreach ($dataSet->getTranslations() as $translation) {
+            $result[] = array(
+                'id' => $translation->getId(),
+                'msgStr' => $translation->getMsgStr(),
+                '_links' => array(
+                    'self' => $urlGenerator->generate('rest.v1.json.translation.get', array('id' => $translation->getId())),
+                )
+            );
+        }
+
+        return new JsonResponse($result);
     }
 
     /**

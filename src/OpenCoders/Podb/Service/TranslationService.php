@@ -4,6 +4,7 @@ namespace OpenCoders\Podb\Service;
 
 
 use Doctrine\ORM\EntityManager;
+use OpenCoders\Podb\Exception\MissingParameterException;
 use OpenCoders\Podb\Persistence\Entity\Translation;
 
 class TranslationService extends BaseEntityService
@@ -13,9 +14,21 @@ class TranslationService extends BaseEntityService
      */
     const ENTITY_NAME = 'OpenCoders\Podb\Persistence\Entity\Translation';
 
-    function __construct(EntityManager $entityManager)
+    /**
+     * @var DataSetService
+     */
+    private $dataSetService;
+
+    /**
+     * @var LanguageService
+     */
+    private $languageService;
+
+    function __construct(EntityManager $entityManager, DataSetService $dataSetService, LanguageService $languageService)
     {
         parent::__construct($entityManager, self::ENTITY_NAME);
+        $this->dataSetService = $dataSetService;
+        $this->languageService = $languageService;
     }
 
     /**
@@ -39,20 +52,33 @@ class TranslationService extends BaseEntityService
 
     /**
      * @param $attributes
+     * @throws \OpenCoders\Podb\Exception\MissingParameterException
      * @return Translation
      */
     public function create($attributes)
     {
         $translation = new Translation();
 
+        if (!isset($attributes['dataSet'])) {
+            throw new MissingParameterException('dataSet');
+        } elseif (!isset($attributes['language'])) {
+            throw new MissingParameterException('language');
+        } elseif (!isset($attributes['msgStr'])) {
+            throw new MissingParameterException('msgStr');
+        }
+
         foreach ($attributes as $key => $value) {
-            if ($key == 'fuzzy') {
+            if ($key === 'dataSet') {
+                $translation->setDataSet($this->dataSetService->get($value));
+            } elseif ($key === 'language') {
+                $translation->setLanguage($this->languageService->get($value));
+            } elseif ($key === 'fuzzy') {
                 $translation->setFuzzy($value);
-            } else if ($key == 'msgStr') {
+            } else if ($key === 'msgStr') {
                 $translation->setMsgStr($value);
-            } else if ($key == 'msgStr1') {
+            } else if ($key === 'msgStr1') {
                 $translation->setMsgStr1($value);
-            } else if ($key == 'msgStr2') {
+            } else if ($key === 'msgStr2') {
                 $translation->setMsgStr2($value);
             }
         }
@@ -75,13 +101,17 @@ class TranslationService extends BaseEntityService
         $translation = $this->get($id);
 
         foreach ($attributes as $key => $value) {
-            if ($key == 'fuzzy') {
+            if ($key === 'dataSet') {
+                $translation->setDataSet($this->dataSetService->get($value));
+            } elseif ($key === 'language') {
+                $translation->setLanguage($this->languageService->get($value));
+            } elseif ($key === 'fuzzy') {
                 $translation->setFuzzy($value);
-            } else if ($key == 'msgStr') {
+            } else if ($key === 'msgStr') {
                 $translation->setMsgStr($value);
-            } else if ($key == 'msgStr1') {
+            } else if ($key === 'msgStr1') {
                 $translation->setMsgStr1($value);
-            } else if ($key == 'msgStr2') {
+            } else if ($key === 'msgStr2') {
                 $translation->setMsgStr2($value);
             }
         }

@@ -57,17 +57,17 @@ class TranslationController extends BaseController
     }
 
     /**
-     * @param $locale
+     * @param $id
      *
      * @throws \Exception
      * @return JsonResponse
      */
-    public function get($locale)
+    public function get($id)
     {
-        $translation = $this->translationService->get($locale);
+        $translation = $this->translationService->get($id);
 
         if ($translation == null) {
-            throw new Exception("No translation found with identifier $locale.", 404);
+            throw new Exception("No translation found with identifier $id.", 404);
         }
         $urlGenerator = $this->getUrlGenerator();
         $urlParams = array('id' => $translation->getId());
@@ -80,6 +80,8 @@ class TranslationController extends BaseController
             'fuzzy' => $translation->getFuzzy(),
             '_links' => array(
                 'self' => $urlGenerator->generate('rest.v1.json.translation.get', $urlParams),
+                'language' => $urlGenerator->generate('rest.v1.json.language.get', array('locale' => $translation->getLanguage()->getLocale())),
+                'dataSet' => $urlGenerator->generate('rest.v1.json.dataSet.get', array('id' => $translation->getDataSet()->getId()))
             )
         ));
     }

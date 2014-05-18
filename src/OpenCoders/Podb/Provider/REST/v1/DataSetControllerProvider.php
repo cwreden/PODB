@@ -29,6 +29,7 @@ class DataSetControllerProvider implements ControllerProviderInterface
 
         $controllers->get('/dataSet', 'rest.v1.json.dataSet_controller:getList')->bind('rest.v1.json.dataSet.getList');
         $controllers->get('/dataSet/{id}', 'rest.v1.json.dataSet_controller:get')->bind('rest.v1.json.dataSet.get');
+        $controllers->get('/dataSet/{id}/translation', 'rest.v1.json.dataSet_controller:getTranslations')->bind('rest.v1.json.dataSet.translation.list');
 
         $controllers->post('/dataSet', 'rest.v1.json.dataSet_controller:post')->bind('rest.v1.json.dataSet.create');
         $controllers->put('/dataSet/{id}', 'rest.v1.json.dataSet_controller:put')->bind('rest.v1.json.dataSet.update');
