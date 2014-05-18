@@ -77,7 +77,8 @@ class ProjectService extends BaseEntityService
             } elseif ($key === 'owner') {
                 $project->setOwner($value);
             } elseif ($key === 'contributors') {
-                $project->setContributors($value);
+                // TODO
+//                $project->setContributors($value);
             } elseif ($key === 'default_language') {
                 $project->setDefaultLanguage($this->languageService->get($value));
             }
