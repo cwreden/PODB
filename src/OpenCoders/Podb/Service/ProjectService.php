@@ -13,9 +13,15 @@ class ProjectService extends BaseEntityService
      */
     const ENTITY_NAME = 'OpenCoders\Podb\Persistence\Entity\Project';
 
-    function __construct(EntityManager $entityManager)
+    /**
+     * @var LanguageService
+     */
+    private $languageService;
+
+    function __construct(EntityManager $entityManager, LanguageService $languageService)
     {
         parent::__construct($entityManager, self::ENTITY_NAME);
+        $this->languageService = $languageService;
     }
 
     /**
@@ -93,14 +99,16 @@ class ProjectService extends BaseEntityService
         $project = $this->get($id);
 
         foreach ($attributes as $key => $value) {
-            if ($key == 'name') {
+            if ($key === 'name') {
 //                $project->setName($value);
-            } else if ($key == 'description') {
+            } else if ($key === 'description') {
                 $project->setDescription($value);
-            } else if ($key == 'private') {
+            } else if ($key === 'private') {
                 $project->setPrivate($value);
-            } else if ($key == 'blog') {
+            } else if ($key === 'blog') {
                 $project->setUrl(sha1($value));
+            } elseif ($key === 'default_language') {
+                $project->setDefaultLanguage($this->languageService->get($value));
             }
         }
 

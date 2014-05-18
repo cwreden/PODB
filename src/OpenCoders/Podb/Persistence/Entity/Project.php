@@ -158,7 +158,7 @@ class Project extends AbstractBaseEntity
     }
 
     /**
-     * @return string
+     * @return Language
      */
     public function getDefaultLanguage()
     {

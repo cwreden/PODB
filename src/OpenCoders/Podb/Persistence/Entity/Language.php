@@ -204,9 +204,10 @@ class Language extends AbstractBaseEntity
 
     /**
      * @param array $data
+     * @deprecated
      * @throws PodbException
      */
-    public function update(array $data)
+    public function updateAttr(array $data)
     {
         if ($data == null) {
             throw new PodbException('There is nothing to update.');

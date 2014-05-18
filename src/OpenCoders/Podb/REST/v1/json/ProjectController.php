@@ -85,7 +85,8 @@ class ProjectController extends BaseController
             'blog' => $project->getUrl(),
             '_links' => array(
                 'self' => $urlGenerator->generate('rest.v1.json.project.get', $urlParams),
-                'owners' => $urlGenerator->generate('rest.v1.json.user.get', array('userName' => $project->getOwner()->getUsername())),
+                'owner' => $urlGenerator->generate('rest.v1.json.user.get', array('userName' => $project->getOwner()->getUsername())),
+                'default_language' => $urlGenerator->generate('rest.v1.json.language.get', array('locale' => $project->getDefaultLanguage()->getLocale())),
                 'contributors' => $urlGenerator->generate('rest.v1.json.project.contributor.list', $urlParams),
                 'categories' => $urlGenerator->generate('rest.v1.json.project.category.list', $urlParams),
                 'languages' => $urlGenerator->generate('rest.v1.json.project.language.list', $urlParams),

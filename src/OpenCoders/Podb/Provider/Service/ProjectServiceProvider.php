@@ -21,7 +21,7 @@ class ProjectServiceProvider implements ServiceProviderInterface
     public function register(Application $app)
     {
         $app['project'] = $app->share(function ($app) {
-            return new ProjectService($app['entityManager']);
+            return new ProjectService($app['entityManager'], $app['language']);
         });
     }
 
