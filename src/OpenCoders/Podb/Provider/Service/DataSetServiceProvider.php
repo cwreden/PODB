@@ -1,8 +1,9 @@
 <?php
 
-namespace OpenCoders\Podb\Provider;
+namespace OpenCoders\Podb\Provider\Service;
 
 
+use OpenCoders\Podb\Service\DataSetService;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 
@@ -19,7 +20,9 @@ class DataSetServiceProvider implements ServiceProviderInterface
      */
     public function register(Application $app)
     {
-        // TODO: Implement register() method.
+        $app['dataSet'] = $app->share(function ($app) {
+            return new DataSetService($app['entityManager']);
+        });
     }
 
     /**

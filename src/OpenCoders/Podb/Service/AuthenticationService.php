@@ -4,6 +4,7 @@ namespace OpenCoders\Podb\Service;
 
 
 use OpenCoders\Podb\Exception\AuthenticationRequiredException;
+use OpenCoders\Podb\Exception\InactiveUserAccountException;
 use OpenCoders\Podb\Exception\InvalidUsernamePasswordCombinationException;
 use OpenCoders\Podb\Persistence\Entity\User;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
@@ -48,8 +49,8 @@ class AuthenticationService
      * @param $username
      * @param $password
      *
+     * @throws \OpenCoders\Podb\Exception\InactiveUserAccountException
      * @throws \OpenCoders\Podb\Exception\InvalidUsernamePasswordCombinationException
-     *
      * @return User
      */
     public function authenticateUser($username, $password)
@@ -59,6 +60,8 @@ class AuthenticationService
 
         if ($user == null || !$user->checkPassword($password)) {
             throw new InvalidUsernamePasswordCombinationException();
+        } else if ($user->getActive() === 0 || $user->getEmailValidated() === false) {
+            throw new InactiveUserAccountException();
         }
         $this->session->set('authenticated', true);
         $this->session->set('userId', $user->getId());

@@ -7,7 +7,11 @@ use Silex\Application;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Routing\Generator\UrlGenerator;
 
-class BaseController
+/**
+ * Class BaseController
+ * @package OpenCoders\Podb\REST\v1
+ */
+abstract class BaseController
 {
     /**
      * @var Application
@@ -52,6 +56,7 @@ class BaseController
     }
 
     /**
+     * @deprecated direkt dem kontroller übergeben, wenn überhaupt.
      * @return UrlGenerator
      */
     protected function getUrlGenerator()

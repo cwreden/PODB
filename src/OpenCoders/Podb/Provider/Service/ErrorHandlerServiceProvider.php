@@ -21,6 +21,7 @@ class ErrorHandlerServiceProvider implements ServiceProviderInterface
      */
     public function register(Application $app)
     {
+        // TODO: Weiter ausbauen so das Fehler genauer und dynamisch behandelt werden können.
         $app->error(function (Exception $e, $code) use ($app) {
             $errorData = array(
                 'errorClass' => get_class($e),

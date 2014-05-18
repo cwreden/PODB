@@ -6,7 +6,7 @@ namespace OpenCoders\Podb\Service;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 
-class BaseEntityService
+abstract class BaseEntityService
 {
     /**
      * @var EntityManager

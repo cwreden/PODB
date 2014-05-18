@@ -345,4 +345,39 @@ class UserController extends BaseController
         ));
     }
 
+    /**
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     *
+     * @return array
+     */
+    public function register(Request $request)
+    {
+        $attributes = array(
+            'displayName' => $request->request->get('displayName'),
+            'username' => $request->request->get('username'),
+            'password' => $request->request->get('password'),
+            'email' => $request->request->get('email'),
+            'active' => 1 // TODO FEATURE konfigurierbar machen
+        );
+        $user = $this->userService->create($attributes);
+        $this->userService->flush();
+
+        $urlGenerator = $this->getUrlGenerator();
+        $urlParams = array('userName' => $user->getUsername());
+
+        return new JsonResponse(array(
+            'id' => $user->getId(),
+            'displayname' => $user->getDisplayName(),
+            'username' => $user->getUsername(),
+            'email' => $user->getEmail(),
+            'active' => $user->getActive(),
+            '_links' => array(
+                'self' => $urlGenerator->generate('rest.v1.json.user.get', $urlParams),
+                'projects' => $urlGenerator->generate('rest.v1.json.user.project.list', $urlParams),
+                'own_projects' => $urlGenerator->generate('rest.v1.json.user.own.project.list', $urlParams),
+                'languages' => $urlGenerator->generate('rest.v1.json.user.language.list', $urlParams),
+                'translations' => $urlGenerator->generate('rest.v1.json.user.translation.list', $urlParams),
+            )
+        ));
+    }
 } 

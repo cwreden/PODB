@@ -36,6 +36,7 @@ class UserControllerProvider implements ControllerProviderInterface
         $controllers->get('/user/{userName}/translations', 'rest.v1.json.user_controller:getTranslations')
             ->bind('rest.v1.json.user.translation.list');
 
+        $controllers->post('/user/register', 'rest.v1.json.user_controller:register')->bind('rest.v1.json.user.register');
         $controllers->post('/user', 'rest.v1.json.user_controller:post')->bind('rest.v1.json.user.create');
         $controllers->put('/user/{id}', 'rest.v1.json.user_controller:put')->bind('rest.v1.json.user.update');
         $controllers->delete('/user/{id}', 'rest.v1.json.user_controller:delete')->bind('rest.v1.json.user.delete');

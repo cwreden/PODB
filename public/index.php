@@ -2,7 +2,6 @@
 
 use OpenCoders\Podb\Persistence\Doctrine;
 use OpenCoders\Podb\Provider\AuditServiceProvider;
-use OpenCoders\Podb\Provider\DataSetServiceProvider;
 use OpenCoders\Podb\Provider\ACLServiceProvider;
 
 define ("APPLICATION_ROOT", realpath(__DIR__."/.."));
@@ -39,7 +38,7 @@ $app->register(new \OpenCoders\Podb\Provider\Service\UserServiceProvider());
 $app->register(new \OpenCoders\Podb\Provider\Service\ProjectServiceProvider());
 $app->register(new \OpenCoders\Podb\Provider\Service\LanguageServiceProvider());
 $app->register(new \OpenCoders\Podb\Provider\Service\CategoryServiceProvider());
-$app->register(new DataSetServiceProvider());
+$app->register(new \OpenCoders\Podb\Provider\Service\DataSetServiceProvider());
 $app->register(new \OpenCoders\Podb\Provider\Service\TranslationServiceProvider());
 $app->register(new AuditServiceProvider());
 $app->register(new ACLServiceProvider());
