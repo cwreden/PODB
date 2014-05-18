@@ -60,14 +60,18 @@ class ProjectService extends BaseEntityService
         $project = new Project();
 
         foreach ($attributes as $key => $value) {
-            if ($key == 'name') {
+            if ($key === 'name') {
                 $project->setName($value);
-            } else if ($key == 'description') {
+            } else if ($key === 'description') {
                 $project->setDescription($value);
-            } else if ($key == 'private') {
+            } else if ($key === 'private') {
                 $project->setPrivate($value);
-            } else if ($key == 'blog') {
+            } else if ($key === 'blog') {
                 $project->setUrl(sha1($value));
+            } elseif ($key === 'owner') {
+                $project->setOwner($value);
+            } elseif ($key === 'contributors') {
+                $project->setContributors($value);
             }
         }
 

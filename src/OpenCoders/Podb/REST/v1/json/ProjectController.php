@@ -85,43 +85,10 @@ class ProjectController extends BaseController
             'blog' => $project->getUrl(),
             '_links' => array(
                 'self' => $urlGenerator->generate('rest.v1.json.project.get', $urlParams),
-                'owners' => $urlGenerator->generate('rest.v1.json.project.owner.list', $urlParams),
+                'owners' => $urlGenerator->generate('rest.v1.json.user.get', array('userName' => $project->getOwner()->getUsername())),
                 'contributors' => $urlGenerator->generate('rest.v1.json.project.contributor.list', $urlParams),
                 'categories' => $urlGenerator->generate('rest.v1.json.project.category.list', $urlParams),
                 'languages' => $urlGenerator->generate('rest.v1.json.project.language.list', $urlParams),
-            )
-        ));
-    }
-
-    /**
-     * @param $projectName
-     *
-     * @throws \Exception
-     *
-     * @return JsonResponse
-     */
-    public function getOwner($projectName)
-    {
-        if ($this->isId($projectName)) {
-            $project = $this->projectService->get($projectName);
-        } else {
-            $project = $this->projectService->getByName($projectName);
-        }
-
-        if ($project == null) {
-            throw new Exception("No project found with identifier $projectName.", 404);
-        }
-
-        $owner = $project->getOwner();
-        $urlGenerator = $this->getUrlGenerator();
-        $urlParams = array('userName' => $owner->getUsername());
-
-        return new JsonResponse(array(
-            'id' => $owner->getId(),
-            'displayname' => $owner->getDisplayName(),
-            'username' => $owner->getUsername(),
-            '_links' => array(
-                'self' => $urlGenerator->generate('rest.v1.json.user.get', $urlParams),
             )
         ));
     }
@@ -196,6 +163,7 @@ class ProjectController extends BaseController
     {
         $this->authenticationService->ensureSession();
         $attributes = $request->request->all();
+        $attributes['owner'] = $this->authenticationService->getCurrentUser();
         try {
             $project = $this->projectService->create($attributes);
             $this->projectService->flush();

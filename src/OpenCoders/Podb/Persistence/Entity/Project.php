@@ -94,7 +94,7 @@ class Project extends AbstractBaseEntity
     }
 
     /**
-     * @return mixed
+     * @return User
      */
     public function getOwner()
     {

@@ -29,8 +29,6 @@ class ProjectControllerProvider implements ControllerProviderInterface
 
         $controllers->get('/project', 'rest.v1.json.project_controller:getList')->bind('rest.v1.json.project.list');
         $controllers->get('/project/{projectName}', 'rest.v1.json.project_controller:get')->bind('rest.v1.json.project.get');
-        $controllers->get('/project/{projectName}/owner', 'rest.v1.json.project_controller:getOwner')
-            ->bind('rest.v1.json.project.owner.list');
         $controllers->get('/project/{projectName}/contributors', 'rest.v1.json.project_controller:getContributors')
             ->bind('rest.v1.json.project.contributor.list');
         $controllers->get('/project/{projectName}/categories', 'rest.v1.json.project_controller:getCategories')
