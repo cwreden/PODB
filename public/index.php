@@ -14,6 +14,20 @@ $app['debug'] = true;
 $app->register(new Silex\Provider\SessionServiceProvider());
 $app->register(new Silex\Provider\ServiceControllerServiceProvider());
 $app->register(new Silex\Provider\UrlGeneratorServiceProvider());
+$app->register(new Silex\Provider\SwiftmailerServiceProvider()
+    // TODO config auslagern in eine Konfigurationsdatei.
+//    ,
+//    array(
+//        'swiftmailer.options' => array(
+//            'host' => 'localhost',
+//            'port' => '25',
+//            'username' => 'username',
+//            'password' => 'password',
+//            'encryption' => null,
+//            'auth_mode' => null
+//        )
+//    )
+);
 // TODO Doctrine via silex
 //$app->register(new Silex\Provider\DoctrineServiceProvider());
 
