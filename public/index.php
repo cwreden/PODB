@@ -1,7 +1,6 @@
 <?php
 
 use OpenCoders\Podb\Persistence\Doctrine;
-use OpenCoders\Podb\Provider\AuditServiceProvider;
 use OpenCoders\Podb\Provider\ACLServiceProvider;
 
 define ("APPLICATION_ROOT", realpath(__DIR__."/.."));
@@ -54,7 +53,7 @@ $app->register(new \OpenCoders\Podb\Provider\Service\LanguageServiceProvider());
 $app->register(new \OpenCoders\Podb\Provider\Service\CategoryServiceProvider());
 $app->register(new \OpenCoders\Podb\Provider\Service\DataSetServiceProvider());
 $app->register(new \OpenCoders\Podb\Provider\Service\TranslationServiceProvider());
-$app->register(new AuditServiceProvider());
+$app->register(new \OpenCoders\Podb\Provider\Service\AuditServiceProvider());
 $app->register(new ACLServiceProvider());
 $app->register(new \OpenCoders\Podb\Provider\Service\AuthenticationServiceProvider());
 $app->register(new \OpenCoders\Podb\Provider\Service\RequestRateLimitServiceProvider());
@@ -78,6 +77,9 @@ $app->mount('/rest/v1', new \OpenCoders\Podb\Provider\REST\v1\AuthenticationCont
 // TODO DoctrineServiceProvider
 $app['entityManager'] = $app->share(function () {
     return Doctrine::getEntityManager();
+});
+$app['auditReader'] = $app->share(function ($app) {
+    return Doctrine::getAuditManager()->createAuditReader($app['entityManager']);
 });
 
 /**
