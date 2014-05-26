@@ -138,7 +138,25 @@ class ProjectController extends BaseController
      */
     public function getCategories($projectName)
     {
-        // TODO Not implemented
+        $project = $this->projectService->get($projectName);
+        $categories = $project->getCategories();
+        $urlGenerator = $this->getUrlGenerator();
+        $data = array();
+
+        foreach ($categories as $category) {
+            $urlParams = array('id' => $category->getId());
+            $data[] = array(
+                'id' => $category->getId(),
+                'name' => $category->getName(),
+                'description' => $category->getDescription(),
+                '_links' => array(
+                    'self' => $urlGenerator->generate('rest.v1.json.category.get', $urlParams),
+                    'project' => $urlGenerator->generate('rest.v1.json.project.get', array('projectName' => $project->getName())),
+                    'dataSets' => $urlGenerator->generate('rest.v1.json.category.dataSet.list', $urlParams)
+                )
+            );
+        }
+
         return new JsonResponse();
     }
 

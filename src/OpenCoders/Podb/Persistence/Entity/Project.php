@@ -83,6 +83,14 @@ class Project extends AbstractBaseEntity
         $this->categories = new ArrayCollection();
     }
 
+    /**
+     * @return Category[]
+     */
+    public function getCategories()
+    {
+        return $this->categories;
+    }
+
     // region Getter & Setter
 
     /**
