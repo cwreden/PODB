@@ -18,12 +18,10 @@
         "node_modules",
         "bower_components",
         "test",
-        "tests"
+        "tests",
+        "public/lib"
     ],
     "dependencies": {
-        "angular": "*",
-        "angular-route": "*",
-        "restangular": "*",
         "bootstrap": "*",
         "bootstrap3-wysihtml5": "*",
         "jquery": "2.0.2",
