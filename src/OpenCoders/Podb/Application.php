@@ -12,7 +12,6 @@ use OpenCoders\Podb\Provider\Service\AuthenticationServiceProvider;
 use OpenCoders\Podb\Provider\Service\CategoryServiceProvider;
 use OpenCoders\Podb\Provider\Service\DataSetServiceProvider;
 use OpenCoders\Podb\Provider\Service\ErrorHandlerServiceProvider;
-use OpenCoders\Podb\Provider\Service\ProjectServiceProvider;
 use OpenCoders\Podb\Provider\Service\RequestRateLimitServiceProvider;
 use Silex\Provider\DoctrineServiceProvider;
 use Silex\Provider\MonologServiceProvider;

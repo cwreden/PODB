@@ -3,6 +3,7 @@
 namespace OpenCoders\Podb\Provider\Service;
 
 
+use OpenCoders\Podb\PODBServices;
 use OpenCoders\Podb\Service\CategoryService;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
@@ -21,7 +22,7 @@ class CategoryServiceProvider implements ServiceProviderInterface
     public function register(Application $app)
     {
         $app['category'] = $app->share(function ($app) {
-            return new CategoryService($app['entityManager'], $app['project']);
+            return new CategoryService($app['entityManager'], $app[PODBServices::PROJECT_REPOSITORY]);
         });
     }
 

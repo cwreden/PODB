@@ -1,10 +1,10 @@
 <?php
 
-namespace OpenCoders\Podb\Provider\Service;
+namespace OpenCoders\Podb;
 
 
-use OpenCoders\Podb\PODBServices;
-use OpenCoders\Podb\Service\ProjectService;
+use Doctrine\ORM\EntityManager;
+use OpenCoders\Podb\Persistence\Entity\Project;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 
@@ -21,8 +21,10 @@ class ProjectServiceProvider implements ServiceProviderInterface
      */
     public function register(Application $app)
     {
-        $app['project'] = $app->share(function ($app) {
-            return new ProjectService($app['entityManager'], $app[PODBServices::LANGUAGE_REPOSITORY]);
+        $app[PODBServices::PROJECT_REPOSITORY] = $app->share(function ($pimple) {
+            /** @var EntityManager $orm */
+            $orm = $pimple['orm'];
+            return $orm->getRepository(Project::ENTITY_NAME);
         });
     }
 

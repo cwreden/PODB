@@ -6,6 +6,7 @@ namespace OpenCoders\Podb\Service;
 use Doctrine\ORM\EntityManager;
 use OpenCoders\Podb\Exception\MissingParameterException;
 use OpenCoders\Podb\Persistence\Entity\Category;
+use OpenCoders\Podb\Persistence\Repository\ProjectRepository;
 
 class CategoryService extends BaseEntityService
 {
@@ -15,14 +16,14 @@ class CategoryService extends BaseEntityService
     const ENTITY_NAME = 'OpenCoders\Podb\Persistence\Entity\Category';
 
     /**
-     * @var ProjectService
+     * @var ProjectRepository
      */
-    private $projectService;
+    private $projectRepository;
 
-    function __construct(EntityManager $entityManager, ProjectService $projectService)
+    function __construct(EntityManager $entityManager, ProjectRepository $projectRepository)
     {
         parent::__construct($entityManager, self::ENTITY_NAME);
-        $this->projectService = $projectService;
+        $this->projectRepository = $projectRepository;
     }
 
     /**
@@ -79,7 +80,7 @@ class CategoryService extends BaseEntityService
             } elseif ($key === 'category') {
                 $category->setCategory($value);
             } elseif ($key === 'project') {
-                $category->setProject($this->projectService->get($value));
+                $category->setProject($this->projectRepository->get($value));
             }
         }
 
@@ -108,7 +109,7 @@ class CategoryService extends BaseEntityService
             } elseif ($key === 'category') {
                 $category->setCategory($value);
             } elseif ($key === 'project') {
-                $category->setProject($this->projectService->get($value));
+                $category->setProject($this->projectRepository->get($value));
             }
         }
 

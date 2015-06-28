@@ -13,6 +13,7 @@ use OpenCoders\Podb\Exception\NothingToUpdatePodbException;
 class Project extends AbstractBaseEntity
 {
     // region attributes
+    const ENTITY_NAME = 'OpenCoders\Podb\Persistence\Entity\Project';
 
     /**
      * @var int

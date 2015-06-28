@@ -7,9 +7,9 @@ use Exception;
 use OpenCoders\Podb\Exception\PodbException;
 use OpenCoders\Podb\Persistence\Entity\Project;
 use OpenCoders\Podb\Persistence\Entity\User;
+use OpenCoders\Podb\Persistence\Repository\ProjectRepository;
 use OpenCoders\Podb\REST\v1\BaseController;
 use OpenCoders\Podb\Service\AuthenticationService;
-use OpenCoders\Podb\Service\ProjectService;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,19 +17,19 @@ use Symfony\Component\HttpFoundation\Request;
 class ProjectController extends BaseController
 {
     /**
-     * @var ProjectService
+     * @var ProjectRepository
      */
-    private $projectService;
+    private $projectRepository;
 
     /**
      * @var AuthenticationService
      */
     private $authenticationService;
 
-    function __construct(Application $app, ProjectService $projectService, AuthenticationService $authenticationService)
+    function __construct(Application $app, ProjectRepository $projectRepository, AuthenticationService $authenticationService)
     {
         parent::__construct($app);
-        $this->projectService = $projectService;
+        $this->projectRepository = $projectRepository;
         $this->authenticationService = $authenticationService;
     }
 
@@ -38,7 +38,7 @@ class ProjectController extends BaseController
      */
     public function getList()
     {
-        $projects = $this->projectService->getAll();
+        $projects = $this->projectRepository->getAll();
         $urlGenerator = $this->getUrlGenerator();
         $data = array();
 
@@ -66,9 +66,9 @@ class ProjectController extends BaseController
     public function get($projectName)
     {
         if ($this->isId($projectName)) {
-            $project = $this->projectService->get($projectName);
+            $project = $this->projectRepository->get($projectName);
         } else {
-            $project = $this->projectService->getByName($projectName);
+            $project = $this->projectRepository->getByName($projectName);
         }
 
         if ($project == null) {
@@ -104,9 +104,9 @@ class ProjectController extends BaseController
     public function getContributors($projectName)
     {
         if ($this->isId($projectName)) {
-            $project = $this->projectService->get($projectName);
+            $project = $this->projectRepository->get($projectName);
         } else {
-            $project = $this->projectService->getByName($projectName);
+            $project = $this->projectRepository->getByName($projectName);
         }
 
         if ($project == null) {
@@ -138,7 +138,7 @@ class ProjectController extends BaseController
      */
     public function getCategories($projectName)
     {
-        $project = $this->projectService->get($projectName);
+        $project = $this->projectRepository->get($projectName);
         $categories = $project->getCategories();
         $urlGenerator = $this->getUrlGenerator();
         $data = array();
@@ -184,8 +184,8 @@ class ProjectController extends BaseController
         $attributes = $request->request->all();
         $attributes['owner'] = $this->authenticationService->getCurrentUser();
         try {
-            $project = $this->projectService->create($attributes);
-            $this->projectService->flush();
+            $project = $this->projectRepository->create($attributes);
+            $this->projectRepository->flush();
         } catch (\Exception $e) {
             throw new Exception($e->getMessage(), 400);
         };
@@ -220,8 +220,8 @@ class ProjectController extends BaseController
 
         $attributes = $request->request->all();
         try {
-            $project = $this->projectService->update($id, $attributes);
-            $this->projectService->flush();
+            $project = $this->projectRepository->update($id, $attributes);
+            $this->projectRepository->flush();
         } catch (PodbException $e) {
             // TODO
             throw new Exception($e->getMessage(), 400);
@@ -254,8 +254,8 @@ class ProjectController extends BaseController
             throw new Exception('Invalid ID ' . $id, 400);
         }
 
-        $this->projectService->remove($id);
-        $this->projectService->flush();
+        $this->projectRepository->remove($id);
+        $this->projectRepository->flush();
 
         return new JsonResponse(array(
             'success' => true

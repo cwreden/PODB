@@ -3,6 +3,7 @@
 namespace OpenCoders\Podb\Provider\REST\v1;
 
 
+use OpenCoders\Podb\PODBServices;
 use OpenCoders\Podb\REST\v1\json\ProjectController;
 use Silex\Application;
 use Silex\ControllerCollection;
@@ -21,7 +22,7 @@ class ProjectControllerProvider implements ControllerProviderInterface
     public function connect(Application $app)
     {
         $app['rest.v1.json.project_controller'] = $app->share(function ($app) {
-            return new ProjectController($app, $app['project'], $app['authentication']);
+            return new ProjectController($app, $app[PODBServices::PROJECT_REPOSITORY], $app['authentication']);
         });
 
         /** @var ControllerCollection $controllers */
