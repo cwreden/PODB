@@ -17,7 +17,7 @@ use Silex\Provider\SwiftmailerServiceProvider;
 use Silex\Provider\TwigServiceProvider;
 use Silex\Provider\UrlGeneratorServiceProvider;
 
-class Application extends \Silex\Application
+class PODBApplication extends \Silex\Application
 {
     /**
      * @param array $values
