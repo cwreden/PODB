@@ -81,7 +81,7 @@ class TranslationController extends BaseController
             '_links' => array(
                 'self' => $urlGenerator->generate('rest.v1.json.translation.get', $urlParams),
                 'language' => $urlGenerator->generate('rest.v1.json.language.get', array('locale' => $translation->getLanguage()->getLocale())),
-                'dataSet' => $urlGenerator->generate('rest.v1.json.dataSet.get', array('id' => $translation->getDataSet()->getId()))
+                'dataSet' => $urlGenerator->generate('rest.v1.json.dataSet.get', array('id' => $translation->getMessage()->getId()))
             )
         ));
     }

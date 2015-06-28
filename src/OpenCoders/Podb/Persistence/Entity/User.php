@@ -21,7 +21,7 @@ class User extends AbstractBaseEntity
     protected $entityName = 'OpenCoders\Podb\Persistence\Entity\User';
 
     /**
-     * @var
+     * @var int
      * @Id
      * @GeneratedValue(strategy="AUTO")
      * @Column(type="integer")
@@ -29,75 +29,63 @@ class User extends AbstractBaseEntity
     private $id;
 
     /**
-     * @var
-     * @Column(type="string", unique=true, nullable=false)
-     */
-    private $username;
-
-    /**
-     * @var
+     * @var string
      * @Column(type="string")
      */
     private $displayName;
 
     /**
-     * @var
+     * @var boolean
      * @Column(type="boolean", nullable=false)
      */
     private $active = 0;
 
     /**
-     * @var
+     * @var string
      * @Column(type="string", unique=true, nullable=false)
      */
     private $email;
 
     /**
-     * @var bool
+     * @var boolean
      * @Column(type="boolean", nullable=false)
      */
     private $emailValidated = false;
 
     /**
-     * @var
-     * @Column(type="string", nullable=false)
-     */
-    private $password;
-
-    /**
-     * @var
+     * @var Project[]|ArrayCollection
      * @OneToMany(targetEntity="Project", mappedBy="owner")
      */
     private $ownedProjects;
 
     /**
-     * @var
+     * @var Project[]|ArrayCollection
      * @ManyToMany(targetEntity="Project", inversedBy="contributors")
      * @JoinTable(name="users_projects")
      */
     private $contributedProjects;
 
     /**
-     * @var
+     * @var Language[]|ArrayCollection
      * @ManyToMany(targetEntity="Language", inversedBy="supportedBy")
      * @JoinTable(name="users_languages")
      */
     private $supportedLanguages;
 
     /**
-     * @var
-     * @Column(type="string", nullable=true)
+     * @var Credential[]|ArrayCollection
+     * @OneToMany(targetEntity="Credential", mappedBy="user")
      */
-    private $gravatarEMail;
+    private $credentials;
 
     /**
-     * @var
+     * @var string
      * @Column(type="string", nullable=true)
      */
     private $publicEMail;
 
     /**
-     * @var
+     * @var string
      * @Column(type="string", nullable=true)
      */
     private $company;
@@ -112,6 +100,7 @@ class User extends AbstractBaseEntity
         $this->ownedProjects = new ArrayCollection();
         $this->contributedProjects = new ArrayCollection();
         $this->supportedLanguages = new ArrayCollection();
+        $this->credentials = new ArrayCollection();
 
         if (isset($data['username'])) {
             $this->setUsername($data['username']);
@@ -416,6 +405,23 @@ class User extends AbstractBaseEntity
     {
         return $this->supportedLanguages;
     }
+
+    /**
+     * @return Credential[]|ArrayCollection
+     */
+    public function getCredentials()
+    {
+        return $this->credentials;
+    }
+
+    /**
+     * @param Credential[]|ArrayCollection $credentials
+     */
+    public function setCredentials($credentials)
+    {
+        $this->credentials = $credentials;
+    }
+
 
     // endregion
 

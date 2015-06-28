@@ -69,7 +69,7 @@ class TranslationService extends BaseEntityService
 
         foreach ($attributes as $key => $value) {
             if ($key === 'dataSet') {
-                $translation->setDataSet($this->dataSetService->get($value));
+                $translation->setMessage($this->dataSetService->get($value));
             } elseif ($key === 'language') {
                 $translation->setLanguage($this->languageService->get($value));
             } elseif ($key === 'fuzzy') {
@@ -102,7 +102,7 @@ class TranslationService extends BaseEntityService
 
         foreach ($attributes as $key => $value) {
             if ($key === 'dataSet') {
-                $translation->setDataSet($this->dataSetService->get($value));
+                $translation->setMessage($this->dataSetService->get($value));
             } elseif ($key === 'language') {
                 $translation->setLanguage($this->languageService->get($value));
             } elseif ($key === 'fuzzy') {

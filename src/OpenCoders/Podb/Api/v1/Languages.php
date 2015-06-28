@@ -110,7 +110,7 @@ class Languages extends AbstractBaseApi
         try {
             $language = new Language();
             $language->setLocale($request_data['locale']);
-            $language->setName($request_data['name']);
+            $language->setLabel($request_data['name']);
 
             $em = $this->getEntityManager();
             $em->persist($language);

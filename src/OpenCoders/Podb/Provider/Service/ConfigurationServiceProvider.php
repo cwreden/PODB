@@ -20,7 +20,7 @@ class ConfigurationServiceProvider implements ServiceProviderInterface
      */
     public function register(Application $app)
     {
-        $app['configuration'] = $app->share(function ($app) {
+        $app['configuration'] = $app->share(function () {
             return new ConfigurationService();
         });
     }

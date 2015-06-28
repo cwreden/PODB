@@ -2,17 +2,20 @@
 
 namespace OpenCoders\Podb\Persistence\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+
 /**
  * Class Domain
- * @deprecated
  * @package OpenCoders\Podb\Persistence\Entity
  * @Entity(repositoryClass="OpenCoders\Podb\Persistence\Repository\DomainRepository")
  */
 class Domain extends AbstractBaseEntity
 {
 
+    // region attributes
+
     /**
-     * @var
+     * @var int
      * @Id
      * @GeneratedValue(strategy="AUTO")
      * @Column(type="integer")
@@ -20,23 +23,31 @@ class Domain extends AbstractBaseEntity
     protected $id;
 
     /**
-     * @var
+     * @var string
      * @Column(type="string", unique=true, nullable=false)
      */
     protected $name;
 
     /**
-     * @var
-     * @ManyToOne(targetEntity="Project")
-     * @Column(nullable=false)
-     */
-    protected $projectId;
-
-    /**
-     * @var
+     * @var string
      * @Column(type="text", nullable=true)
      */
     protected $description;
+
+    /**
+     * @var Project
+     * @ManyToOne(targetEntity="Project", inversedBy="domains")
+     * @JoinColumn(name="project_id", referencedColumnName="id")
+     */
+    protected $project;
+
+    /**
+     * @var Message[]|ArrayCollection
+     * @OneToMany(targetEntity="Message", mappedBy="domain")
+     */
+    protected $messages;
+
+    // endregion
 
     /**
      * @throws \Exception
@@ -119,11 +130,11 @@ class Domain extends AbstractBaseEntity
     }
 
     /**
-     * @param string $projectId
+     * @param string $project
      */
-    public function setProjectId($projectId)
+    public function setProjectId($project)
     {
-        $this->projectId = $projectId;
+        $this->project = $project;
     }
 
     /**
@@ -131,7 +142,7 @@ class Domain extends AbstractBaseEntity
      */
     public function getProjectId()
     {
-        return $this->projectId;
+        return $this->project;
     }
 
     /**

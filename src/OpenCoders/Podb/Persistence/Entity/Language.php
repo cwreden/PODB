@@ -16,7 +16,7 @@ class Language extends AbstractBaseEntity
     // region attributes
 
     /**
-     * @var
+     * @var int
      * @Id
      * @GeneratedValue(strategy="AUTO")
      * @Column(type="integer")
@@ -24,29 +24,36 @@ class Language extends AbstractBaseEntity
     protected $id;
 
     /**
-     * @var
+     * @var string
      * @Column(type="string", unique=true, nullable=false)
      */
-    protected $name;
+    protected $label;
 
     /**
-     * @var
+     * (de_DE, en_GB, ...)
+     * @var string
      * @Column(type="string", unique=true, nullable=false)
      */
     protected $locale;
 
     /**
-     * @var
+     * @var User[]|ArrayCollection
      * @ManyToMany(targetEntity="User", mappedBy="supportedLanguages")
      * @JoinTable(name="users_languages")
      */
     protected $supportedBy;
 
     /**
-     * @var
-     * @OneToMany(targetEntity="Project", mappedBy="default_language")
+     * @var Project[]|ArrayCollection
+     * @OneToMany(targetEntity="Project", mappedBy="defaultLanguage")
      */
     protected $projects;
+
+    /**
+     * @var Translation[]|ArrayCollection
+     * @OneToMany(targetEntity="Translation", mappedBy="language")
+     */
+    protected $translations;
 
     // endregion
 
@@ -54,6 +61,7 @@ class Language extends AbstractBaseEntity
     {
         $this->supportedBy = new ArrayCollection();
         $this->projects = new ArrayCollection();
+        $this->translations = new ArrayCollection();
     }
 
     // region getter and setter
@@ -69,9 +77,9 @@ class Language extends AbstractBaseEntity
     /**
      * @return string
      */
-    public function getName()
+    public function getLabel()
     {
-        return $this->name;
+        return $this->label;
     }
 
     /**
@@ -107,16 +115,16 @@ class Language extends AbstractBaseEntity
     }
 
     /**
-     * @param string $name
+     * @param string $label
      *
      * @throws EmptyParameterException
      */
-    public function setName($name)
+    public function setLabel($label)
     {
-        if ($name == null || $name == '') {
+        if ($label == null || $label == '') {
             throw new EmptyParameterException('Name not allowed to be empty.');
         }
-        $this->name = $name;
+        $this->label = $label;
     }
 
     /**
@@ -165,7 +173,7 @@ class Language extends AbstractBaseEntity
     {
         return array(
             'id' => $this->getId(),
-            'name' => $this->getName(),
+            'name' => $this->getLabel(),
             'locale' => $this->getLocale(),
 //            'createdBy' => $createdBy,
 //            'createDate' => $this->getCreateDate(),
@@ -181,7 +189,7 @@ class Language extends AbstractBaseEntity
     {
         return array(
             'id' => $this->getId(),
-            'name' => $this->getName(),
+            'name' => $this->getLabel(),
         );
     }
 
@@ -214,7 +222,7 @@ class Language extends AbstractBaseEntity
         }
         foreach ($data as $key => $value) {
             if ($key == 'name') {
-                $this->setName($value);
+                $this->setLabel($value);
             } else if ($key == 'locale') {
                 $this->setLocale($value);
             }

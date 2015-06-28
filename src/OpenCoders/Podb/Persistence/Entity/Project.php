@@ -15,7 +15,7 @@ class Project extends AbstractBaseEntity
     // region attributes
 
     /**
-     * @var
+     * @var int
      * @ID
      * @GeneratedValue(strategy="AUTO")
      * @Column(type="integer")
@@ -23,7 +23,7 @@ class Project extends AbstractBaseEntity
     protected $id;
 
     /**
-     * @var
+     * @var string
      * @Column(type="string", unique=true, nullable=false)
      */
     protected $name;
@@ -33,30 +33,36 @@ class Project extends AbstractBaseEntity
      * @ManyToOne(targetEntity="Language", inversedBy="projects")
      * @JoinColumn(name="default_language_id", referencedColumnName="id")
      */
-    protected $default_language;
+    protected $defaultLanguage;
 
     /**
-     * @var
+     * @var User
      * @ManyToOne(targetEntity="User", inversedBy="ownedProjects")
      * @JoinColumn(name="user_id", referencedColumnName="id")
      */
     protected $owner;
 
     /**
-     * @var
+     * @var User[]|ArrayCollection
      * @ManyToMany(targetEntity="User", mappedBy="contributedProjects")
      * @JoinTable(name="users_projects")
      */
     protected $contributors;
 
     /**
-     * @var
+     * @var Message[]|ArrayCollection
+     * @OneToMany(targetEntity="Message", mappedBy="project")
+     */
+    protected $messages;
+
+    /**
+     * @var boolean
      * @Column(type="boolean", nullable=false, options={"default" = 0})
      */
     protected $private = false;
 
     /**
-     * @var
+     * @var string
      * @Column(type="text", nullable=true)
      */
     protected $description;
@@ -64,16 +70,16 @@ class Project extends AbstractBaseEntity
     /**
      * Project web page
      *
-     * @var
+     * @var string
      * @Column(type="string", nullable=true)
      */
     private $url;
 
     /**
-     * @var
-     * @OneToMany(targetEntity="Category", mappedBy="project")
+     * @var Domain[]|ArrayCollection
+     * @OneToMany(targetEntity="Domain", mappedBy="project")
      */
-    protected $categories;
+    protected $domains;
 
     // endregion
 

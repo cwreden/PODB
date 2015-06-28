@@ -13,7 +13,7 @@ class Translation extends AbstractBaseEntity
     // region attributes
 
     /**
-     * @var
+     * @var int
      * @Id
      * @GeneratedValue(strategy="AUTO")
      * @Column(type="integer")
@@ -21,39 +21,39 @@ class Translation extends AbstractBaseEntity
     protected $id;
 
     /**
-     * @var
-     * @ManyToOne(targetEntity="DataSet", inversedBy="dataSets")
-     * @JoinColumn(name="dataSet_id", referencedColumnName="id")
+     * @var Message
+     * @ManyToOne(targetEntity="Message", inversedBy="translations")
+     * @JoinColumn(name="message_id", referencedColumnName="id")
      */
-    protected $dataSet;
+    protected $message;
 
     /**
-     * @var
-     * @ManyToOne(targetEntity="Language")
+     * @var Language
+     * @ManyToOne(targetEntity="Language", inversedBy="translations")
      * @JoinColumn(name="language_id", referencedColumnName="id")
      */
     protected $language;
 
     /**
-     * @var
+     * @var string
      * @Column(type="string", nullable=false)
      */
     protected $msgStr;
 
     /**
-     * @var
+     * @var string
      * @Column(type="string", nullable=true)
      */
     protected $msgStr1;
 
     /**
-     * @var
+     * @var string
      * @Column(type="string", nullable=true)
      */
     protected $msgStr2;
 
     /**
-     * @var
+     * @var boolean
      * @Column(type="boolean", nullable=false, options={"default" = 0})
      */
     protected $fuzzy = false;
@@ -183,19 +183,19 @@ class Translation extends AbstractBaseEntity
     }
 
     /**
-     * @param DataSet $dataSet
+     * @param DataSet $message
      */
-    public function setDataSet($dataSet)
+    public function setMessage($message)
     {
-        $this->dataSet = $dataSet;
+        $this->message = $message;
     }
 
     /**
      * @return DataSet
      */
-    public function getDataSet()
+    public function getMessage()
     {
-        return $this->dataSet;
+        return $this->message;
     }
 
     // endregion

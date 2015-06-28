@@ -61,7 +61,7 @@ class LanguageService extends BaseEntityService
 
         foreach ($attributes as $key => $value) {
             if ($key == 'name') {
-                $language->setName($value);
+                $language->setLabel($value);
             } else if ($key == 'locale') {
                 $language->setLocale($value);
             }
@@ -86,7 +86,7 @@ class LanguageService extends BaseEntityService
 
         foreach ($attributes as $key => $value) {
             if ($key == 'name') {
-                $language->setName($value);
+                $language->setLabel($value);
             } else if ($key == 'locale') {
                 $language->setLocale($value);
             }

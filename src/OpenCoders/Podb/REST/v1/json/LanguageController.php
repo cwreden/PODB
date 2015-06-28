@@ -47,7 +47,7 @@ class LanguageController extends BaseController
             $urlParams = array('locale' => $language->getLocale());
             $data[] = array(
                 'id' => $language->getId(),
-                'name' => $language->getName(),
+                'name' => $language->getLabel(),
                 'locale' => $language->getLocale(),
                 '_links' => array(
                     'self' => $urlGenerator->generate('rest.v1.json.language.get', $urlParams),
@@ -80,7 +80,7 @@ class LanguageController extends BaseController
 
         return new JsonResponse(array(
             'id' => $language->getId(),
-            'name' => $language->getName(),
+            'name' => $language->getLabel(),
             'locale' => $language->getLocale(),
             '_links' => array(
                 'self' => $urlGenerator->generate('rest.v1.json.language.get', $urlParams),
@@ -152,7 +152,7 @@ class LanguageController extends BaseController
 
         return new JsonResponse(array(
             'id' => $language->getId(),
-            'name' => $language->getName(),
+            'name' => $language->getLabel(),
             'locale' => $language->getLocale(),
             '_links' => array(
                 'self' => $urlGenerator->generate('rest.v1.json.language.get', $urlParams),
@@ -191,7 +191,7 @@ class LanguageController extends BaseController
 
         return new JsonResponse(array(
             'id' => $language->getId(),
-            'name' => $language->getName(),
+            'name' => $language->getLabel(),
             'locale' => $language->getLocale(),
             '_links' => array(
                 'self' => $urlGenerator->generate('rest.v1.json.language.get', $urlParams),

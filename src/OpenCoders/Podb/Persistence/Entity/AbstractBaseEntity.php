@@ -8,6 +8,11 @@ use OpenCoders\Podb\Persistence\Doctrine;
 use OpenCoders\Podb\Session\Session;
 use OpenCoders\Podb\Session\SessionManager;
 
+/**
+ * Class AbstractBaseEntity
+ * @package OpenCoders\Podb\Persistence\Entity
+ * @deprecated
+ */
 abstract class AbstractBaseEntity
 {
 
@@ -23,6 +28,7 @@ abstract class AbstractBaseEntity
 
     /**
      * @return array
+     * @deprecated
      */
     public function asArray()
     {
@@ -31,6 +37,7 @@ abstract class AbstractBaseEntity
 
     /**
      * @return array
+     * @deprecated
      */
     public function asShortArray()
     {
@@ -80,6 +87,7 @@ abstract class AbstractBaseEntity
 
     /**
      * @return string
+     * @deprecated
      */
     protected function getBaseAPIUrl()
     {
@@ -90,6 +98,7 @@ abstract class AbstractBaseEntity
      * Returns the actual Session
      * TODO wird dies genutzt???
      * @return Session
+     * @deprecated
      */
     protected function getSession()
     {
@@ -100,6 +109,7 @@ abstract class AbstractBaseEntity
      * Returns the EntityManager
      *
      * @return EntityManager
+     * @deprecated
      */
     protected function getEntityManager()
     {
