@@ -10,7 +10,6 @@ use OpenCoders\Podb\Provider\ACLServiceProvider;
 use OpenCoders\Podb\Provider\IndexControllerProvider;
 use OpenCoders\Podb\Provider\Service\AuthenticationServiceProvider;
 use OpenCoders\Podb\Provider\Service\CategoryServiceProvider;
-use OpenCoders\Podb\Provider\Service\DataSetServiceProvider;
 use Silex\Provider\DoctrineServiceProvider;
 use Silex\Provider\MonologServiceProvider;
 use Silex\Provider\ServiceControllerServiceProvider;
@@ -52,7 +51,7 @@ class Application extends \Silex\Application
         $this->register(new ProjectServiceProvider());
         $this->register(new LanguageServiceProvider());
         $this->register(new CategoryServiceProvider());
-        $this->register(new DataSetServiceProvider());
+        $this->register(new MessageServiceProvider());
         $this->register(new TranslationServiceProvider());
 
         $this->register(new ACLServiceProvider());

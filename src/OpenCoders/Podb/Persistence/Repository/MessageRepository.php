@@ -1,56 +1,41 @@
 <?php
 
-namespace OpenCoders\Podb\Service;
+namespace OpenCoders\Podb\Persistence\Repository;
 
+use OpenCoders\Podb\Exception\DeprecatedException;
+use OpenCoders\Podb\Persistence\Entity\Message;
 
-use Doctrine\ORM\EntityManager;
-use OpenCoders\Podb\Exception\MissingParameterException;
-use OpenCoders\Podb\Persistence\Entity\DataSet;
-
-class DataSetService extends BaseEntityService
+/**
+ * Class MessageRepository
+ * @package OpenCoders\Podb\Persistence\Repository
+ */
+class MessageRepository extends EntityRepositoryAbstract
 {
     /**
-     * @var string EntityClassName (FQN)
-     */
-    const ENTITY_NAME = 'OpenCoders\Podb\Persistence\Entity\DataSet';
-
-    /**
-     * @var CategoryService
-     */
-    private $categoryService;
-
-    function __construct(EntityManager $entityManager, CategoryService $categoryService)
-    {
-        parent::__construct($entityManager, self::ENTITY_NAME);
-        $this->categoryService = $categoryService;
-    }
-
-    /**
-     * @return DataSet[]
+     * @return Message[]
      */
     public function getAll()
     {
-        $repository = $this->getRepository();
-        return $repository->findAll();
+        return $this->findAll();
     }
 
     /**
      * @param $id
-     * @return null|DataSet
+     * @return null|Message
      */
     public function get($id)
     {
-        $repository = $this->getRepository();
-        return $repository->find($id);
+        return $this->find($id);
     }
 
     /**
      * @param $attributes
-     * @throws \OpenCoders\Podb\Exception\MissingParameterException
-     * @return DataSet
+     * @return Message
+     * @throws MissingParameterException
      */
     public function create($attributes)
     {
+        throw new DeprecatedException();
         $dataSet = new DataSet();
 
         if (!isset($attributes['category'])) {
@@ -78,10 +63,11 @@ class DataSetService extends BaseEntityService
      *
      * @param $id
      * @param $attributes
-     * @return null|DataSet
+     * @return null|Message
      */
     public function update($id, $attributes)
     {
+        throw new DeprecatedException();
         $dataSet = $this->get($id);
 
         foreach ($attributes as $key => $value) {
@@ -94,4 +80,4 @@ class DataSetService extends BaseEntityService
 
         return $dataSet;
     }
-} 
+}

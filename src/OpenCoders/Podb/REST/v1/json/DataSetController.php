@@ -8,30 +8,36 @@ use Exception;
 use OpenCoders\Podb\Exception\PodbException;
 use OpenCoders\Podb\Persistence\Entity\DataSet;
 use OpenCoders\Podb\Persistence\Entity\Translation;
+use OpenCoders\Podb\Persistence\Repository\MessageRepository;
 use OpenCoders\Podb\REST\v1\BaseController;
 use OpenCoders\Podb\Service\AuthenticationService;
-use OpenCoders\Podb\Service\DataSetService;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
+/**
+ * Class DataSetController
+ * @package OpenCoders\Podb\REST\v1\json
+ * @deprecated
+ * TODO refactor to message controller
+ */
 class DataSetController extends BaseController
 {
     /**
-     * @var DataSetService
+     * @var MessageRepository
      */
-    private $dataSetService;
+    private $messageRepository;
 
     /**
      * @var AuthenticationService
      */
     private $authenticationService;
 
-    function __construct(Application $app, DataSetService $dataSetService, AuthenticationService $authenticationService)
+    function __construct(Application $app, MessageRepository $messageRepository, AuthenticationService $authenticationService)
     {
         parent::__construct($app);
         $this->authenticationService = $authenticationService;
-        $this->dataSetService = $dataSetService;
+        $this->messageRepository = $messageRepository;
     }
 
     /**
@@ -39,7 +45,7 @@ class DataSetController extends BaseController
      */
     public function getList()
     {
-        $dataSets = $this->dataSetService->getAll();
+        $dataSets = $this->messageRepository->getAll();
         $urlGenerator = $this->getUrlGenerator();
         $data = array();
 
@@ -66,7 +72,7 @@ class DataSetController extends BaseController
      */
     public function get($id)
     {
-        $dataSet = $this->dataSetService->get($id);
+        $dataSet = $this->messageRepository->get($id);
 
         if ($dataSet == null) {
             throw new EntityNotFoundException("No dataSet found with identifier $id.", 404);
@@ -92,7 +98,7 @@ class DataSetController extends BaseController
      */
     public function getTranslations($id)
     {
-        $dataSet = $this->dataSetService->get($id);
+        $dataSet = $this->messageRepository->get($id);
 
         if ($dataSet == null) {
             throw new EntityNotFoundException("No dataSet found with identifier $id.", 404);
@@ -127,8 +133,8 @@ class DataSetController extends BaseController
         $this->authenticationService->ensureSession();
         $attributes = $request->request->all();
         try {
-            $dataSet = $this->dataSetService->create($attributes);
-            $this->dataSetService->flush();
+            $dataSet = $this->messageRepository->create($attributes);
+            $this->messageRepository->flush();
         } catch (\Exception $e) {
             throw new Exception($e->getMessage(), 400);
         };
@@ -163,8 +169,8 @@ class DataSetController extends BaseController
 
         $attributes = $request->request->all();
         try {
-            $dataSet = $this->dataSetService->update($id, $attributes);
-            $this->dataSetService->flush();
+            $dataSet = $this->messageRepository->update($id, $attributes);
+            $this->messageRepository->flush();
         } catch (PodbException $e) {
             // TODO
             throw new Exception($e->getMessage(), 400);
@@ -197,8 +203,8 @@ class DataSetController extends BaseController
             throw new \InvalidArgumentException('Invalid ID ' . $id, 400);
         }
 
-        $this->dataSetService->remove($id);
-        $this->dataSetService->flush();
+        $this->messageRepository->remove($id);
+        $this->messageRepository->flush();
 
         return new JsonResponse(array(
             'success' => true

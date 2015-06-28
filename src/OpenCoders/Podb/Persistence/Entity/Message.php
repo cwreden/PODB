@@ -12,6 +12,7 @@ class Message
 {
 
     // region attributes
+    const ENTITY_NAME = 'OpenCoders\Podb\Persistence\Entity\Message';
 
     /**
      * @var int

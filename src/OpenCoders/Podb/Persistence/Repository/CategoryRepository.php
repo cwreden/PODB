@@ -7,6 +7,7 @@ use Doctrine\ORM\EntityRepository;
 /**
  * Class CategoryRepository
  * @package OpenCoders\Podb\Persistence\Repository
+ * @deprecated
  */
 class CategoryRepository extends EntityRepository
 {

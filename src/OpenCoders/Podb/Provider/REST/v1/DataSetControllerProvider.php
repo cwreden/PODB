@@ -3,11 +3,18 @@
 namespace OpenCoders\Podb\Provider\REST\v1;
 
 
+use OpenCoders\Podb\PODBServices;
 use OpenCoders\Podb\REST\v1\json\DataSetController;
 use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\ControllerProviderInterface;
 
+/**
+ * Class DataSetControllerProvider
+ * @package OpenCoders\Podb\Provider\REST\v1
+ * @deprecated
+ * TODO refactor
+ */
 class DataSetControllerProvider implements ControllerProviderInterface
 {
 
@@ -21,7 +28,7 @@ class DataSetControllerProvider implements ControllerProviderInterface
     public function connect(Application $app)
     {
         $app['rest.v1.json.dataSet_controller'] = $app->share(function ($app) {
-            return new DataSetController($app, $app['dataSet'], $app['authentication']);
+            return new DataSetController($app, $app[PODBServices::MESSAGE_REPOSITORY], $app['authentication']);
         });
 
         /** @var ControllerCollection $controllers */

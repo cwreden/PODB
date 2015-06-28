@@ -11,4 +11,5 @@ class PODBServices
     const LANGUAGE_REPOSITORY = 'podb.repository.language';
     const TRANSLATION_REPOSITORY = 'podb.repository.translation';
     const PROJECT_REPOSITORY = 'podb.repository.project';
+    const MESSAGE_REPOSITORY = 'podb.repository.message';
 }

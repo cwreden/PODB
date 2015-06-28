@@ -1,13 +1,14 @@
 <?php
 
-namespace OpenCoders\Podb\Provider\Service;
+namespace OpenCoders\Podb;
 
 
-use OpenCoders\Podb\Service\DataSetService;
+use Doctrine\ORM\EntityManager;
+use OpenCoders\Podb\Persistence\Entity\Message;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 
-class DataSetServiceProvider implements ServiceProviderInterface
+class MessageServiceProvider implements ServiceProviderInterface
 {
 
     /**
@@ -20,8 +21,10 @@ class DataSetServiceProvider implements ServiceProviderInterface
      */
     public function register(Application $app)
     {
-        $app['dataSet'] = $app->share(function ($app) {
-            return new DataSetService($app['entityManager'], $app['category']);
+        $app[PODBServices::MESSAGE_REPOSITORY] = $app->share(function ($pimple) {
+            /** @var EntityManager $orm */
+            $orm = $pimple['orm'];
+            return $orm->getRepository(Message::ENTITY_NAME);
         });
     }
 
