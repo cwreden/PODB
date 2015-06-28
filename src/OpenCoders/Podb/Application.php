@@ -3,6 +3,7 @@
 namespace OpenCoders\Podb;
 
 
+use OpenCoders\Podb\Api\ResourceControllerProvider;
 use OpenCoders\Podb\Persistence\Doctrine;
 use OpenCoders\Podb\Provider\ACLServiceProvider;
 use OpenCoders\Podb\Provider\IndexControllerProvider;
@@ -92,16 +93,22 @@ class Application extends \Silex\Application
 
         // Page
         $this->mount('', new IndexControllerProvider());
+        // TODO login page
+        // TODO register page
+        // TODO profile page
+        // TODO project page
+        // TODO ...
 
         // REST
+        $this->mount('api/resource', new ResourceControllerProvider());
         $this->mount('/rest/v1', new \OpenCoders\Podb\Provider\REST\v1\UserControllerProvider());
         $this->mount('/rest/v1', new \OpenCoders\Podb\Provider\REST\v1\ProjectControllerProvider());
         $this->mount('/rest/v1', new \OpenCoders\Podb\Provider\REST\v1\LanguageControllerProvider());
-        $this->mount('/rest/v1', new \OpenCoders\Podb\Provider\REST\v1\CategoryControllerProvider());
-        $this->mount('/rest/v1', new \OpenCoders\Podb\Provider\REST\v1\DataSetControllerProvider());
+//        $this->mount('/rest/v1', new \OpenCoders\Podb\Provider\REST\v1\CategoryControllerProvider());
+//        $this->mount('/rest/v1', new \OpenCoders\Podb\Provider\REST\v1\DataSetControllerProvider());
         $this->mount('/rest/v1', new \OpenCoders\Podb\Provider\REST\v1\TranslationControllerProvider());
         $this->mount('/rest/v1', new \OpenCoders\Podb\Provider\REST\v1\AuditControllerProvider());
-        $this->mount('/rest/v1', new \OpenCoders\Podb\Provider\REST\v1\ACLControllerProvider());
+//        $this->mount('/rest/v1', new \OpenCoders\Podb\Provider\REST\v1\ACLControllerProvider());
         $this->mount('/rest/v1', new \OpenCoders\Podb\Provider\REST\v1\AuthenticationControllerProvider());
 
         /**
