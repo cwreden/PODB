@@ -23,7 +23,6 @@ class AuditServiceProvider implements ServiceProviderInterface
     {
         $app['audit.option.entityClasses'] = array(
             'OpenCoders\Podb\Persistence\Entity\User',
-            'OpenCoders\Podb\Persistence\Entity\Credential',
             'OpenCoders\Podb\Persistence\Entity\Language',
             'OpenCoders\Podb\Persistence\Entity\Project',
             'OpenCoders\Podb\Persistence\Entity\Domain',

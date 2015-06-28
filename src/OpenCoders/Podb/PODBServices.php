@@ -13,6 +13,5 @@ class PODBServices
     const TRANSLATION_REPOSITORY = 'podb.repository.translation';
     const PROJECT_REPOSITORY = 'podb.repository.project';
     const MESSAGE_REPOSITORY = 'podb.repository.message';
-    const CREDENTIAL_REPOSITORY = 'podb.repository.credential';
     const DOMAIN_REPOSITORY = 'podb.repository.domain';
 }

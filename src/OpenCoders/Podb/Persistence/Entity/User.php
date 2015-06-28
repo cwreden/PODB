@@ -18,11 +18,6 @@ class User
     // region attributes
 
     /**
-     * @var string EntityClassName (FQN)
-     */
-    protected $entityName = 'OpenCoders\Podb\Persistence\Entity\User';
-
-    /**
      * @var int
      * @Id
      * @GeneratedValue(strategy="AUTO")
@@ -34,13 +29,19 @@ class User
      * @var string
      * @Column(type="string")
      */
+    private $userName;
+
+    /**
+     * @var string
+     * @Column(type="string")
+     */
     private $displayName;
 
     /**
      * @var boolean
      * @Column(type="boolean", nullable=false)
      */
-    private $active = 0;
+    private $active = false;
 
     /**
      * @var string
@@ -53,6 +54,12 @@ class User
      * @Column(type="boolean", nullable=false)
      */
     private $emailValidated = false;
+
+    /**
+     * @var boolean
+     * @Column(type="boolean", nullable=false)
+     */
+    private $validated = false;
 
     /**
      * @var Project[]|ArrayCollection
@@ -75,10 +82,10 @@ class User
     private $supportedLanguages;
 
     /**
-     * @var Credential[]|ArrayCollection
-     * @OneToMany(targetEntity="Credential", mappedBy="user")
+     * @var string
+     * @Column(type="string", nullable=false)
      */
-    private $credentials;
+    private $password;
 
     /**
      * @var string
@@ -102,7 +109,6 @@ class User
         $this->ownedProjects = new ArrayCollection();
         $this->contributedProjects = new ArrayCollection();
         $this->supportedLanguages = new ArrayCollection();
-        $this->credentials = new ArrayCollection();
 
         if (isset($data['username'])) {
             $this->setUsername($data['username']);
@@ -111,6 +117,62 @@ class User
     }
 
     // region getter and setter
+
+    /**
+     * @return string
+     */
+    public function getUserName()
+    {
+        return $this->userName;
+    }
+
+    /**
+     * @param string $userName
+     * @throws EmptyParameterException
+     */
+    public function setUserName($userName)
+    {
+        if ($userName === null || $userName === '') {
+            throw new EmptyParameterException('Username not allowed to be empty.');
+        }
+        $this->userName = $userName;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPassword()
+    {
+        return $this->password;
+    }
+
+    /**
+     * @param string $password
+     * @throws EmptyParameterException
+     */
+    public function setPassword($password)
+    {
+        if ($password === null || $password === '') {
+            throw new EmptyParameterException('Password not allowed to be empty.');
+        }
+        $this->password = $password;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isValidated()
+    {
+        return $this->validated;
+    }
+
+    /**
+     * @param boolean $validated
+     */
+    public function setValidated($validated)
+    {
+        $this->validated = $validated;
+    }
 
     /**
      * @param ArrayCollection $ownedProjects
@@ -161,39 +223,6 @@ class User
     }
 
     /**
-     * @param string $entityName
-     */
-    public function setEntityName($entityName)
-    {
-        $this->entityName = $entityName;
-    }
-
-    /**
-     * @return string
-     * @deprecated
-     */
-    public function getEntityName()
-    {
-        return $this->entityName;
-    }
-
-    /**
-     * @param string $gravatarEMail
-     */
-    public function setGravatarEMail($gravatarEMail)
-    {
-        $this->gravatarEMail = $gravatarEMail;
-    }
-
-    /**
-     * @return string
-     */
-    public function getGravatarEMail()
-    {
-        return $this->gravatarEMail;
-    }
-
-    /**
      * @param string $publicEMail
      */
     public function setPublicEMail($publicEMail)
@@ -218,7 +247,7 @@ class User
      */
     public function setEmail($email)
     {
-        if ($email == null || $email == '') {
+        if ($email === null || $email === '') {
             throw new EmptyParameterException('EMail not allowed to be empty.');
         }
         $this->email = $email;
@@ -238,52 +267,6 @@ class User
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * @param string $username
-     *
-     * @throws EmptyParameterException
-     *
-     * @return void
-     */
-    public function setUsername($username)
-    {
-        if ($username == null || $username == '') {
-            throw new EmptyParameterException('Username not allowed to be empty.');
-        }
-        $this->username = $username;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getUsername()
-    {
-        return $this->username;
-    }
-
-    /**
-     * @param string $password
-     *
-     * @throws EmptyParameterException
-     *
-     * @return void
-     */
-    public function setPassword($password)
-    {
-        if ($password == null || $password == '') {
-            throw new EmptyParameterException('Password not allowed to be empty.');
-        }
-        $this->password = $password;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getPassword()
-    {
-        return $this->password;
     }
 
     /**
@@ -381,7 +364,7 @@ class User
     {
         if ($supportedLanguages instanceof ArrayCollection) {
             $this->supportedLanguages = $supportedLanguages;
-        } else if ($supportedLanguages == null) {
+        } else if ($supportedLanguages === null) {
             $this->supportedLanguages = null;
         } else if (is_string($supportedLanguages) && $supportedLanguages !== '') {
 
@@ -407,22 +390,6 @@ class User
     public function getSupportedLanguages()
     {
         return $this->supportedLanguages;
-    }
-
-    /**
-     * @return Credential[]|ArrayCollection
-     */
-    public function getCredentials()
-    {
-        return $this->credentials;
-    }
-
-    /**
-     * @param Credential[]|ArrayCollection $credentials
-     */
-    public function setCredentials($credentials)
-    {
-        $this->credentials = $credentials;
     }
 
     // endregion
@@ -490,7 +457,7 @@ class User
      */
     public function update($data)
     {
-        if ($data == null) {
+        if ($data === null) {
             throw new PodbException('There is nothing to update.');
         }
         $this->setBulk($data);
@@ -505,7 +472,7 @@ class User
      */
     public function checkPassword($password)
     {
-        return $this->password == sha1($password);
+        return $this->password === sha1($password);
     }
 
     /**
@@ -519,23 +486,23 @@ class User
     private function setBulk($data)
     {
         foreach ($data as $key => $value) {
-            if ($key == 'displayName') {
+            if ($key === 'displayName') {
                 $this->setDisplayName($value);
-            } else if ($key == 'email') {
+            } else if ($key === 'email') {
                 $this->setEmail($value);
-            } else if ($key == 'password') {
+            } else if ($key === 'password') {
                 $this->setPassword(sha1($value));
-            } else if ($key == 'active') {
+            } else if ($key === 'active') {
                 $this->setActive($value);
-            } else if ($key == 'gravatarEMail') {
+            } else if ($key === 'gravatarEMail') {
                 $this->setGravatarEMail($value);
-            } else if ($key == 'company') {
+            } else if ($key === 'company') {
                 $this->setCompany($value);
-            } else if ($key == 'publicEMail') {
+            } else if ($key === 'publicEMail') {
                 $this->setPublicEMail($value);
-            } else if ($key == 'supportedLanguages') {
+            } else if ($key === 'supportedLanguages') {
                 $this->setSupportedLanguages($value);
-            } else if ($key == 'emailValidated') {
+            } else if ($key === 'emailValidated') {
                 $this->setEmailValidated($value);
             }
         }

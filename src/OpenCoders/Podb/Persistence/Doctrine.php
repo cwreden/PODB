@@ -68,7 +68,7 @@ class Doctrine
 //            $config->setMetadataCacheImpl($cache);
 //            $config->setQueryCacheImpl($cache);
 
-            self::$em = EntityManager::create($dbParams['dbs.option'], $config, self::getEventManager());
+            self::$em = EntityManager::create($dbParams['db.options'], $config, self::getEventManager());
         }
 
         return self::$em;
@@ -84,7 +84,6 @@ class Doctrine
             $auditConfig = new AuditConfiguration();
             $auditConfig->setAuditedEntityClasses(array(
                 'OpenCoders\Podb\Persistence\Entity\User',
-                'OpenCoders\Podb\Persistence\Entity\Credential',
                 'OpenCoders\Podb\Persistence\Entity\Language',
                 'OpenCoders\Podb\Persistence\Entity\Project',
                 'OpenCoders\Podb\Persistence\Entity\Domain',

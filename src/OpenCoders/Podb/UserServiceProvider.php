@@ -4,7 +4,6 @@ namespace OpenCoders\Podb;
 
 
 use Doctrine\ORM\EntityManager;
-use OpenCoders\Podb\Persistence\Entity\Credential;
 use OpenCoders\Podb\Persistence\Entity\User;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
@@ -26,11 +25,6 @@ class UserServiceProvider implements ServiceProviderInterface
             /** @var EntityManager $orm */
             $orm = $pimple['orm'];
             return $orm->getRepository(User::ENTITY_NAME);
-        });
-        $app[PODBServices::CREDENTIAL_REPOSITORY] = $app->share(function ($pimple) {
-            /** @var EntityManager $orm */
-            $orm = $pimple['orm'];
-            return $orm->getRepository(Credential::ENTITY_NAME);
         });
     }
 
