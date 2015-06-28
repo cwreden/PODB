@@ -14,6 +14,7 @@ use OpenCoders\Podb\Exception\PodbException;
 class Language extends AbstractBaseEntity
 {
     // region attributes
+    const ENTITY_NAME = 'OpenCoders\Podb\Persistence\Entity\Language';
 
     /**
      * @var int

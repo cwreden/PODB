@@ -3,7 +3,9 @@
 namespace OpenCoders\Podb\Provider\Service;
 
 
-use OpenCoders\Podb\Service\LanguageService;
+use Doctrine\ORM\EntityManager;
+use OpenCoders\Podb\Persistence\Entity\Language;
+use OpenCoders\Podb\PODBServices;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 
@@ -20,9 +22,12 @@ class LanguageServiceProvider implements ServiceProviderInterface
      */
     public function register(Application $app)
     {
-        $app['language'] = $app->share(function ($app) {
-            return new LanguageService($app['entityManager']);
+        $app[PODBServices::LANGUAGE_REPOSITORY] = $app->share(function ($pimple) {
+            /** @var EntityManager $orm */
+            $orm = $pimple['orm'];
+            return $orm->getRepository(Language::ENTITY_NAME);
         });
+
     }
 
     /**

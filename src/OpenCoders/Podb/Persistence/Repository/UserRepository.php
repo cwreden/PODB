@@ -2,11 +2,10 @@
 
 namespace OpenCoders\Podb\Persistence\Repository;
 
-use Doctrine\ORM\EntityRepository;
 use Luracast\Restler\RestException;
 use OpenCoders\Podb\Persistence\Entity\User;
 
-class UserRepository extends EntityRepository
+class UserRepository extends EntityRepositoryAbstract
 {
 
     /**

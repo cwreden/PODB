@@ -3,6 +3,7 @@
 namespace OpenCoders\Podb\Provider\Service;
 
 
+use OpenCoders\Podb\PODBServices;
 use OpenCoders\Podb\Service\ProjectService;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
@@ -21,7 +22,7 @@ class ProjectServiceProvider implements ServiceProviderInterface
     public function register(Application $app)
     {
         $app['project'] = $app->share(function ($app) {
-            return new ProjectService($app['entityManager'], $app['language']);
+            return new ProjectService($app['entityManager'], $app[PODBServices::LANGUAGE_REPOSITORY]);
         });
     }
 

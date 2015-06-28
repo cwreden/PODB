@@ -3,6 +3,7 @@
 namespace OpenCoders\Podb\Provider\REST\v1;
 
 
+use OpenCoders\Podb\PODBServices;
 use OpenCoders\Podb\REST\v1\json\LanguageController;
 use Silex\Application;
 use Silex\ControllerCollection;
@@ -21,7 +22,7 @@ class LanguageControllerProvider implements ControllerProviderInterface
     public function connect(Application $app)
     {
         $app['rest.v1.json.language_controller'] = $app->share(function ($app) {
-            return new LanguageController($app, $app['language'], $app['authentication']);
+            return new LanguageController($app, $app[PODBServices::LANGUAGE_REPOSITORY], $app['authentication']);
         });
 
         /** @var ControllerCollection $controllers */

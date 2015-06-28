@@ -3,6 +3,7 @@
 namespace OpenCoders\Podb\Provider\Service;
 
 
+use OpenCoders\Podb\PODBServices;
 use OpenCoders\Podb\Service\TranslationService;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
@@ -21,7 +22,7 @@ class TranslationServiceProvider implements ServiceProviderInterface
     public function register(Application $app)
     {
         $app['translation'] = $app->share(function ($app) {
-            return new TranslationService($app['entityManager'], $app['dataSet'], $app['language']);
+            return new TranslationService($app['entityManager'], $app['dataSet'], $app[PODBServices::LANGUAGE_REPOSITORY]);
         });
     }
 

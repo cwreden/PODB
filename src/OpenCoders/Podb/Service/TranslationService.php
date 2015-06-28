@@ -6,6 +6,7 @@ namespace OpenCoders\Podb\Service;
 use Doctrine\ORM\EntityManager;
 use OpenCoders\Podb\Exception\MissingParameterException;
 use OpenCoders\Podb\Persistence\Entity\Translation;
+use OpenCoders\Podb\Persistence\Repository\LanguageRepository;
 
 class TranslationService extends BaseEntityService
 {
@@ -20,15 +21,15 @@ class TranslationService extends BaseEntityService
     private $dataSetService;
 
     /**
-     * @var LanguageService
+     * @var LanguageRepository
      */
-    private $languageService;
+    private $languageRepository;
 
-    function __construct(EntityManager $entityManager, DataSetService $dataSetService, LanguageService $languageService)
+    function __construct(EntityManager $entityManager, DataSetService $dataSetService, LanguageRepository $languageRepository)
     {
         parent::__construct($entityManager, self::ENTITY_NAME);
         $this->dataSetService = $dataSetService;
-        $this->languageService = $languageService;
+        $this->languageRepository = $languageRepository;
     }
 
     /**
@@ -71,7 +72,7 @@ class TranslationService extends BaseEntityService
             if ($key === 'dataSet') {
                 $translation->setMessage($this->dataSetService->get($value));
             } elseif ($key === 'language') {
-                $translation->setLanguage($this->languageService->get($value));
+                $translation->setLanguage($this->languageRepository->get($value));
             } elseif ($key === 'fuzzy') {
                 $translation->setFuzzy($value);
             } else if ($key === 'msgStr') {
@@ -104,7 +105,7 @@ class TranslationService extends BaseEntityService
             if ($key === 'dataSet') {
                 $translation->setMessage($this->dataSetService->get($value));
             } elseif ($key === 'language') {
-                $translation->setLanguage($this->languageService->get($value));
+                $translation->setLanguage($this->languageRepository->get($value));
             } elseif ($key === 'fuzzy') {
                 $translation->setFuzzy($value);
             } else if ($key === 'msgStr') {

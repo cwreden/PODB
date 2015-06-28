@@ -6,6 +6,7 @@ namespace OpenCoders\Podb\Service;
 use Doctrine\ORM\EntityManager;
 use OpenCoders\Podb\Exception\MissingParameterException;
 use OpenCoders\Podb\Persistence\Entity\Project;
+use OpenCoders\Podb\Persistence\Repository\LanguageRepository;
 
 class ProjectService extends BaseEntityService
 {
@@ -15,14 +16,14 @@ class ProjectService extends BaseEntityService
     const ENTITY_NAME = 'OpenCoders\Podb\Persistence\Entity\Project';
 
     /**
-     * @var LanguageService
+     * @var LanguageRepository
      */
-    private $languageService;
+    private $languageRepository;
 
-    function __construct(EntityManager $entityManager, LanguageService $languageService)
+    function __construct(EntityManager $entityManager, LanguageRepository $languageRepository)
     {
         parent::__construct($entityManager, self::ENTITY_NAME);
-        $this->languageService = $languageService;
+        $this->languageRepository = $languageRepository;
     }
 
     /**
@@ -88,7 +89,7 @@ class ProjectService extends BaseEntityService
                 // TODO
 //                $project->setContributors($value);
             } elseif ($key === 'default_language') {
-                $project->setDefaultLanguage($this->languageService->get($value));
+                $project->setDefaultLanguage($this->languageRepository->get($value));
             }
         }
 
@@ -119,7 +120,7 @@ class ProjectService extends BaseEntityService
             } else if ($key === 'blog') {
                 $project->setUrl(sha1($value));
             } elseif ($key === 'default_language') {
-                $project->setDefaultLanguage($this->languageService->get($value));
+                $project->setDefaultLanguage($this->languageRepository->get($value));
             }
         }
 

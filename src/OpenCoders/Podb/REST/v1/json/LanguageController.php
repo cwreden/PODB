@@ -7,9 +7,9 @@ use Exception;
 use OpenCoders\Podb\Exception\PodbException;
 use OpenCoders\Podb\Persistence\Entity\Language;
 use OpenCoders\Podb\Persistence\Entity\User;
+use OpenCoders\Podb\Persistence\Repository\LanguageRepository;
 use OpenCoders\Podb\REST\v1\BaseController;
 use OpenCoders\Podb\Service\AuthenticationService;
-use OpenCoders\Podb\Service\LanguageService;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,19 +17,19 @@ use Symfony\Component\HttpFoundation\Request;
 class LanguageController extends BaseController
 {
     /**
-     * @var LanguageService
+     * @var LanguageRepository
      */
-    private $languageService;
+    private $languageRepository;
 
     /**
      * @var AuthenticationService
      */
     private $authenticationService;
 
-    function __construct(Application $app, LanguageService $languageService, AuthenticationService $authenticationService)
+    function __construct(Application $app, LanguageRepository $languageRepository, AuthenticationService $authenticationService)
     {
         parent::__construct($app);
-        $this->languageService = $languageService;
+        $this->languageRepository = $languageRepository;
         $this->authenticationService = $authenticationService;
     }
 
@@ -38,7 +38,7 @@ class LanguageController extends BaseController
      */
     public function getList()
     {
-        $languages = $this->languageService->getAll();
+        $languages = $this->languageRepository->getAll();
         $urlGenerator = $this->getUrlGenerator();
         $data = array();
 
@@ -67,9 +67,9 @@ class LanguageController extends BaseController
     public function get($locale)
     {
         if ($this->isId($locale)) {
-            $language = $this->languageService->get($locale);
+            $language = $this->languageRepository->get($locale);
         } else {
-            $language = $this->languageService->getByLocale($locale);
+            $language = $this->languageRepository->getByLocale($locale);
         }
 
         if ($language == null) {
@@ -99,9 +99,9 @@ class LanguageController extends BaseController
     public function getSupporters($locale)
     {
         if ($this->isId($locale)) {
-            $language = $this->languageService->get($locale);
+            $language = $this->languageRepository->get($locale);
         } else {
-            $language = $this->languageService->getByLocale($locale);
+            $language = $this->languageRepository->getByLocale($locale);
         }
 
         if ($language == null) {
@@ -141,8 +141,8 @@ class LanguageController extends BaseController
         $this->authenticationService->ensureSession();
         $attributes = $request->request->all();
         try {
-            $language = $this->languageService->create($attributes);
-            $this->languageService->flush();
+            $language = $this->languageRepository->create($attributes);
+            $this->languageRepository->flush();
         } catch (\Exception $e) {
             throw new Exception($e->getMessage(), 400);
         };
@@ -179,8 +179,8 @@ class LanguageController extends BaseController
 
         $attributes = $request->request->all();
         try {
-            $language = $this->languageService->update($id, $attributes);
-            $this->languageService->flush();
+            $language = $this->languageRepository->update($id, $attributes);
+            $this->languageRepository->flush();
         } catch (PodbException $e) {
             // TODO
             throw new Exception($e->getMessage(), 400);
@@ -215,8 +215,8 @@ class LanguageController extends BaseController
             throw new Exception('Invalid ID ' . $id, 400);
         }
 
-        $this->languageService->remove($id);
-        $this->languageService->flush();
+        $this->languageRepository->remove($id);
+        $this->languageRepository->flush();
 
         return new JsonResponse(array(
             'success' => true
