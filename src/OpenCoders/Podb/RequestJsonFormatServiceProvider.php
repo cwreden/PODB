@@ -1,19 +1,13 @@
 <?php
 
-namespace OpenCoders\Podb\Provider\Service;
+namespace OpenCoders\Podb;
 
 
-use OpenCoders\Podb\Configuration\ConfigurationService;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
+use Symfony\Component\HttpFoundation\Request;
 
-/**
- * TODO refactor
- * @deprecated
- * Class ConfigurationServiceProvider
- * @package OpenCoders\Podb\Provider\Service
- */
-class ConfigurationServiceProvider implements ServiceProviderInterface
+class RequestJsonFormatServiceProvider implements ServiceProviderInterface
 {
 
     /**
@@ -26,8 +20,13 @@ class ConfigurationServiceProvider implements ServiceProviderInterface
      */
     public function register(Application $app)
     {
-        $app['configuration'] = $app->share(function () {
-            return new ConfigurationService();
+        /**
+         * Put payload to request part
+         */
+        $app->before(function (Request $request) {
+            if ($request->getContentType() === 'json') {
+                $request->request->add(json_decode($request->getContent(), true));
+            }
         });
     }
 
