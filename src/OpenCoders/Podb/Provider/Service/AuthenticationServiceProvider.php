@@ -3,6 +3,7 @@
 namespace OpenCoders\Podb\Provider\Service;
 
 
+use OpenCoders\Podb\PODBServices;
 use OpenCoders\Podb\Service\AuthenticationService;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
@@ -21,7 +22,7 @@ class AuthenticationServiceProvider implements ServiceProviderInterface
     public function register(Application $app)
     {
         $app['authentication'] = $app->share(function ($app) {
-            return new AuthenticationService($app['session'], $app['user']);
+            return new AuthenticationService($app['session'], $app[PODBServices::USER_REPOSITORY]);
         });
     }
 

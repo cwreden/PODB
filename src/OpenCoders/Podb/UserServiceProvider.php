@@ -1,11 +1,10 @@
 <?php
 
-namespace OpenCoders\Podb\Provider\Service;
+namespace OpenCoders\Podb;
 
 
-use OpenCoders\Podb\Persistence\Doctrine;
-use OpenCoders\Podb\REST\v1\UserController;
-use OpenCoders\Podb\Service\UserService;
+use Doctrine\ORM\EntityManager;
+use OpenCoders\Podb\Persistence\Entity\User;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 
@@ -22,8 +21,10 @@ class UserServiceProvider implements ServiceProviderInterface
      */
     public function register(Application $app)
     {
-        $app['user'] = $app->share(function ($app) {
-            return new UserService($app['entityManager']);
+        $app[PODBServices::USER_REPOSITORY] = $app->share(function ($pimple) {
+            /** @var EntityManager $orm */
+            $orm = $pimple['orm'];
+            return $orm->getRepository(User::ENTITY_NAME);
         });
     }
 

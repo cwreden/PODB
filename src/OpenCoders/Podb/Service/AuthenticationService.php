@@ -7,6 +7,7 @@ use OpenCoders\Podb\Exception\AuthenticationRequiredException;
 use OpenCoders\Podb\Exception\InactiveUserAccountException;
 use OpenCoders\Podb\Exception\InvalidUsernamePasswordCombinationException;
 use OpenCoders\Podb\Persistence\Entity\User;
+use OpenCoders\Podb\Persistence\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class AuthenticationService
@@ -17,14 +18,14 @@ class AuthenticationService
     private $session;
 
     /**
-     * @var UserService
+     * @var UserRepository
      */
-    private $userService;
+    private $userRepository;
 
-    function __construct($session, $userService)
+    function __construct($session, UserRepository $userRepository)
     {
         $this->session = $session;
-        $this->userService = $userService;
+        $this->userRepository = $userRepository;
     }
 
     /**
@@ -56,7 +57,7 @@ class AuthenticationService
     public function authenticateUser($username, $password)
     {
         /** @var User $user */
-        $user = $this->userService->getByName($username);
+        $user = $this->userRepository->getByName($username);
 
         if ($user == null || !$user->checkPassword($password)) {
             throw new InvalidUsernamePasswordCombinationException();
@@ -85,7 +86,7 @@ class AuthenticationService
     public function getCurrentUser()
     {
         $this->ensureSession();
-        return $this->userService->get($this->session->get('userId'));
+        return $this->userRepository->get($this->session->get('userId'));
     }
 
     /**

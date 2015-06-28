@@ -3,6 +3,7 @@
 namespace OpenCoders\Podb\Provider\REST\v1;
 
 
+use OpenCoders\Podb\PODBServices;
 use OpenCoders\Podb\REST\v1\json\UserController;
 use Silex\Application;
 use Silex\ControllerCollection;
@@ -21,7 +22,7 @@ class UserControllerProvider implements ControllerProviderInterface
     public function connect(Application $app)
     {
         $app['rest.v1.json.user_controller'] = $app->share(function ($app) {
-            return new UserController($app, $app['user'], $app['authentication']);
+            return new UserController($app, $app[PODBServices::USER_REPOSITORY], $app['authentication']);
         });
 
         /** @var ControllerCollection $controllers */

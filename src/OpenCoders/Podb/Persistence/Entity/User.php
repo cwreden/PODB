@@ -13,6 +13,8 @@ use OpenCoders\Podb\Exception\PodbException;
  */
 class User extends AbstractBaseEntity
 {
+    const ENTITY_NAME = 'OpenCoders\Podb\Persistence\Entity\User';
+
     // region attributes
 
     /**
@@ -422,7 +424,6 @@ class User extends AbstractBaseEntity
     {
         $this->credentials = $credentials;
     }
-
 
     // endregion
 

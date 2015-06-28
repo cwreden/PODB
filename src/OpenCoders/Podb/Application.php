@@ -16,7 +16,6 @@ use OpenCoders\Podb\Provider\Service\LanguageServiceProvider;
 use OpenCoders\Podb\Provider\Service\ProjectServiceProvider;
 use OpenCoders\Podb\Provider\Service\RequestRateLimitServiceProvider;
 use OpenCoders\Podb\Provider\Service\TranslationServiceProvider;
-use OpenCoders\Podb\Provider\Service\UserServiceProvider;
 use Silex\Provider\DoctrineServiceProvider;
 use Silex\Provider\MonologServiceProvider;
 use Silex\Provider\ServiceControllerServiceProvider;
@@ -24,7 +23,6 @@ use Silex\Provider\SessionServiceProvider;
 use Silex\Provider\SwiftmailerServiceProvider;
 use Silex\Provider\TwigServiceProvider;
 use Silex\Provider\UrlGeneratorServiceProvider;
-use Symfony\Component\HttpFoundation\Request;
 
 class Application extends \Silex\Application
 {

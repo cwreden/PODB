@@ -8,9 +8,9 @@ use OpenCoders\Podb\Exception\PodbException;
 use OpenCoders\Podb\Persistence\Entity\Language;
 use OpenCoders\Podb\Persistence\Entity\Project;
 use OpenCoders\Podb\Persistence\Entity\User;
+use OpenCoders\Podb\Persistence\Repository\UserRepository;
 use OpenCoders\Podb\REST\v1\BaseController;
 use OpenCoders\Podb\Service\AuthenticationService;
-use OpenCoders\Podb\Service\UserService;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,19 +18,19 @@ use Symfony\Component\HttpFoundation\Request;
 class UserController extends BaseController
 {
     /**
-     * @var UserService
+     * @var UserRepository
      */
-    private $userService;
+    private $userRepository;
 
     /**
      * @var AuthenticationService
      */
     private $authenticationService;
 
-    function __construct(Application $app, UserService $userService, AuthenticationService $authenticationService)
+    function __construct(Application $app, UserRepository $userRepository, AuthenticationService $authenticationService)
     {
         parent::__construct($app);
-        $this->userService = $userService;
+        $this->userRepository = $userRepository;
         $this->authenticationService = $authenticationService;
     }
 
@@ -39,7 +39,7 @@ class UserController extends BaseController
      */
     public function getList()
     {
-        $users = $this->userService->getList();
+        $users = $this->userRepository->getList();
         $urlGenerator = $this->getUrlGenerator();
         $data = array();
 
@@ -68,9 +68,9 @@ class UserController extends BaseController
     public function get($userName)
     {
         if ($this->isId($userName)) {
-            $user = $this->userService->get($userName);
+            $user = $this->userRepository->get($userName);
         } else {
-            $user = $this->userService->getByName($userName);
+            $user = $this->userRepository->getByName($userName);
         }
 
         if ($user == null) {
@@ -106,9 +106,9 @@ class UserController extends BaseController
     public function getProjects($userName)
     {
         if ($this->isId($userName)) {
-            $user = $this->userService->get($userName);
+            $user = $this->userRepository->get($userName);
         } else {
-            $user = $this->userService->getByName($userName);
+            $user = $this->userRepository->getByName($userName);
         }
 
         if ($user == null) {
@@ -135,9 +135,9 @@ class UserController extends BaseController
     public function getOwnedProjects($userName)
     {
         if ($this->isId($userName)) {
-            $user = $this->userService->get($userName);
+            $user = $this->userRepository->get($userName);
         } else {
-            $user = $this->userService->getByName($userName);
+            $user = $this->userRepository->getByName($userName);
         }
 
         if ($user == null) {
@@ -164,9 +164,9 @@ class UserController extends BaseController
     public function getLanguages($userName)
     {
         if ($this->isId($userName)) {
-            $user = $this->userService->get($userName);
+            $user = $this->userRepository->get($userName);
         } else {
-            $user = $this->userService->getByName($userName);
+            $user = $this->userRepository->getByName($userName);
         }
 
         if ($user == null) {
@@ -265,8 +265,8 @@ class UserController extends BaseController
         $this->authenticationService->ensureSession();
         $attributes = $request->request->all();
         try {
-            $user = $this->userService->create($attributes);
-            $this->userService->flush();
+            $user = $this->userRepository->create($attributes);
+            $this->userRepository->flush();
         } catch (\Exception $e) {
             throw new Exception($e->getMessage(), 400);
         };
@@ -302,8 +302,8 @@ class UserController extends BaseController
 
         $attributes = $request->request->all();
         try {
-            $user = $this->userService->update($id, $attributes);
-            $this->userService->flush();
+            $user = $this->userRepository->update($id, $attributes);
+            $this->userRepository->flush();
         } catch (PodbException $e) {
             // TODO
             throw new Exception($e->getMessage(), 400);
@@ -337,8 +337,8 @@ class UserController extends BaseController
             throw new Exception('Invalid ID ' . $id, 400);
         }
 
-        $this->userService->remove($id);
-        $this->userService->flush();
+        $this->userRepository->remove($id);
+        $this->userRepository->flush();
 
         return new JsonResponse(array(
             'success' => true
@@ -359,8 +359,8 @@ class UserController extends BaseController
             'email' => $request->request->get('email'),
             'active' => 1 // TODO FEATURE konfigurierbar machen
         );
-        $user = $this->userService->create($attributes);
-        $this->userService->flush();
+        $user = $this->userRepository->create($attributes);
+        $this->userRepository->flush();
 
         $urlGenerator = $this->getUrlGenerator();
         $urlParams = array('userName' => $user->getUsername());
