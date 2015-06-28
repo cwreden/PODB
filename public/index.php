@@ -5,7 +5,7 @@ define ("APPLICATION_ROOT", realpath(__DIR__."/.."));
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-$app = new Application(array(
-    'debug' => true
-));
+$configuration = include(__DIR__ . '/../config/podb.config.php');
+
+$app = new Application($configuration);
 $app->run();

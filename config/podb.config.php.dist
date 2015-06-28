@@ -1,7 +1,7 @@
 <?php
 return array(
-	'session' => array(
-		'timeout' => 1800,
-		'lifetime' => 43200
-	)
+	'podb.session.timeout' => 1800,
+	'podb.session.lifetime' => 43200,
+
+	'debug' => false
 );
