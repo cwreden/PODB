@@ -5,12 +5,12 @@ namespace OpenCoders\Podb\REST\v1\json;
 
 use Doctrine\ORM\EntityNotFoundException;
 use Exception;
+use OpenCoders\Podb\AuthenticationService;
 use OpenCoders\Podb\Exception\PodbException;
 use OpenCoders\Podb\Persistence\Entity\DataSet;
 use OpenCoders\Podb\Persistence\Entity\Translation;
 use OpenCoders\Podb\Persistence\Repository\MessageRepository;
 use OpenCoders\Podb\REST\v1\BaseController;
-use OpenCoders\Podb\Service\AuthenticationService;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -29,7 +29,7 @@ class DataSetController extends BaseController
     private $messageRepository;
 
     /**
-     * @var AuthenticationService
+     * @var \OpenCoders\Podb\AuthenticationService
      */
     private $authenticationService;
 

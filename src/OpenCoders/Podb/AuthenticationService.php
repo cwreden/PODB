@@ -1,6 +1,6 @@
 <?php
 
-namespace OpenCoders\Podb\Service;
+namespace OpenCoders\Podb;
 
 
 use OpenCoders\Podb\Exception\AuthenticationRequiredException;
@@ -10,6 +10,12 @@ use OpenCoders\Podb\Persistence\Entity\User;
 use OpenCoders\Podb\Persistence\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
+/**
+ * Class AuthenticationService
+ * @package OpenCoders\Podb\Service
+ * @deprecated
+ * TODO refactor by silex security layer
+ */
 class AuthenticationService
 {
     /**

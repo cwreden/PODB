@@ -4,13 +4,13 @@ namespace OpenCoders\Podb\REST\v1\json;
 
 
 use Exception;
+use OpenCoders\Podb\AuthenticationService;
 use OpenCoders\Podb\Exception\PodbException;
 use OpenCoders\Podb\Persistence\Entity\Language;
 use OpenCoders\Podb\Persistence\Entity\Project;
 use OpenCoders\Podb\Persistence\Entity\User;
 use OpenCoders\Podb\Persistence\Repository\UserRepository;
 use OpenCoders\Podb\REST\v1\BaseController;
-use OpenCoders\Podb\Service\AuthenticationService;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,7 +23,7 @@ class UserController extends BaseController
     private $userRepository;
 
     /**
-     * @var AuthenticationService
+     * @var \OpenCoders\Podb\AuthenticationService
      */
     private $authenticationService;
 

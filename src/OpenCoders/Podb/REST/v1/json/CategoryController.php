@@ -5,9 +5,9 @@ namespace OpenCoders\Podb\REST\v1\json;
 
 use Doctrine\ORM\EntityNotFoundException;
 use Exception;
+use OpenCoders\Podb\AuthenticationService;
 use OpenCoders\Podb\Persistence\Entity\Category;
 use OpenCoders\Podb\REST\v1\BaseController;
-use OpenCoders\Podb\Service\AuthenticationService;
 use OpenCoders\Podb\Service\CategoryService;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -26,7 +26,7 @@ class CategoryController extends BaseController
     private $categoryService;
 
     /**
-     * @var AuthenticationService
+     * @var \OpenCoders\Podb\AuthenticationService
      */
     private $authenticationService;
 

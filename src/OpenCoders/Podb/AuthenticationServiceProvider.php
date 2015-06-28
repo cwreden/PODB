@@ -1,19 +1,12 @@
 <?php
 
-namespace OpenCoders\Podb\Provider\Service;
+namespace OpenCoders\Podb;
 
 
-use OpenCoders\Podb\PODBServices;
-use OpenCoders\Podb\Service\CategoryService;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 
-/**
- * Class CategoryServiceProvider
- * @package OpenCoders\Podb\Provider\Service
- * @deprecated
- */
-class CategoryServiceProvider implements ServiceProviderInterface
+class AuthenticationServiceProvider implements ServiceProviderInterface
 {
 
     /**
@@ -26,8 +19,8 @@ class CategoryServiceProvider implements ServiceProviderInterface
      */
     public function register(Application $app)
     {
-        $app['category'] = $app->share(function ($app) {
-            return new CategoryService($app['entityManager'], $app[PODBServices::PROJECT_REPOSITORY]);
+        $app['authentication'] = $app->share(function ($app) {
+            return new AuthenticationService($app['session'], $app[PODBServices::USER_REPOSITORY]);
         });
     }
 

@@ -4,12 +4,12 @@ namespace OpenCoders\Podb\REST\v1\json;
 
 
 use Exception;
+use OpenCoders\Podb\AuthenticationService;
 use OpenCoders\Podb\Exception\PodbException;
 use OpenCoders\Podb\Persistence\Entity\Language;
 use OpenCoders\Podb\Persistence\Entity\User;
 use OpenCoders\Podb\Persistence\Repository\LanguageRepository;
 use OpenCoders\Podb\REST\v1\BaseController;
-use OpenCoders\Podb\Service\AuthenticationService;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,7 +22,7 @@ class LanguageController extends BaseController
     private $languageRepository;
 
     /**
-     * @var AuthenticationService
+     * @var \OpenCoders\Podb\AuthenticationService
      */
     private $authenticationService;
 

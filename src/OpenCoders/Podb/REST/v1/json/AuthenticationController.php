@@ -3,17 +3,17 @@
 namespace OpenCoders\Podb\REST\v1\json;
 
 
+use OpenCoders\Podb\AuthenticationService;
 use OpenCoders\Podb\Exception\AlreadyAuthenticatedException;
 use OpenCoders\Podb\Exception\MissingParameterException;
 use OpenCoders\Podb\REST\v1\BaseController;
-use OpenCoders\Podb\Service\AuthenticationService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 class AuthenticationController extends BaseController
 {
     /**
-     * @var \OpenCoders\Podb\Service\AuthenticationService
+     * @var \OpenCoders\Podb\AuthenticationService
      */
     private $authenticationService;
 
