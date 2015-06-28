@@ -2,13 +2,11 @@
 
 namespace OpenCoders\Podb\Persistence\Repository;
 
-use Doctrine\ORM\EntityRepository;
-
 /**
- * Class DomainRepository
+ * Class CredentialRepository
  * @package OpenCoders\Podb\Persistence\Repository
  */
-class DomainRepository extends EntityRepository
+class CredentialRepository extends EntityRepositoryAbstract
 {
 
 }

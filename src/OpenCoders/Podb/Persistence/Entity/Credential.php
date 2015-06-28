@@ -11,6 +11,7 @@ namespace OpenCoders\Podb\Persistence\Entity;
 class Credential
 {
     // region attributes
+    const ENTITY_NAME = 'OpenCoders\Podb\Persistence\Entity\Credential';
 
     /**
      * @var int

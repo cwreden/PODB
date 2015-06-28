@@ -13,6 +13,7 @@ class Domain extends AbstractBaseEntity
 {
 
     // region attributes
+    const ENTITY_NAME = 'OpenCoders\Podb\Persistence\Entity\Domain';
 
     /**
      * @var int

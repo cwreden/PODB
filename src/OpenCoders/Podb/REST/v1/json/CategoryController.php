@@ -13,6 +13,11 @@ use Silex\Application;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
+/**
+ * Class CategoryController
+ * @package OpenCoders\Podb\REST\v1\json
+ * @deprecated
+ */
 class CategoryController extends BaseController
 {
     /**

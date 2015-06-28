@@ -50,9 +50,9 @@ class Application extends \Silex\Application
         $this->register(new UserServiceProvider());
         $this->register(new ProjectServiceProvider());
         $this->register(new LanguageServiceProvider());
-        $this->register(new CategoryServiceProvider());
         $this->register(new MessageServiceProvider());
         $this->register(new TranslationServiceProvider());
+        $this->register(new DomainServiceProvider());
 
         $this->register(new ACLServiceProvider());
         $this->register(new AuthenticationServiceProvider());

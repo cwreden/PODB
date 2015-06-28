@@ -1,19 +1,14 @@
 <?php
 
-namespace OpenCoders\Podb\Provider\Service;
+namespace OpenCoders\Podb;
 
 
-use OpenCoders\Podb\PODBServices;
-use OpenCoders\Podb\Service\CategoryService;
+use Doctrine\ORM\EntityManager;
+use OpenCoders\Podb\Persistence\Entity\Domain;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 
-/**
- * Class CategoryServiceProvider
- * @package OpenCoders\Podb\Provider\Service
- * @deprecated
- */
-class CategoryServiceProvider implements ServiceProviderInterface
+class DomainServiceProvider implements ServiceProviderInterface
 {
 
     /**
@@ -26,8 +21,10 @@ class CategoryServiceProvider implements ServiceProviderInterface
      */
     public function register(Application $app)
     {
-        $app['category'] = $app->share(function ($app) {
-            return new CategoryService($app['entityManager'], $app[PODBServices::PROJECT_REPOSITORY]);
+        $app[PODBServices::DOMAIN_REPOSITORY] = $app->share(function ($pimple) {
+            /** @var EntityManager $orm */
+            $orm = $pimple['orm'];
+            return $orm->getRepository(Domain::ENTITY_NAME);
         });
     }
 

@@ -8,6 +8,11 @@ use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\ControllerProviderInterface;
 
+/**
+ * Class CategoryControllerProvider
+ * @package OpenCoders\Podb\Provider\REST\v1
+ * @deprecated
+ */
 class CategoryControllerProvider implements ControllerProviderInterface
 {
 

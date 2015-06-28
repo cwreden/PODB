@@ -8,6 +8,11 @@ use OpenCoders\Podb\Exception\MissingParameterException;
 use OpenCoders\Podb\Persistence\Entity\Category;
 use OpenCoders\Podb\Persistence\Repository\ProjectRepository;
 
+/**
+ * Class CategoryService
+ * @package OpenCoders\Podb\Service
+ * @deprecated
+ */
 class CategoryService extends BaseEntityService
 {
     /**
