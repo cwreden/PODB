@@ -10,6 +10,13 @@ use Doctrine\ORM\EntityManager;
 use SimpleThings\EntityAudit\AuditConfiguration;
 use SimpleThings\EntityAudit\AuditManager;
 
+/**
+ * Class Doctrine
+ *
+ * Command line tool support only
+ *
+ * @package OpenCoders\Podb\Persistence
+ */
 class Doctrine
 {
 
@@ -38,6 +45,7 @@ class Doctrine
      * Returns a singleton instance of the Doctrine EntityManager
      *
      * @return \Doctrine\ORM\EntityManager
+     * @deprecated
      */
     static public function getEntityManager()
     {
@@ -68,6 +76,7 @@ class Doctrine
 
     /**
      * @return AuditManager
+     * @deprecated
      */
     static public function getAuditManager ()
     {
@@ -75,10 +84,11 @@ class Doctrine
             $auditConfig = new AuditConfiguration();
             $auditConfig->setAuditedEntityClasses(array(
                 'OpenCoders\Podb\Persistence\Entity\User',
-                'OpenCoders\Podb\Persistence\Entity\Project',
+                'OpenCoders\Podb\Persistence\Entity\Credential',
                 'OpenCoders\Podb\Persistence\Entity\Language',
-                'OpenCoders\Podb\Persistence\Entity\Category',
-                'OpenCoders\Podb\Persistence\Entity\DataSet',
+                'OpenCoders\Podb\Persistence\Entity\Project',
+                'OpenCoders\Podb\Persistence\Entity\Domain',
+                'OpenCoders\Podb\Persistence\Entity\Message',
                 'OpenCoders\Podb\Persistence\Entity\Translation',
             ));
             $evm = self::getEventManager();
