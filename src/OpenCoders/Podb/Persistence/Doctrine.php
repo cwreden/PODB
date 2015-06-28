@@ -50,7 +50,7 @@ class Doctrine
     static public function getEntityManager()
     {
         if (self::$em == null) {
-            $dbParams = include(__DIR__ . '/../../../../config/doctrine.local.php');
+            $dbParams = include(__DIR__ . '/../../../../config/podb.config.php');
             $pathToEntities = array(__DIR__ . "/Entity");
 
             self::getAuditManager();
@@ -68,7 +68,7 @@ class Doctrine
 //            $config->setMetadataCacheImpl($cache);
 //            $config->setQueryCacheImpl($cache);
 
-            self::$em = EntityManager::create($dbParams, $config, self::getEventManager());
+            self::$em = EntityManager::create($dbParams['dbs.option'], $config, self::getEventManager());
         }
 
         return self::$em;
