@@ -21,4 +21,4 @@ config/podb.config.php
 tmp
 atlassian*
 public/lib/
-doc/DB-Structure.bak
+*.bak
