@@ -36,6 +36,7 @@ class AuthenticationService
 
     /**
      * @throws \OpenCoders\Podb\Exception\AuthenticationRequiredException
+     * @deprecated
      */
     public function ensureSession()
     {
@@ -77,7 +78,7 @@ class AuthenticationService
     }
 
     /**
-     *
+     * @deprecated
      */
     public function logout()
     {

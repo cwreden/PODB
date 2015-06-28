@@ -4,14 +4,14 @@ namespace OpenCoders\Podb\Persistence\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use OpenCoders\Podb\Exception\EmptyParameterException;
-use OpenCoders\Podb\Exception\PodbException;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * Class User
  * @package OpenCoders\Podb\Persistence\Entity
  * @Entity(repositoryClass="OpenCoders\Podb\Persistence\Repository\UserRepository")
  */
-class User
+class User implements UserInterface
 {
     const ENTITY_NAME = 'OpenCoders\Podb\Persistence\Entity\User';
 
@@ -29,7 +29,7 @@ class User
      * @var string
      * @Column(type="string")
      */
-    private $userName;
+    private $username;
 
     /**
      * @var string
@@ -89,6 +89,12 @@ class User
 
     /**
      * @var string
+     * @Column(type="string", nullable=false)
+     */
+    private $salt;
+
+    /**
+     * @var string
      * @Column(type="string", nullable=true)
      */
     private $publicEMail;
@@ -99,21 +105,24 @@ class User
      */
     private $company;
 
+    /**
+     * @var Role[]|ArrayCollection
+     * @ManyToMany(targetEntity="Role", inversedBy="users")
+     * @JoinTable(name="users_roles")
+     */
+    private $roles;
+
     // endregion
 
     /**
-     * @param array|null $data TODO refactor: no set attributes at instancing
+     *
      */
-    public function __construct($data = array())
+    public function __construct()
     {
         $this->ownedProjects = new ArrayCollection();
         $this->contributedProjects = new ArrayCollection();
         $this->supportedLanguages = new ArrayCollection();
-
-        if (isset($data['username'])) {
-            $this->setUsername($data['username']);
-        }
-        $this->setBulk($data);
+        $this->roles = new ArrayCollection();
     }
 
     // region getter and setter
@@ -121,21 +130,21 @@ class User
     /**
      * @return string
      */
-    public function getUserName()
+    public function getUsername()
     {
-        return $this->userName;
+        return $this->username;
     }
 
     /**
-     * @param string $userName
+     * @param string $username
      * @throws EmptyParameterException
      */
-    public function setUserName($userName)
+    public function setUsername($username)
     {
-        if ($userName === null || $userName === '') {
+        if ($username === null || $username === '') {
             throw new EmptyParameterException('Username not allowed to be empty.');
         }
-        $this->userName = $userName;
+        $this->username = $username;
     }
 
     /**
@@ -392,6 +401,42 @@ class User
         return $this->supportedLanguages;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getRoles()
+    {
+        return $this->roles;
+    }
+
+    /**
+     * @param mixed $roles
+     */
+    public function setRoles($roles)
+    {
+        $this->roles = $roles;
+    }
+
+    /**
+     * Returns the salt that was originally used to encode the password.
+     *
+     * This can return null if the password was not encoded using a salt.
+     *
+     * @return string|null The salt
+     */
+    public function getSalt()
+    {
+        return $this->salt;
+    }
+
+    /**
+     * @param string $salt
+     */
+    public function setSalt($salt)
+    {
+        $this->salt = $salt;
+    }
+
     // endregion
 
     /**
@@ -446,24 +491,6 @@ class User
     }
 
     /**
-     * Updates a User by given data
-     *
-     * @deprecated
-     * @param array $data
-     *
-     * @throws PodbException
-     *
-     * @return void
-     */
-    public function update($data)
-    {
-        if ($data === null) {
-            throw new PodbException('There is nothing to update.');
-        }
-        $this->setBulk($data);
-    }
-
-    /**
      * Returns true if given password is equal with stored password
      *
      * @param $password string
@@ -476,35 +503,14 @@ class User
     }
 
     /**
-     * Updates this user by given data
+     * Removes sensitive data from the user.
      *
-     * @deprecated
-     * @param array $data
-     *
-     * @return void
+     * This is important if, at any given point, sensitive information like
+     * the plain-text password is stored on this object.
      */
-    private function setBulk($data)
+    public function eraseCredentials()
     {
-        foreach ($data as $key => $value) {
-            if ($key === 'displayName') {
-                $this->setDisplayName($value);
-            } else if ($key === 'email') {
-                $this->setEmail($value);
-            } else if ($key === 'password') {
-                $this->setPassword(sha1($value));
-            } else if ($key === 'active') {
-                $this->setActive($value);
-            } else if ($key === 'gravatarEMail') {
-                $this->setGravatarEMail($value);
-            } else if ($key === 'company') {
-                $this->setCompany($value);
-            } else if ($key === 'publicEMail') {
-                $this->setPublicEMail($value);
-            } else if ($key === 'supportedLanguages') {
-                $this->setSupportedLanguages($value);
-            } else if ($key === 'emailValidated') {
-                $this->setEmailValidated($value);
-            }
-        }
+        // TODO: Implement eraseCredentials() method.
+        // Hint nothing to do
     }
 }

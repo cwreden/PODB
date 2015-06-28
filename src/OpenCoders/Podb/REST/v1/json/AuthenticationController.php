@@ -9,6 +9,7 @@ use OpenCoders\Podb\Exception\MissingParameterException;
 use OpenCoders\Podb\REST\v1\BaseController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class AuthenticationController extends BaseController
 {
@@ -16,11 +17,21 @@ class AuthenticationController extends BaseController
      * @var \OpenCoders\Podb\AuthenticationService
      */
     private $authenticationService;
+    /**
+     * @var TokenStorageInterface
+     */
+    private $tokenStorage;
 
-    function __construct($app, AuthenticationService $authenticationService)
+    /**
+     * @param $app
+     * @param AuthenticationService $authenticationService
+     * @param TokenStorageInterface $tokenStorage
+     */
+    function __construct($app, AuthenticationService $authenticationService, TokenStorageInterface $tokenStorage)
     {
         parent::__construct($app);
         $this->authenticationService = $authenticationService;
+        $this->tokenStorage = $tokenStorage;
     }
 
     /**
@@ -55,11 +66,14 @@ class AuthenticationController extends BaseController
     }
 
     /**
+     * @param Request $request
      * @return JsonResponse
      */
-    public function logout()
+    public function logout(Request $request)
     {
         $this->authenticationService->logout();
+        $this->tokenStorage->setToken(null);
+        $request->getSession()->invalidate();
         return new JsonResponse(array(
             'success' => true
         ));

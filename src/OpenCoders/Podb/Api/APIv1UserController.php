@@ -1,21 +1,25 @@
 <?php
 
-namespace OpenCoders\Podb\REST\v1\json;
+namespace OpenCoders\Podb\Api;
 
 
+use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use OpenCoders\Podb\AuthenticationService;
+use OpenCoders\Podb\Exception\MissingParameterException;
 use OpenCoders\Podb\Exception\PodbException;
 use OpenCoders\Podb\Persistence\Entity\Language;
 use OpenCoders\Podb\Persistence\Entity\Project;
 use OpenCoders\Podb\Persistence\Entity\User;
 use OpenCoders\Podb\Persistence\Repository\UserRepository;
-use OpenCoders\Podb\REST\v1\BaseController;
+use OpenCoders\Podb\Security\PasswordSaltGenerator;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Security\Core\Encoder\MessageDigestPasswordEncoder;
 
-class UserController extends BaseController
+class APIv1UserController
 {
     /**
      * @var UserRepository
@@ -26,12 +30,46 @@ class UserController extends BaseController
      * @var \OpenCoders\Podb\AuthenticationService
      */
     private $authenticationService;
+    /**
+     * @var UrlGeneratorInterface
+     */
+    private $urlGenerator;
+    /**
+     * @var EntityManagerInterface
+     */
+    private $entityManager;
+    /**
+     * @var MessageDigestPasswordEncoder
+     */
+    private $passwordEncoder;
+    /**
+     * @var PasswordSaltGenerator
+     */
+    private $passwordSaltGenerator;
 
-    function __construct(Application $app, UserRepository $userRepository, AuthenticationService $authenticationService)
+    /**
+     * @param UserRepository $userRepository
+     * @param AuthenticationService $authenticationService
+     * @param UrlGeneratorInterface $urlGenerator
+     * @param EntityManagerInterface $entityManager
+     * @param MessageDigestPasswordEncoder $passwordEncoder
+     * @param PasswordSaltGenerator $passwordSaltGenerator
+     */
+    function __construct(
+        UserRepository $userRepository,
+        AuthenticationService $authenticationService,
+        UrlGeneratorInterface $urlGenerator,
+        EntityManagerInterface $entityManager,
+        MessageDigestPasswordEncoder $passwordEncoder,
+        PasswordSaltGenerator $passwordSaltGenerator
+    )
     {
-        parent::__construct($app);
         $this->userRepository = $userRepository;
         $this->authenticationService = $authenticationService;
+        $this->urlGenerator = $urlGenerator;
+        $this->entityManager = $entityManager;
+        $this->passwordEncoder = $passwordEncoder;
+        $this->passwordSaltGenerator = $passwordSaltGenerator;
     }
 
     /**
@@ -40,7 +78,6 @@ class UserController extends BaseController
     public function getList()
     {
         $users = $this->userRepository->getList();
-        $urlGenerator = $this->getUrlGenerator();
         $data = array();
 
         /** @var User $user */
@@ -51,7 +88,7 @@ class UserController extends BaseController
                 'displayname' => $user->getDisplayName(),
                 'username' => $user->getUsername(),
                 '_links' => array(
-                    'self' => $urlGenerator->generate('rest.v1.json.user.get', $urlParams),
+                    'self' => $this->urlGenerator->generate(ApiURIs::V1_USER_GET, $urlParams),
                 )
             );
         }
@@ -73,10 +110,9 @@ class UserController extends BaseController
             $user = $this->userRepository->getByName($userName);
         }
 
-        if ($user == null) {
+        if (!$user instanceof User) {
             throw new Exception("No user found with identifier $userName.", 404);
         }
-        $urlGenerator = $this->getUrlGenerator();
         $urlParams = array('userName' => $user->getUsername());
 
         return new JsonResponse(array(
@@ -86,11 +122,11 @@ class UserController extends BaseController
             'email' => $user->getEmail(),
             'active' => $user->getActive(),
             '_links' => array(
-                'self' => $urlGenerator->generate('rest.v1.json.user.get', $urlParams),
-                'projects' => $urlGenerator->generate('rest.v1.json.user.project.list', $urlParams),
-                'own_projects' => $urlGenerator->generate('rest.v1.json.user.own.project.list', $urlParams),
-                'languages' => $urlGenerator->generate('rest.v1.json.user.language.list', $urlParams),
-                'translations' => $urlGenerator->generate('rest.v1.json.user.translation.list', $urlParams),
+                'self' => $this->urlGenerator->generate(ApiURIs::V1_USER_GET, $urlParams),
+                'projects' => $this->urlGenerator->generate(ApiURIs::V1_USER_PROJECT_LIST, $urlParams),
+                'own_projects' => $this->urlGenerator->generate(ApiURIs::V1_USER_PROJECT_OWN_LIST, $urlParams),
+                'languages' => $this->urlGenerator->generate(ApiURIs::V1_USER_LANGUAGE_LIST, $urlParams),
+                'translations' => $this->urlGenerator->generate(ApiURIs::V1_USER_TRANSLATION_LIST, $urlParams),
             )
         ));
     }
@@ -111,14 +147,26 @@ class UserController extends BaseController
             $user = $this->userRepository->getByName($userName);
         }
 
-        if ($user == null) {
+        if (!$user instanceof User) {
             throw new Exception("No user found with identifier $userName.", 404);
         }
 
         $data = array();
         /** @var Project $project */
         foreach ($user->getContributedProjects() as $project) {
-            $data[] = $project->asShortArrayWithAPIInformation($this->apiVersion);
+            $urlParams = array(
+                'projectName' => $project->getName()
+            );
+            $data[] =  array(
+                'id' => $project->getId(),
+                'name' => $project->getName(),
+                '_links' => array(
+                    'self' => $this->urlGenerator->generate(ApiURIs::V1_PROJECT_GET, $urlParams),
+                    'html' => '', // @ToDo: Überlegen, was mit url_html gemeint war
+                    'members' => $this->urlGenerator->generate(ApiURIs::V1_PROJECT_CONTRIBUTOR_LIST, $urlParams),
+                    'languages' => $this->urlGenerator->generate(ApiURIs::V1_PROJECT_LANGUAGE_LIST, $urlParams)
+                )
+            );
         }
 
         return new JsonResponse($data);
@@ -140,14 +188,26 @@ class UserController extends BaseController
             $user = $this->userRepository->getByName($userName);
         }
 
-        if ($user == null) {
+        if (!$user instanceof User) {
             throw new Exception("No user found with identifier $userName.", 404);
         }
 
         $data = array();
         /** @var $project Project */
         foreach ($user->getOwnedProjects() as $project) {
-            $data[] = $project->asShortArrayWithAPIInformation($this->apiVersion);
+            $urlParams = array(
+                'projectName' => $project->getName()
+            );
+            $data[] = array(
+                'id' => $project->getId(),
+                'name' => $project->getName(),
+                '_links' => array(
+                    'self' => $this->urlGenerator->generate(ApiURIs::V1_PROJECT_GET, $urlParams),
+                    'html' => '', // @ToDo: Überlegen, was mit url_html gemeint war
+                    'members' => $this->urlGenerator->generate(ApiURIs::V1_PROJECT_CONTRIBUTOR_LIST, $urlParams),
+                    'languages' => $this->urlGenerator->generate(ApiURIs::V1_PROJECT_LANGUAGE_LIST, $urlParams)
+                )
+            );
         }
 
         return new JsonResponse($data);
@@ -169,14 +229,23 @@ class UserController extends BaseController
             $user = $this->userRepository->getByName($userName);
         }
 
-        if ($user == null) {
+        if (!$user instanceof User) {
             throw new Exception("No user found with identifier $userName.", 404);
         }
 
         $data = array();
         /** @var $language Language */
         foreach ($user->getSupportedLanguages() as $language) {
-            $data[] = $language->asShortArrayWithAPIInformation($this->apiVersion);
+            $data[] = array(
+                'id' => $language->getId(),
+                'name' => $language->getLabel(),
+                '_links' => array(
+                    'self' => $this->urlGenerator->generate(ApiURIs::V1_LANGUAGE_GET, array(
+                        'locale' => $language->getLocale()
+                    )),
+//                    'url_projects' => $apiBaseUrl . '/' . $apiVersion . '/languages/' . $this->getLocale() . '/projects'
+                )
+            );
         }
 
         return $data;
@@ -263,15 +332,58 @@ class UserController extends BaseController
     public function post(Request $request)
     {
         $this->authenticationService->ensureSession();
+
+        $userName = $request->get('userName');
+        if (!isset($userName)) {
+            throw new MissingParameterException('userName');
+        }
+        $displayName = $request->get('displayName');
+        if (!isset($displayName)) {
+            throw new MissingParameterException('displayName');
+        }
+        $email = $request->get('email');
+        if (!isset($email)) {
+            throw new MissingParameterException('email');
+        }
+        $rawPassword = $request->get('password');
+        if (!isset($rawPassword)) {
+            throw new MissingParameterException('password');
+        }
+
         $attributes = $request->request->all();
         try {
-            $user = $this->userRepository->create($attributes);
-            $this->userRepository->flush();
+            $user = new User();
+            $user->setUsername($userName);
+            $user->setDisplayName($displayName);
+            $user->setActive(true);// TODO FEATURE konfigurierbar machen
+            $user->setEmailValidated(true);// TODO FEATURE konfigurierbar machen
+            $user->setValidated(true);// TODO FEATURE konfigurierbar machen
+            $user->setEmail($email);
+
+            $salt = $this->passwordSaltGenerator->generate();
+            $user->setSalt($salt);
+            $password = $this->passwordEncoder->encodePassword($rawPassword, $salt);
+            $user->setPassword($password);
+
+
+            foreach ($attributes as $key => $value) {
+                if ($key === 'company') {
+                    $user->setCompany($value);
+                } else if ($key === 'publicEMail') {
+                    $user->setPublicEMail($value);
+                } else if ($key === 'supportedLanguages') {
+                    $user->setSupportedLanguages($value);
+                } else if ($key === 'emailValidated') {
+                    $user->setEmailValidated($value);
+                }
+            }
+
+            $this->entityManager->persist($user);
+            $this->entityManager->flush();
         } catch (\Exception $e) {
             throw new Exception($e->getMessage(), 400);
         };
 
-        $urlGenerator = $this->getUrlGenerator();
         $urlParams = array('userName' => $user->getUsername());
 
         return new JsonResponse(array(
@@ -279,7 +391,7 @@ class UserController extends BaseController
             'displayname' => $user->getDisplayName(),
             'username' => $user->getUsername(),
             '_links' => array(
-                'self' => $urlGenerator->generate('rest.v1.json.user.get', $urlParams),
+                'self' => $this->urlGenerator->generate(ApiURIs::V1_USER_GET, $urlParams),
             )
         ));
     }
@@ -302,14 +414,35 @@ class UserController extends BaseController
 
         $attributes = $request->request->all();
         try {
-            $user = $this->userRepository->update($id, $attributes);
-            $this->userRepository->flush();
+            $user = $this->userRepository->get($id);
+
+            foreach ($attributes as $key => $value) {
+                if ($key === 'displayName') {
+                    $user->setDisplayName($value);
+                } else if ($key === 'email') {
+                    $user->setEmail($value);
+                } else if ($key === 'password') {
+                    $user->setPassword(sha1($value));
+                } else if ($key === 'active') {
+                    $user->setActive($value);
+                } else if ($key === 'company') {
+                    $user->setCompany($value);
+                } else if ($key === 'publicEMail') {
+                    $user->setPublicEMail($value);
+                } else if ($key === 'supportedLanguages') {
+                    $user->setSupportedLanguages($value);
+                } else if ($key === 'emailValidated') {
+                    $user->setEmailValidated($value);
+                }
+            }
+
+            $this->entityManager->persist($user);
+            $this->entityManager->flush();
         } catch (PodbException $e) {
             // TODO
             throw new Exception($e->getMessage(), 400);
         }
 
-        $urlGenerator = $this->getUrlGenerator();
         $urlParams = array('userName' => $user->getUsername());
 
         return new JsonResponse(array(
@@ -317,7 +450,7 @@ class UserController extends BaseController
             'displayname' => $user->getDisplayName(),
             'username' => $user->getUsername(),
             '_links' => array(
-                'self' => $urlGenerator->generate('rest.v1.json.user.get', $urlParams),
+                'self' => $this->urlGenerator->generate(ApiURIs::V1_USER_GET, $urlParams),
             )
         ));
     }
@@ -347,22 +480,45 @@ class UserController extends BaseController
 
     /**
      * @param \Symfony\Component\HttpFoundation\Request $request
-     *
      * @return array
+     * @throws MissingParameterException
+     * @throws \OpenCoders\Podb\Exception\EmptyParameterException
      */
     public function register(Request $request)
     {
-        $attributes = array(
-            'displayName' => $request->request->get('displayName'),
-            'username' => $request->request->get('username'),
-            'password' => $request->request->get('password'),
-            'email' => $request->request->get('email'),
-            'active' => 1 // TODO FEATURE konfigurierbar machen
-        );
-        $user = $this->userRepository->create($attributes);
-        $this->userRepository->flush();
+        $userName = $request->get('userName');
+        if (!isset($userName)) {
+            throw new MissingParameterException('userName');
+        }
+        $displayName = $request->get('displayName');
+        if (!isset($displayName)) {
+            throw new MissingParameterException('displayName');
+        }
+        $email = $request->get('email');
+        if (!isset($email)) {
+            throw new MissingParameterException('email');
+        }
+        $rawPassword = $request->get('password');
+        if (!isset($rawPassword)) {
+            throw new MissingParameterException('password');
+        }
 
-        $urlGenerator = $this->getUrlGenerator();
+        $user = new User();
+        $user->setUsername($userName);
+        $user->setDisplayName($displayName);
+        $user->setActive(true);// TODO FEATURE konfigurierbar machen
+        $user->setEmailValidated(true);// TODO FEATURE konfigurierbar machen
+        $user->setValidated(true);// TODO FEATURE konfigurierbar machen
+        $user->setEmail($email);
+
+        $salt = $this->passwordSaltGenerator->generate();
+        $user->setSalt($salt);
+        $password = $this->passwordEncoder->encodePassword($rawPassword, $salt);
+        $user->setPassword($password);
+
+        $this->entityManager->persist($user);
+        $this->entityManager->flush();
+
         $urlParams = array('userName' => $user->getUsername());
 
         return new JsonResponse(array(
@@ -372,12 +528,23 @@ class UserController extends BaseController
             'email' => $user->getEmail(),
             'active' => $user->getActive(),
             '_links' => array(
-                'self' => $urlGenerator->generate('rest.v1.json.user.get', $urlParams),
-                'projects' => $urlGenerator->generate('rest.v1.json.user.project.list', $urlParams),
-                'own_projects' => $urlGenerator->generate('rest.v1.json.user.own.project.list', $urlParams),
-                'languages' => $urlGenerator->generate('rest.v1.json.user.language.list', $urlParams),
-                'translations' => $urlGenerator->generate('rest.v1.json.user.translation.list', $urlParams),
+                'self' => $this->urlGenerator->generate(ApiURIs::V1_USER_GET, $urlParams),
+                'projects' => $this->urlGenerator->generate(ApiURIs::V1_USER_PROJECT_LIST, $urlParams),
+                'own_projects' => $this->urlGenerator->generate(ApiURIs::V1_USER_PROJECT_OWN_LIST, $urlParams),
+                'languages' => $this->urlGenerator->generate(ApiURIs::V1_USER_LANGUAGE_LIST, $urlParams),
+                'translations' => $this->urlGenerator->generate(ApiURIs::V1_USER_TRANSLATION_LIST, $urlParams),
             )
         ));
     }
-} 
+
+    /**
+     * Returns true, if $value is an integer
+     *
+     * @param $value
+     * @return bool
+     */
+    protected function isId($value)
+    {
+        return isset($value) && intval($value) != 0;
+    }
+}

@@ -87,15 +87,6 @@ class Project
     function __construct()
     {
         $this->contributors = new ArrayCollection();
-        $this->categories = new ArrayCollection();
-    }
-
-    /**
-     * @return Category[]
-     */
-    public function getCategories()
-    {
-        return $this->categories;
     }
 
     // region Getter & Setter
@@ -169,7 +160,7 @@ class Project
      */
     public function setDefaultLanguage($defaultLanguageId)
     {
-        $this->default_language = $defaultLanguageId;
+        $this->defaultLanguage = $defaultLanguageId;
     }
 
     /**
@@ -177,7 +168,7 @@ class Project
      */
     public function getDefaultLanguage()
     {
-        return $this->default_language;
+        return $this->defaultLanguage;
     }
 
     /**

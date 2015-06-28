@@ -84,6 +84,7 @@ class Doctrine
             $auditConfig = new AuditConfiguration();
             $auditConfig->setAuditedEntityClasses(array(
                 'OpenCoders\Podb\Persistence\Entity\User',
+                'OpenCoders\Podb\Persistence\Entity\Role',
                 'OpenCoders\Podb\Persistence\Entity\Language',
                 'OpenCoders\Podb\Persistence\Entity\Project',
                 'OpenCoders\Podb\Persistence\Entity\Domain',
