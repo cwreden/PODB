@@ -10,6 +10,7 @@ use OpenCoders\Podb\Persistence\DoctrineORMServiceProvider;
 use OpenCoders\Podb\Web\IndexControllerProvider;
 use Silex\Provider\DoctrineServiceProvider;
 use Silex\Provider\MonologServiceProvider;
+use Silex\Provider\SecurityServiceProvider;
 use Silex\Provider\ServiceControllerServiceProvider;
 use Silex\Provider\SessionServiceProvider;
 use Silex\Provider\SwiftmailerServiceProvider;
@@ -35,6 +36,7 @@ class PODBApplication extends \Silex\Application
         $this->register(new TwigServiceProvider());
         $this->register(new MonologServiceProvider());
         // TODO security
+        $this->register(new SecurityServiceProvider());
         // TODO remember me
 
         // Potential third party service provider
