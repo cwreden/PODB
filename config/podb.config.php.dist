@@ -1,7 +1,24 @@
 <?php
 return array(
-	'podb.session.timeout' => 1800,
-	'podb.session.lifetime' => 43200,
 
-	'debug' => false
+    'dbs.option' => array (
+        'driver'    => 'pdo_mysql',
+        'host'      => 'localhost',
+        'dbname'    => 'podb',
+        'user'      => 'root',
+        'password'  => 'root',
+        'charset'   => 'utf8mb4',
+//        'prefix'   => '', // TODO
+    ),
+
+    'session.storage.options' => array(
+        'cookie_lifetime' => 43200 // TODO default??
+    ),
+
+    'debug' => true,
+
+
+    'podb.requestLimit.resetInterval' => 3600,
+    'podb.requestLimit.limit' => 60,
+    'podb.requestLimit.authenticatedLimit' => 5000,
 );

@@ -20,24 +20,11 @@ class ConfigurationService
     private $mainConfigFile = 'podb.config.php';
 
     /**
-     * Rate limit config File
-     */
-    private $rateLimitConfigFile = 'rateLimit.config.php';
-
-    /**
      *
      */
     public function __construct ()
     {
         $this->configPath = __DIR__ . '/../../../../config/';
-    }
-
-    /**
-     * @return array
-     */
-    public function getRateLimit ()
-    {
-        return include($this->configPath . $this->rateLimitConfigFile);
     }
 
     /**

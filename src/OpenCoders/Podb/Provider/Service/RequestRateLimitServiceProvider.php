@@ -3,7 +3,6 @@
 namespace OpenCoders\Podb\Provider\Service;
 
 
-use OpenCoders\Podb\Configuration\ConfigurationService;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -43,16 +42,13 @@ class RequestRateLimitServiceProvider implements ServiceProviderInterface
      */
     public function boot(Application $app)
     {
-        $app->before(function () use ($app) {
-            /** @var ConfigurationService $configurationService */
-            $configurationService = $app['configuration'];
-            $rateLimitConfig = $configurationService->getRateLimit();
-            /** @var SessionInterface $session */
-            $session = $app['session'];
+        // TODO only at api calls
+        $app->before(function (Request $request) use ($app) {
+            $session = $request->getSession();
 
-            $limit = $rateLimitConfig['limit'];
+            $limit = $app['podb.requestLimit.limit'];
             if ($session->get('authenticated') === true) {
-                $limit = $rateLimitConfig['authenticatedLimit'];
+                $limit = $app['podb.requestLimit.authenticatedLimit'];
             }
             if ($limit == 0) {
                 return;
@@ -60,14 +56,15 @@ class RequestRateLimitServiceProvider implements ServiceProviderInterface
 
             $rate = $session->get('rateLimit');
 
+            $resetInterval = $app['podb.requestLimit.resetInterval'];
             if (!isset($rate)) {
-                $rate = array('reset_at' => (time() + $rateLimitConfig['resetInterval']), 'used' => 0);
+                $rate = array('reset_at' => (time() + $resetInterval), 'used' => 0);
                 $session->set('rateLimit', $rate);
             }
 
             $actualTime = time();
             if (isset($rate['reset_at']) && $rate['reset_at'] - $actualTime <= 0) {
-                $rate['reset_at'] = ($actualTime + $rateLimitConfig['resetInterval']);
+                $rate['reset_at'] = ($actualTime + $resetInterval);
                 $rate['used'] = 0;
                 $session->set('rateLimit', $rate);
             }
@@ -87,19 +84,15 @@ class RequestRateLimitServiceProvider implements ServiceProviderInterface
         });
 
         $app->after(function (Request $request, Response $response) use ($app) {
-            /** @var ConfigurationService $configurationService */
-            $configurationService = $app['configuration'];
-            $rateLimitConfig = $configurationService->getRateLimit();
-            /** @var SessionInterface $session */
-            $session = $app['session'];
+            $session = $request->getSession();
             $rate = $session->get('rateLimit');
 
             $rate['used']++;
             $session->set('rateLimit', $rate);
 
-            $limit = $rateLimitConfig['limit'];
+            $limit = $app['podb.requestLimit.limit'];
             if ($session->get('authenticated') === true) {
-                $limit = $rateLimitConfig['authenticatedLimit'];
+                $limit = $app['podb.requestLimit.authenticatedLimit'];
             }
             if ($limit == 0) {
                 return;
