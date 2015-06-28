@@ -4,10 +4,10 @@ namespace OpenCoders\Podb;
 
 
 use OpenCoders\Podb\Api\ResourceControllerProvider;
-use OpenCoders\Podb\Persistence\Doctrine;
+use OpenCoders\Podb\Persistence\AuditServiceProvider;
+use OpenCoders\Podb\Persistence\DoctrineORMServiceProvider;
 use OpenCoders\Podb\Provider\ACLServiceProvider;
 use OpenCoders\Podb\Provider\IndexControllerProvider;
-use OpenCoders\Podb\Provider\Service\AuditServiceProvider;
 use OpenCoders\Podb\Provider\Service\AuthenticationServiceProvider;
 use OpenCoders\Podb\Provider\Service\CategoryServiceProvider;
 use OpenCoders\Podb\Provider\Service\ConfigurationServiceProvider;
@@ -18,6 +18,7 @@ use OpenCoders\Podb\Provider\Service\ProjectServiceProvider;
 use OpenCoders\Podb\Provider\Service\RequestRateLimitServiceProvider;
 use OpenCoders\Podb\Provider\Service\TranslationServiceProvider;
 use OpenCoders\Podb\Provider\Service\UserServiceProvider;
+use Silex\Provider\DoctrineServiceProvider;
 use Silex\Provider\MonologServiceProvider;
 use Silex\Provider\ServiceControllerServiceProvider;
 use Silex\Provider\SessionServiceProvider;
@@ -39,7 +40,8 @@ class Application extends \Silex\Application
         $this->register(new SessionServiceProvider());
         $this->register(new ServiceControllerServiceProvider());
         $this->register(new UrlGeneratorServiceProvider());
-        $this->register(new SwiftmailerServiceProvider()
+
+//        $this->register(new SwiftmailerServiceProvider()
 // TODO config auslagern in eine Konfigurationsdatei.
 //    ,
 //    array(
@@ -52,9 +54,8 @@ class Application extends \Silex\Application
 //            'auth_mode' => null
 //        )
 //    )
-        );
-// TODO Doctrine via silex
-//$this->register(new Silex\Provider\DoctrineServiceProvider());
+//        );
+        $this->register(new DoctrineServiceProvider());// TODO configuration
         $this->register(
             new TwigServiceProvider(),
             array(
@@ -69,27 +70,23 @@ class Application extends \Silex\Application
             )
         );
 
-// Services
+        // Service Provider
+        $this->register(new DoctrineORMServiceProvider());
+        $this->register(new AuditServiceProvider());
         $this->register(new ConfigurationServiceProvider());
+
         $this->register(new UserServiceProvider());
         $this->register(new ProjectServiceProvider());
         $this->register(new LanguageServiceProvider());
         $this->register(new CategoryServiceProvider());
         $this->register(new DataSetServiceProvider());
         $this->register(new TranslationServiceProvider());
-        $this->register(new AuditServiceProvider());
+
         $this->register(new ACLServiceProvider());
         $this->register(new AuthenticationServiceProvider());
+
         $this->register(new RequestRateLimitServiceProvider());
         $this->register(new ErrorHandlerServiceProvider());
-
-        // TODO DoctrineServiceProvider
-        $this['entityManager'] = $this->share(function () {
-            return Doctrine::getEntityManager();
-        });
-        $this['auditReader'] = $this->share(function ($pimple) {
-            return Doctrine::getAuditManager()->createAuditReader($pimple['entityManager']);
-        });
 
         // Page
         $this->mount('', new IndexControllerProvider());
@@ -104,12 +101,11 @@ class Application extends \Silex\Application
         $this->mount('/rest/v1', new \OpenCoders\Podb\Provider\REST\v1\UserControllerProvider());
         $this->mount('/rest/v1', new \OpenCoders\Podb\Provider\REST\v1\ProjectControllerProvider());
         $this->mount('/rest/v1', new \OpenCoders\Podb\Provider\REST\v1\LanguageControllerProvider());
-//        $this->mount('/rest/v1', new \OpenCoders\Podb\Provider\REST\v1\CategoryControllerProvider());
-//        $this->mount('/rest/v1', new \OpenCoders\Podb\Provider\REST\v1\DataSetControllerProvider());
         $this->mount('/rest/v1', new \OpenCoders\Podb\Provider\REST\v1\TranslationControllerProvider());
         $this->mount('/rest/v1', new \OpenCoders\Podb\Provider\REST\v1\AuditControllerProvider());
 //        $this->mount('/rest/v1', new \OpenCoders\Podb\Provider\REST\v1\ACLControllerProvider());
         $this->mount('/rest/v1', new \OpenCoders\Podb\Provider\REST\v1\AuthenticationControllerProvider());
+        // TODO version concept
 
         /**
          * Put payload to request part
