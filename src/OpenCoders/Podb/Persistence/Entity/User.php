@@ -168,6 +168,7 @@ class User extends AbstractBaseEntity
 
     /**
      * @return string
+     * @deprecated
      */
     public function getEntityName()
     {
