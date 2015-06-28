@@ -9,7 +9,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  * @package OpenCoders\Podb\Persistence\Entity
  * @Entity(repositoryClass="OpenCoders\Podb\Persistence\Repository\DomainRepository")
  */
-class Domain extends AbstractBaseEntity
+class Domain
 {
 
     // region attributes

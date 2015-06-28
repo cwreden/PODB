@@ -10,7 +10,7 @@ use OpenCoders\Podb\Exception\NothingToUpdatePodbException;
  * @package OpenCoders\Podb\Persistence\Entity
  * @Entity(repositoryClass="OpenCoders\Podb\Persistence\Repository\ProjectRepository")
  */
-class Project extends AbstractBaseEntity
+class Project
 {
     // region attributes
     const ENTITY_NAME = 'OpenCoders\Podb\Persistence\Entity\Project';

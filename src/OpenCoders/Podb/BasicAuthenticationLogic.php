@@ -1,14 +1,18 @@
 <?php
 
-namespace OpenCoders\Podb\Access;
+namespace OpenCoders\Podb;
 
-use Luracast\Restler\iAuthenticate;
 use Luracast\Restler\RestException;
-use OpenCoders\Podb\Persistence\Entity\User;
 use OpenCoders\Podb\Persistence\Doctrine;
-use OpenCoders\Podb\Session\SessionManager;
+use OpenCoders\Podb\Persistence\Entity\User;
 
-class BasicAuthentication implements iAuthenticate
+/**
+ * Class BasicAuthentication
+ * @package OpenCoders\Podb\Access
+ * @deprecated
+ * TODO old restler code
+ */
+class BasicAuthenticationLogic
 {
 
     const REALM = 'Restricted API';

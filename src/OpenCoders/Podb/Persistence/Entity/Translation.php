@@ -8,7 +8,7 @@ namespace OpenCoders\Podb\Persistence\Entity;
  * @package OpenCoders\Podb\Persistence\Entity
  * @Entity(repositoryClass="OpenCoders\Podb\Persistence\Repository\TranslationRepository")
  */
-class Translation extends AbstractBaseEntity
+class Translation
 {
     const ENTITY_NAME = 'OpenCoders\Podb\Persistence\Entity\Translation';
 

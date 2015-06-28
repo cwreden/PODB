@@ -11,7 +11,7 @@ use OpenCoders\Podb\Exception\PodbException;
  * @package OpenCoders\Podb\Persistence\Entity
  * @Entity(repositoryClass="OpenCoders\Podb\Persistence\Repository\LanguageRepository")
  */
-class Language extends AbstractBaseEntity
+class Language
 {
     const ENTITY_NAME = 'OpenCoders\Podb\Persistence\Entity\Language';
 
