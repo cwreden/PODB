@@ -2,7 +2,11 @@
 
 namespace OpenCoders\Podb\Configuration;
 
-
+/**
+ * Class ConfigurationService
+ * @package OpenCoders\Podb\Configuration
+ * @deprecated
+ */
 class ConfigurationService
 {
     /**

@@ -7,6 +7,12 @@ use OpenCoders\Podb\Configuration\ConfigurationService;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 
+/**
+ * TODO refactor
+ * @deprecated
+ * Class ConfigurationServiceProvider
+ * @package OpenCoders\Podb\Provider\Service
+ */
 class ConfigurationServiceProvider implements ServiceProviderInterface
 {
 
