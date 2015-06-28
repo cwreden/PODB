@@ -3,6 +3,7 @@
 namespace OpenCoders\Podb\Persistence\Repository;
 
 use Luracast\Restler\RestException;
+use OpenCoders\Podb\Exception\DeprecatedException;
 use OpenCoders\Podb\Persistence\Entity\User;
 
 class UserRepository extends EntityRepositoryAbstract
@@ -83,6 +84,7 @@ class UserRepository extends EntityRepositoryAbstract
      */
     public function create($attributes)
     {
+        throw new DeprecatedException();
         $user = new User();
 
         foreach ($attributes as $key => $value) {
@@ -124,6 +126,7 @@ class UserRepository extends EntityRepositoryAbstract
      */
     public function update($id, $attributes)
     {
+        throw new DeprecatedException();
         $user = $this->get($id);
 
         foreach ($attributes as $key => $value) {

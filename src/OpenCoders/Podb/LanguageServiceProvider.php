@@ -1,11 +1,10 @@
 <?php
 
-namespace OpenCoders\Podb\Provider\Service;
+namespace OpenCoders\Podb;
 
 
 use Doctrine\ORM\EntityManager;
 use OpenCoders\Podb\Persistence\Entity\Language;
-use OpenCoders\Podb\PODBServices;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 
@@ -27,7 +26,6 @@ class LanguageServiceProvider implements ServiceProviderInterface
             $orm = $pimple['orm'];
             return $orm->getRepository(Language::ENTITY_NAME);
         });
-
     }
 
     /**

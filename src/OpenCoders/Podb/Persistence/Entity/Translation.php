@@ -10,6 +10,8 @@ namespace OpenCoders\Podb\Persistence\Entity;
  */
 class Translation extends AbstractBaseEntity
 {
+    const ENTITY_NAME = 'OpenCoders\Podb\Persistence\Entity\Translation';
+
     // region attributes
 
     /**

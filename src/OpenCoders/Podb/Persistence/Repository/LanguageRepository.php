@@ -2,6 +2,7 @@
 
 namespace OpenCoders\Podb\Persistence\Repository;
 
+use OpenCoders\Podb\Exception\DeprecatedException;
 use OpenCoders\Podb\Persistence\Entity\Language;
 
 class LanguageRepository extends EntityRepositoryAbstract
@@ -40,9 +41,13 @@ class LanguageRepository extends EntityRepositoryAbstract
     /**
      * @param $attributes
      * @return Language
+     * @throws DeprecatedException
+     * @throws \OpenCoders\Podb\Exception\EmptyParameterException
+     * @deprecated
      */
     public function create($attributes)
     {
+        throw new DeprecatedException();
         $language = new Language();
 
         foreach ($attributes as $key => $value) {
@@ -64,9 +69,11 @@ class LanguageRepository extends EntityRepositoryAbstract
      * @param $id
      * @param $attributes
      * @return null|Language
+     * @deprecated
      */
     public function update($id, $attributes)
     {
+        throw new DeprecatedException();
         $language = $this->get($id);
 
         foreach ($attributes as $key => $value) {

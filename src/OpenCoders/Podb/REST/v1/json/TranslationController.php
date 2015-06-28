@@ -6,9 +6,9 @@ namespace OpenCoders\Podb\REST\v1\json;
 use Exception;
 use OpenCoders\Podb\Exception\PodbException;
 use OpenCoders\Podb\Persistence\Entity\Translation;
+use OpenCoders\Podb\Persistence\Repository\TranslationRepository;
 use OpenCoders\Podb\REST\v1\BaseController;
 use OpenCoders\Podb\Service\AuthenticationService;
-use OpenCoders\Podb\Service\TranslationService;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,19 +16,19 @@ use Symfony\Component\HttpFoundation\Request;
 class TranslationController extends BaseController
 {
     /**
-     * @var
+     * @var TranslationRepository
      */
-    private $translationService;
+    private $translationRepository;
 
     /**
      * @var AuthenticationService
      */
     private $authenticationService;
 
-    function __construct(Application $app, TranslationService $translationService, AuthenticationService $authenticationService)
+    function __construct(Application $app, TranslationRepository $translationRepository, AuthenticationService $authenticationService)
     {
         parent::__construct($app);
-        $this->translationService = $translationService;
+        $this->translationRepository = $translationRepository;
         $this->authenticationService = $authenticationService;
     }
 
@@ -37,7 +37,7 @@ class TranslationController extends BaseController
      */
     public function getList()
     {
-        $translations = $this->translationService->getAll();
+        $translations = $this->translationRepository->getAll();
         $urlGenerator = $this->getUrlGenerator();
         $data = array();
 
@@ -64,7 +64,7 @@ class TranslationController extends BaseController
      */
     public function get($id)
     {
-        $translation = $this->translationService->get($id);
+        $translation = $this->translationRepository->get($id);
 
         if ($translation == null) {
             throw new Exception("No translation found with identifier $id.", 404);
@@ -99,8 +99,8 @@ class TranslationController extends BaseController
         $this->authenticationService->ensureSession();
         $attributes = $request->request->all();
         try {
-            $translation = $this->translationService->create($attributes);
-            $this->translationService->flush();
+            $translation = $this->translationRepository->create($attributes);
+            $this->translationRepository->flush();
         } catch (\Exception $e) {
             throw new Exception($e->getMessage(), 400);
         };
@@ -138,8 +138,8 @@ class TranslationController extends BaseController
 
         $attributes = $request->request->all();
         try {
-            $translation = $this->translationService->update($id, $attributes);
-            $this->translationService->flush();
+            $translation = $this->translationRepository->update($id, $attributes);
+            $this->translationRepository->flush();
         } catch (PodbException $e) {
             // TODO
             throw new Exception($e->getMessage(), 400);
@@ -175,8 +175,8 @@ class TranslationController extends BaseController
             throw new Exception('Invalid ID ' . $id, 400);
         }
 
-        $this->translationService->remove($id);
-        $this->translationService->flush();
+        $this->translationRepository->remove($id);
+        $this->translationRepository->flush();
 
         return new JsonResponse(array(
             'success' => true
