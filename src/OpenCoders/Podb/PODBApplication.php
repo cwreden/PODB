@@ -3,6 +3,7 @@
 namespace OpenCoders\Podb;
 
 
+use OpenCoders\Podb\Api\APIv1ControllerProvider;
 use OpenCoders\Podb\Api\ResourceControllerProvider;
 use OpenCoders\Podb\Persistence\AuditServiceProvider;
 use OpenCoders\Podb\Persistence\DoctrineORMServiceProvider;
@@ -68,13 +69,7 @@ class PODBApplication extends \Silex\Application
 
         // API controller
         $this->mount('api/resource', new ResourceControllerProvider());
-        $this->mount('/rest/v1', new \OpenCoders\Podb\Provider\REST\v1\UserControllerProvider());
-        $this->mount('/rest/v1', new \OpenCoders\Podb\Provider\REST\v1\ProjectControllerProvider());
-        $this->mount('/rest/v1', new \OpenCoders\Podb\Provider\REST\v1\LanguageControllerProvider());
-        $this->mount('/rest/v1', new \OpenCoders\Podb\Provider\REST\v1\TranslationControllerProvider());
-        $this->mount('/rest/v1', new \OpenCoders\Podb\Provider\REST\v1\AuditControllerProvider());
-//        $this->mount('/rest/v1', new \OpenCoders\Podb\Provider\REST\v1\ACLControllerProvider());
-        $this->mount('/rest/v1', new \OpenCoders\Podb\Provider\REST\v1\AuthenticationControllerProvider());
+        $this->mount('api/v1', new APIv1ControllerProvider());
         // TODO version concept
 
         foreach ($values as $key => $value) {
