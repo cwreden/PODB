@@ -1,14 +1,13 @@
 <?php
 
-namespace OpenCoders\Podb\Service;
+namespace OpenCoders\Podb\Persistence;
 
 
-use OpenCoders\Podb\Persistence\Entity\User;
 use SimpleThings\EntityAudit\AuditReader;
 use SimpleThings\EntityAudit\ChangedEntity;
 use SimpleThings\EntityAudit\Revision;
 
-class AuditService
+class AuditRevisionManager
 {
     /**
      * @var AuditReader

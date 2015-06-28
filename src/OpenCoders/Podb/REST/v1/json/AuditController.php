@@ -3,7 +3,7 @@
 namespace OpenCoders\Podb\REST\v1\json;
 
 
-use OpenCoders\Podb\Service\AuditService;
+use OpenCoders\Podb\Persistence\AuditRevisionManager;
 use SimpleThings\EntityAudit\Revision;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -12,11 +12,11 @@ class AuditController
 {
 
     /**
-     * @var AuditService
+     * @var AuditRevisionManager
      */
     private $auditService;
 
-    function __construct(AuditService $auditService)
+    function __construct(AuditRevisionManager $auditService)
     {
         $this->auditService = $auditService;
     }

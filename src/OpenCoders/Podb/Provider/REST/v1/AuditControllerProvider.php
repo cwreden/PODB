@@ -21,7 +21,7 @@ class AuditControllerProvider implements ControllerProviderInterface
     public function connect(Application $app)
     {
         $app['rest.v1.json.audit_controller'] = $app->share(function ($app) {
-            return new AuditController($app['audit']);
+            return new AuditController($app['audit.revision.manager']);
         });
 
         /** @var ControllerCollection $controllers */

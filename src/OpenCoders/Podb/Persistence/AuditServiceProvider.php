@@ -3,7 +3,6 @@
 namespace OpenCoders\Podb\Persistence;
 
 
-use OpenCoders\Podb\Service\AuditService;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 use SimpleThings\EntityAudit\AuditConfiguration;
@@ -22,12 +21,6 @@ class AuditServiceProvider implements ServiceProviderInterface
      */
     public function register(Application $app)
     {
-        // @deprecated
-        // TODO refactor
-        $app['audit'] = $app->share(function ($app) {
-            return new AuditService($app['audit.reader']);
-        });
-
         $app['audit.option.entityClasses'] = array(
             'OpenCoders\Podb\Persistence\Entity\User',
             'OpenCoders\Podb\Persistence\Entity\Credential',
@@ -54,6 +47,9 @@ class AuditServiceProvider implements ServiceProviderInterface
             $auditManager = $pimple['audit.manager'];
             return $auditManager->createAuditReader($pimple['orm']);
         };
+        $app['audit.revision.manager'] = $app->share(function ($pimple) {
+            return new AuditRevisionManager($pimple['audit.reader']);
+        });
     }
 
     /**
