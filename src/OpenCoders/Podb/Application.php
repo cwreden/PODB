@@ -11,8 +11,6 @@ use OpenCoders\Podb\Provider\IndexControllerProvider;
 use OpenCoders\Podb\Provider\Service\AuthenticationServiceProvider;
 use OpenCoders\Podb\Provider\Service\CategoryServiceProvider;
 use OpenCoders\Podb\Provider\Service\DataSetServiceProvider;
-use OpenCoders\Podb\Provider\Service\ErrorHandlerServiceProvider;
-use OpenCoders\Podb\Provider\Service\RequestRateLimitServiceProvider;
 use Silex\Provider\DoctrineServiceProvider;
 use Silex\Provider\MonologServiceProvider;
 use Silex\Provider\ServiceControllerServiceProvider;
@@ -39,6 +37,8 @@ class Application extends \Silex\Application
         $this->register(new DoctrineServiceProvider());
         $this->register(new TwigServiceProvider());
         $this->register(new MonologServiceProvider());
+        // TODO security
+        // TODO remember me
 
         // Potential third party service provider
         $this->register(new DoctrineORMServiceProvider());
