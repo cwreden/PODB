@@ -66,7 +66,7 @@ class RequestRateLimitServiceProvider implements ServiceProviderInterface
             }
 
             $actualTime = time();
-            if ($rate['reset_at'] - $actualTime <= 0) {
+            if (isset($rate['reset_at']) && $rate['reset_at'] - $actualTime <= 0) {
                 $rate['reset_at'] = ($actualTime + $rateLimitConfig['resetInterval']);
                 $rate['used'] = 0;
                 $session->set('rateLimit', $rate);
