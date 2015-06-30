@@ -6,7 +6,6 @@ namespace OpenCoders\Podb\Api;
 use OpenCoders\Podb\PODBServices;
 use OpenCoders\Podb\REST\v1\json\AuditController;
 use OpenCoders\Podb\REST\v1\json\AuthenticationController;
-use OpenCoders\Podb\REST\v1\json\LanguageController;
 use OpenCoders\Podb\REST\v1\json\ProjectController;
 use OpenCoders\Podb\REST\v1\json\TranslationController;
 use OpenCoders\Podb\Security\SecurityServices;
@@ -42,7 +41,10 @@ class APIv1ControllerProvider implements ControllerProviderInterface
         });
 
         $app[APIServices::V1_LANGUAGE_CONTROLLER] = $app->share(function ($app) {
-            return new LanguageController($app, $app[PODBServices::LANGUAGE_REPOSITORY], $app['authentication']);
+            return new APIv1LanguageController(
+                $app[PODBServices::LANGUAGE_REPOSITORY],
+                $app['authentication']
+            );
         });
 
         $app[APIServices::V1_TRANSLATION_CONTROLLER] = $app->share(function ($app) {

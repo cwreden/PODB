@@ -69,7 +69,7 @@ class Language
     // region getter and setter
 
     /**
-     * @return
+     * @return int
      */
     public function getId()
     {
@@ -170,6 +170,7 @@ class Language
 
     /**
      * @return array
+     * @deprecated
      */
     public function asArray()
     {
@@ -186,6 +187,7 @@ class Language
 
     /**
      * @return array
+     * @deprecated
      */
     public function asShortArray()
     {
@@ -199,6 +201,7 @@ class Language
      * @param int $apiVersion
      *
      * @return array
+     * @deprecated
      */
     public function getAPIInformation($apiVersion)
     {

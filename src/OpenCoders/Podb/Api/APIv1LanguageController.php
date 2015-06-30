@@ -1,6 +1,6 @@
 <?php
 
-namespace OpenCoders\Podb\REST\v1\json;
+namespace OpenCoders\Podb\Api;
 
 
 use Exception;
@@ -14,7 +14,7 @@ use Silex\Application;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
-class LanguageController extends BaseController
+class APIv1LanguageController
 {
     /**
      * @var LanguageRepository
@@ -26,9 +26,11 @@ class LanguageController extends BaseController
      */
     private $authenticationService;
 
-    function __construct(Application $app, LanguageRepository $languageRepository, AuthenticationService $authenticationService)
+    function __construct(
+        LanguageRepository $languageRepository,
+        AuthenticationService $authenticationService
+    )
     {
-        parent::__construct($app);
         $this->languageRepository = $languageRepository;
         $this->authenticationService = $authenticationService;
     }
