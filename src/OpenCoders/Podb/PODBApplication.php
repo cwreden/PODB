@@ -69,7 +69,7 @@ class PODBApplication extends \Silex\Application
         // TODO ...
 
         // API controller
-        $this->mount('api/resource', new ResourceControllerProvider());
+        $this->mount('api', new ResourceControllerProvider());
         $this->mount('api/v1', new APIv1ControllerProvider());
         // TODO version concept
 

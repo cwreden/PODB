@@ -8,6 +8,8 @@ use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\ControllerProviderInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\RouteCollection;
 
 class ResourceControllerProvider implements ControllerProviderInterface
 {
@@ -24,10 +26,22 @@ class ResourceControllerProvider implements ControllerProviderInterface
         /** @var ControllerCollection $collection */
         $collection = $app[PODBServices::CONTROLLER_FACTORY];
 
-        $collection->get('/', function () use ($app) {
-            $resources = array(
-                '/rest/v1/user'
-            );
+        $collection->get('/resource', function (Request $request) use ($app) {
+
+            $requestUri = $request->getRequestUri();
+            $pattern = '#^' . substr($request->getRequestUri(), 0, strpos($requestUri, '/resource')) . '#';
+
+            /** @var RouteCollection $routes */
+            $routes = $app['routes'];
+            $resources = array();
+            foreach ($routes->all() as $route) {
+                if (preg_match($pattern, $route->getPath())) {
+                    $resources[] = array(
+                        'path' => $route->getPath(),
+                        'methods' => $route->getMethods(),
+                    );
+                }
+            }
 
             return new JsonResponse($resources);
         });
