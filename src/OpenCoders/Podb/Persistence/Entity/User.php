@@ -367,28 +367,14 @@ class User implements UserInterface
     }
 
     /**
-     * @param ArrayCollection|string $supportedLanguages
+     * @param Language[]|ArrayCollection $supportedLanguages
      */
     public function setSupportedLanguages($supportedLanguages)
     {
-        if ($supportedLanguages instanceof ArrayCollection) {
-            $this->supportedLanguages = $supportedLanguages;
-        } else if ($supportedLanguages === null) {
-            $this->supportedLanguages = null;
-        } else if (is_string($supportedLanguages) && $supportedLanguages !== '') {
-
-            $supportedLanguageIds = explode(',', $supportedLanguages);
-            $supportedLanguages = new ArrayCollection();
-            foreach ($supportedLanguageIds as $languageId) {
-                $language = $this->getEntityManager()->getRepository(
-                    'OpenCoders\Podb\Persistence\Entity\Language'
-                )->find($languageId);
-                if ($language) {
-                    $supportedLanguages->add($language);
-                }
-            }
-            $this->supportedLanguages = $supportedLanguages;
+        if (!$supportedLanguages instanceof ArrayCollection && !is_array($supportedLanguages)) {
+            $supportedLanguages = null;
         }
+        $this->supportedLanguages = $supportedLanguages;
     }
 
     /**
@@ -440,62 +426,12 @@ class User implements UserInterface
     // endregion
 
     /**
-     * Returns all user data as an array
-     *
-     * @return array
-     */
-    public function asArray()
-    {
-        $data = $this->asShortArray();
-
-        $data['email'] = $this->getEmail();
-        $data['active'] = $this->getActive();
-
-        return $data;
-    }
-
-    /**
-     *
-     *
-     * @return array
-     */
-    public function asShortArray()
-    {
-        return array(
-            'id' => $this->getId(),
-            'displayname' => $this->getDisplayName(),
-            'username' => $this->getUsername(),
-        );
-    }
-
-    /**
-     * Returns an array with API Information (urls) about this user
-     *
-     * @param $apiVersion
-     *
-     * @return array
-     */
-    public function getAPIInformation($apiVersion)
-    {
-        $urlToUser = $this->getBaseAPIUrl() . '/' . $apiVersion . '/users/' . $this->getUsername();
-
-        return array(
-            '_links' => array(
-                'self' => $urlToUser,
-                'projects' => $urlToUser . '/projects',
-                'own_projects' => $urlToUser . '/own/projects',
-                'languages' => $urlToUser . '/languages',
-                'translations' => $urlToUser . '/translations'
-            )
-        );
-    }
-
-    /**
      * Returns true if given password is equal with stored password
      *
      * @param $password string
      *
      * @return bool
+     * @deprecated
      */
     public function checkPassword($password)
     {
