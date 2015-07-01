@@ -88,7 +88,7 @@ class APIv1ControllerProvider implements ControllerProviderInterface
 
 
         $collection->get('/project', APIServices::V1_PROJECT_CONTROLLER . ':getList')
-            ->bind('rest.v1.json.project.list');
+            ->bind(ApiURIs::V1_PROJECT_LIST);
         $collection->get('/project/{projectName}', APIServices::V1_PROJECT_CONTROLLER . ':get')
             ->bind(ApiURIs::V1_PROJECT_GET);
         $collection->get('/project/{projectName}/contributors', APIServices::V1_PROJECT_CONTROLLER . ':getContributors')
@@ -98,24 +98,27 @@ class APIv1ControllerProvider implements ControllerProviderInterface
         $collection->get('/project/{projectName}/languages', APIServices::V1_PROJECT_CONTROLLER . ':getLanguages')
             ->bind(ApiURIs::V1_PROJECT_LANGUAGE_LIST);
 
-        $collection->post('/project', APIServices::V1_PROJECT_CONTROLLER . ':post')->bind('rest.v1.json.project.create');
-        $collection->put('/project/{id}', APIServices::V1_PROJECT_CONTROLLER . ':put')->bind('rest.v1.json.project.update');
-        $collection->delete('/project/{id}', APIServices::V1_PROJECT_CONTROLLER . ':delete')->bind('rest.v1.json.project.delete');
+        $collection->post('/project', APIServices::V1_PROJECT_CONTROLLER . ':post')
+            ->bind(ApiURIs::V1_PROJECT_CREATE);
+        $collection->put('/project/{id}', APIServices::V1_PROJECT_CONTROLLER . ':put')
+            ->bind(ApiURIs::V1_PROJECT_UPDATE);
+        $collection->delete('/project/{id}', APIServices::V1_PROJECT_CONTROLLER . ':delete')
+            ->bind(ApiURIs::V1_PROJECT_DELETE);
 
 
         $collection->get('/language', APIServices::V1_LANGUAGE_CONTROLLER . ':getList')
-            ->bind('rest.v1.json.language.list');
+            ->bind(ApiURIs::V1_LANGUAGE_LIST);
         $collection->get('/language/{locale}', APIServices::V1_LANGUAGE_CONTROLLER . ':get')
             ->bind(ApiURIs::V1_LANGUAGE_GET);
         $collection->get('/language/{locale}/supporter', APIServices::V1_LANGUAGE_CONTROLLER . ':getSupporters')
-            ->bind('rest.v1.json.language.supporter.list');
+            ->bind(ApiURIs::V1_LANGUAGE_SUPPORTER_LIST);
 
         $collection->post('/language', APIServices::V1_LANGUAGE_CONTROLLER . ':post')
-            ->bind('rest.v1.json.language.create');
+            ->bind(ApiURIs::V1_LANGUAGE_CREATE);
         $collection->put('/language/{id}', APIServices::V1_LANGUAGE_CONTROLLER . ':put')
-            ->bind('rest.v1.json.language.update');
+            ->bind(ApiURIs::V1_LANGUAGE_UPDATE);
         $collection->delete('/language/{id}', APIServices::V1_LANGUAGE_CONTROLLER . ':delete')
-            ->bind('rest.v1.json.language.delete');
+            ->bind(ApiURIs::V1_LANGUAGE_DELETE);
 
 
 //        $collection->get('/translation', APIServices::V1_TRANSLATION_CONTROLLER . ':getList')->bind('rest.v1.json.translation.list');

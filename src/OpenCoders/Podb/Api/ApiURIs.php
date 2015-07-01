@@ -20,4 +20,13 @@ class ApiURIs
     const V1_USER_CREATE = 'rest.v1.json.user.create';
     const V1_USER_UPDATE = 'rest.v1.json.user.update';
     const V1_USER_DELETE = 'rest.v1.json.user.delete';
+    const V1_PROJECT_LIST = 'rest.v1.json.project.list';
+    const V1_PROJECT_CREATE = 'rest.v1.json.project.create';
+    const V1_PROJECT_UPDATE = 'rest.v1.json.project.update';
+    const V1_PROJECT_DELETE = 'rest.v1.json.project.delete';
+    const V1_LANGUAGE_LIST = 'rest.v1.json.language.list';
+    const V1_LANGUAGE_SUPPORTER_LIST = 'rest.v1.json.language.supporter.list';
+    const V1_LANGUAGE_CREATE = 'rest.v1.json.language.create';
+    const V1_LANGUAGE_UPDATE = 'rest.v1.json.language.update';
+    const V1_LANGUAGE_DELETE = 'rest.v1.json.language.delete';
 }

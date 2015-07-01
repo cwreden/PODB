@@ -3,16 +3,17 @@
 namespace OpenCoders\Podb\Api;
 
 
+use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use OpenCoders\Podb\AuthenticationService;
 use OpenCoders\Podb\Exception\PodbException;
 use OpenCoders\Podb\Persistence\Entity\Language;
 use OpenCoders\Podb\Persistence\Entity\User;
 use OpenCoders\Podb\Persistence\Repository\LanguageRepository;
-use OpenCoders\Podb\REST\v1\BaseController;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class APIv1LanguageController
 {
@@ -25,14 +26,32 @@ class APIv1LanguageController
      * @var \OpenCoders\Podb\AuthenticationService
      */
     private $authenticationService;
+    /**
+     * @var UrlGeneratorInterface
+     */
+    private $urlGenerator;
+    /**
+     * @var EntityManagerInterface
+     */
+    private $entityManager;
 
+    /**
+     * @param LanguageRepository $languageRepository
+     * @param AuthenticationService $authenticationService
+     * @param UrlGeneratorInterface $urlGenerator
+     * @param EntityManagerInterface $entityManager
+     */
     function __construct(
         LanguageRepository $languageRepository,
-        AuthenticationService $authenticationService
+        AuthenticationService $authenticationService,
+        UrlGeneratorInterface $urlGenerator,
+        EntityManagerInterface $entityManager
     )
     {
         $this->languageRepository = $languageRepository;
         $this->authenticationService = $authenticationService;
+        $this->urlGenerator = $urlGenerator;
+        $this->entityManager = $entityManager;
     }
 
     /**
@@ -41,10 +60,8 @@ class APIv1LanguageController
     public function getList()
     {
         $languages = $this->languageRepository->getAll();
-        $urlGenerator = $this->getUrlGenerator();
         $data = array();
 
-        /** @var Language $language */
         foreach ($languages as $language) {
             $urlParams = array('locale' => $language->getLocale());
             $data[] = array(
@@ -52,7 +69,7 @@ class APIv1LanguageController
                 'name' => $language->getLabel(),
                 'locale' => $language->getLocale(),
                 '_links' => array(
-                    'self' => $urlGenerator->generate('rest.v1.json.language.get', $urlParams),
+                    'self' => $this->urlGenerator->generate(ApiURIs::V1_LANGUAGE_GET, $urlParams),
                 )
             );
         }
@@ -77,7 +94,6 @@ class APIv1LanguageController
         if ($language == null) {
             throw new Exception("No language found with identifier $locale.", 404);
         }
-        $urlGenerator = $this->getUrlGenerator();
         $urlParams = array('locale' => $language->getLocale());
 
         return new JsonResponse(array(
@@ -85,8 +101,8 @@ class APIv1LanguageController
             'name' => $language->getLabel(),
             'locale' => $language->getLocale(),
             '_links' => array(
-                'self' => $urlGenerator->generate('rest.v1.json.language.get', $urlParams),
-                'supporter' => $urlGenerator->generate('rest.v1.json.language.supporter.list', $urlParams),
+                'self' => $this->urlGenerator->generate(ApiURIs::V1_LANGUAGE_GET, $urlParams),
+                'supporter' => $this->urlGenerator->generate(ApiURIs::V1_LANGUAGE_SUPPORTER_LIST, $urlParams),
             )
         ));
     }
@@ -111,7 +127,6 @@ class APIv1LanguageController
         }
 
         $supporters = $language->getSupportedBy();
-        $urlGenerator = $this->getUrlGenerator();
         $data = array();
 
         /** @var User $supporter */
@@ -119,10 +134,10 @@ class APIv1LanguageController
             $urlParams = array('userName' => $supporter->getUsername());
             $data[] = array(
                 'id' => $supporter->getId(),
-                'displayname' => $supporter->getDisplayName(),
+                'displayName' => $supporter->getDisplayName(),
                 'username' => $supporter->getUsername(),
                 '_links' => array(
-                    'self' => $urlGenerator->generate('rest.v1.json.user.get', $urlParams),
+                    'self' => $this->urlGenerator->generate(ApiURIs::V1_USER_GET, $urlParams),
                 )
             );
         }
@@ -141,24 +156,26 @@ class APIv1LanguageController
     public function post(Request $request)
     {
         $this->authenticationService->ensureSession();
-        $attributes = $request->request->all();
         try {
-            $language = $this->languageRepository->create($attributes);
+            $language = new Language();
+            $language->setLabel($request->get('name'));
+            $language->setLabel($request->get('locale'));
+
+            $this->entityManager->persist($language);
             $this->languageRepository->flush();
         } catch (\Exception $e) {
             throw new Exception($e->getMessage(), 400);
         };
 
         $urlParams = array('locale' => $language->getLocale());
-        $urlGenerator = $this->getUrlGenerator();
 
         return new JsonResponse(array(
             'id' => $language->getId(),
             'name' => $language->getLabel(),
             'locale' => $language->getLocale(),
             '_links' => array(
-                'self' => $urlGenerator->generate('rest.v1.json.language.get', $urlParams),
-                'supporter' => $urlGenerator->generate('rest.v1.json.language.supporter.list', $urlParams),
+                'self' => $this->urlGenerator->generate(ApiURIs::V1_LANGUAGE_GET, $urlParams),
+                'supporter' => $this->urlGenerator->generate(ApiURIs::V1_LANGUAGE_SUPPORTER_LIST, $urlParams),
             )
         ));
     }
@@ -179,9 +196,17 @@ class APIv1LanguageController
             throw new Exception('Invalid ID ' . $id, 400);
         }
 
-        $attributes = $request->request->all();
         try {
-            $language = $this->languageRepository->update($id, $attributes);
+            $language = $this->languageRepository->get($id);
+            $label = $request->get('name');
+            if (!empty($label)) {
+                $language->setLabel($label);
+            }
+            $locale = $request->get('locale');
+            if (!empty($locale)) {
+                $language->setLocale($locale);
+            }
+
             $this->languageRepository->flush();
         } catch (PodbException $e) {
             // TODO
@@ -189,15 +214,14 @@ class APIv1LanguageController
         }
 
         $urlParams = array('locale' => $language->getLocale());
-        $urlGenerator = $this->getUrlGenerator();
 
         return new JsonResponse(array(
             'id' => $language->getId(),
             'name' => $language->getLabel(),
             'locale' => $language->getLocale(),
             '_links' => array(
-                'self' => $urlGenerator->generate('rest.v1.json.language.get', $urlParams),
-                'supporter' => $urlGenerator->generate('rest.v1.json.language.supporter.list', $urlParams),
+                'self' => $this->urlGenerator->generate(ApiURIs::V1_LANGUAGE_GET, $urlParams),
+                'supporter' => $this->urlGenerator->generate(ApiURIs::V1_LANGUAGE_SUPPORTER_LIST, $urlParams),
             )
         ));
     }
@@ -223,5 +247,16 @@ class APIv1LanguageController
         return new JsonResponse(array(
             'success' => true
         ));
+    }
+
+    /**
+     * Returns true, if $value is an integer
+     *
+     * @param $value
+     * @return bool
+     */
+    protected function isId($value)
+    {
+        return isset($value) && intval($value) != 0;
     }
 }

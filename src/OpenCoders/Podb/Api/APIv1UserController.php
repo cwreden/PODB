@@ -85,7 +85,7 @@ class APIv1UserController
             $urlParams = array('userName' => $user->getUsername());
             $data[] = array(
                 'id' => $user->getId(),
-                'displayname' => $user->getDisplayName(),
+                'displayName' => $user->getDisplayName(),
                 'username' => $user->getUsername(),
                 '_links' => array(
                     'self' => $this->urlGenerator->generate(ApiURIs::V1_USER_GET, $urlParams),
@@ -117,7 +117,7 @@ class APIv1UserController
 
         return new JsonResponse(array(
             'id' => $user->getId(),
-            'displayname' => $user->getDisplayName(),
+            'displayName' => $user->getDisplayName(),
             'username' => $user->getUsername(),
             'email' => $user->getEmail(),
             'active' => $user->getActive(),
@@ -388,7 +388,7 @@ class APIv1UserController
 
         return new JsonResponse(array(
             'id' => $user->getId(),
-            'displayname' => $user->getDisplayName(),
+            'displayName' => $user->getDisplayName(),
             'username' => $user->getUsername(),
             '_links' => array(
                 'self' => $this->urlGenerator->generate(ApiURIs::V1_USER_GET, $urlParams),
@@ -447,7 +447,7 @@ class APIv1UserController
 
         return new JsonResponse(array(
             'id' => $user->getId(),
-            'displayname' => $user->getDisplayName(),
+            'displayName' => $user->getDisplayName(),
             'username' => $user->getUsername(),
             '_links' => array(
                 'self' => $this->urlGenerator->generate(ApiURIs::V1_USER_GET, $urlParams),
@@ -523,7 +523,7 @@ class APIv1UserController
 
         return new JsonResponse(array(
             'id' => $user->getId(),
-            'displayname' => $user->getDisplayName(),
+            'displayName' => $user->getDisplayName(),
             'username' => $user->getUsername(),
             'email' => $user->getEmail(),
             'active' => $user->getActive(),

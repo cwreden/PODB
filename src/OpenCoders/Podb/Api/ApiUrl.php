@@ -2,7 +2,11 @@
 
 namespace OpenCoders\Podb\Api;
 
-
+/**
+ * Class ApiUrl
+ * @package OpenCoders\Podb\Api
+ * @deprecated
+ */
 class ApiUrl {
 
     static public function getBaseApiUrl()
