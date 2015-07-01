@@ -36,13 +36,21 @@ class APIv1ControllerProvider implements ControllerProviderInterface
         });
 
         $app[APIServices::V1_PROJECT_CONTROLLER] = $app->share(function ($app) {
-            return new APIv1ProjectController($app, $app[PODBServices::PROJECT_REPOSITORY], $app['authentication']);
+            return new APIv1ProjectController(
+                $app[PODBServices::PROJECT_REPOSITORY],
+                $app['authentication'],
+                $app['url_generator'],
+                $app['orm'],
+                $app[PODBServices::LANGUAGE_REPOSITORY]
+            );
         });
 
-        $app[APIServices::V1_LANGUAGE_CONTROLLER] = $app->share(function ($app) {
+        $app[APIServices::V1_LANGUAGE_CONTROLLER] = $app->share(function ($pimple) {
             return new APIv1LanguageController(
-                $app[PODBServices::LANGUAGE_REPOSITORY],
-                $app['authentication']
+                $pimple[PODBServices::LANGUAGE_REPOSITORY],
+                $pimple['authentication'],
+                $pimple['url_generator'],
+                $pimple['orm']
             );
         });
 
@@ -92,8 +100,6 @@ class APIv1ControllerProvider implements ControllerProviderInterface
             ->bind(ApiURIs::V1_PROJECT_GET);
         $collection->get('/project/{projectName}/contributors', APIServices::V1_PROJECT_CONTROLLER . ':getContributors')
             ->bind(ApiURIs::V1_PROJECT_CONTRIBUTOR_LIST);
-//        $collection->get('/project/{projectName}/categories', APIServices::V1_PROJECT_CONTROLLER . ':getCategories')
-//            ->bind('rest.v1.json.project.category.list');
         $collection->get('/project/{projectName}/languages', APIServices::V1_PROJECT_CONTROLLER . ':getLanguages')
             ->bind(ApiURIs::V1_PROJECT_LANGUAGE_LIST);
 

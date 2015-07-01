@@ -3,18 +3,20 @@
 namespace OpenCoders\Podb\Api;
 
 
+use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use OpenCoders\Podb\AuthenticationService;
 use OpenCoders\Podb\Exception\PodbException;
 use OpenCoders\Podb\Persistence\Entity\Project;
 use OpenCoders\Podb\Persistence\Entity\User;
+use OpenCoders\Podb\Persistence\Repository\LanguageRepository;
 use OpenCoders\Podb\Persistence\Repository\ProjectRepository;
-use OpenCoders\Podb\REST\v1\BaseController;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-class APIv1ProjectController extends BaseController
+class APIv1ProjectController
 {
     /**
      * @var ProjectRepository
@@ -25,12 +27,39 @@ class APIv1ProjectController extends BaseController
      * @var \OpenCoders\Podb\AuthenticationService
      */
     private $authenticationService;
+    /**
+     * @var UrlGeneratorInterface
+     */
+    private $urlGenerator;
+    /**
+     * @var EntityManagerInterface
+     */
+    private $entityManager;
+    /**
+     * @var LanguageRepository
+     */
+    private $languageRepository;
 
-    function __construct(Application $app, ProjectRepository $projectRepository, AuthenticationService $authenticationService)
+    /**
+     * @param ProjectRepository $projectRepository
+     * @param AuthenticationService $authenticationService
+     * @param UrlGeneratorInterface $urlGenerator
+     * @param EntityManagerInterface $entityManager
+     * @param LanguageRepository $languageRepository
+     */
+    function __construct(
+        ProjectRepository $projectRepository,
+        AuthenticationService $authenticationService,
+        UrlGeneratorInterface $urlGenerator,
+        EntityManagerInterface $entityManager,
+        LanguageRepository $languageRepository
+    )
     {
-        parent::__construct($app);
         $this->projectRepository = $projectRepository;
         $this->authenticationService = $authenticationService;
+        $this->urlGenerator = $urlGenerator;
+        $this->entityManager = $entityManager;
+        $this->languageRepository = $languageRepository;
     }
 
     /**
@@ -39,7 +68,6 @@ class APIv1ProjectController extends BaseController
     public function getList()
     {
         $projects = $this->projectRepository->getAll();
-        $urlGenerator = $this->getUrlGenerator();
         $data = array();
 
         /** @var Project $project */
@@ -49,7 +77,7 @@ class APIv1ProjectController extends BaseController
                 'id' => $project->getId(),
                 'name' => $project->getName(),
                 '_links' => array(
-                    'self' => $urlGenerator->generate('rest.v1.json.project.get', $urlParams),
+                    'self' => $this->urlGenerator->generate(ApiURIs::V1_PROJECT_GET, $urlParams),
                 )
             );
         }
@@ -74,7 +102,6 @@ class APIv1ProjectController extends BaseController
         if ($project == null) {
             throw new Exception("No project found with identifier $projectName.", 404);
         }
-        $urlGenerator = $this->getUrlGenerator();
         $urlParams = array('projectName' => $project->getName());
 
         return new JsonResponse(array(
@@ -84,12 +111,11 @@ class APIv1ProjectController extends BaseController
             'private' => $project->getPrivate(),
             'blog' => $project->getUrl(),
             '_links' => array(
-                'self' => $urlGenerator->generate('rest.v1.json.project.get', $urlParams),
-                'owner' => $urlGenerator->generate('rest.v1.json.user.get', array('userName' => $project->getOwner()->getUsername())),
-                'default_language' => $urlGenerator->generate('rest.v1.json.language.get', array('locale' => $project->getDefaultLanguage()->getLocale())),
-                'contributors' => $urlGenerator->generate('rest.v1.json.project.contributor.list', $urlParams),
-                'categories' => $urlGenerator->generate('rest.v1.json.project.category.list', $urlParams),
-                'languages' => $urlGenerator->generate('rest.v1.json.project.language.list', $urlParams),
+                'self' => $this->urlGenerator->generate(ApiURIs::V1_PROJECT_GET, $urlParams),
+                'owner' => $this->urlGenerator->generate(ApiURIs::V1_USER_GET, array('userName' => $project->getOwner()->getUsername())),
+                'default_language' => $this->urlGenerator->generate(ApiURIs::V1_LANGUAGE_GET, array('locale' => $project->getDefaultLanguage()->getLocale())),
+                'contributors' => $this->urlGenerator->generate(ApiURIs::V1_PROJECT_CONTRIBUTOR_LIST, $urlParams),
+                'languages' => $this->urlGenerator->generate(ApiURIs::V1_PROJECT_LANGUAGE_LIST, $urlParams),
             )
         ));
     }
@@ -114,7 +140,6 @@ class APIv1ProjectController extends BaseController
         }
 
         $contributors = $project->getContributors();
-        $urlGenerator = $this->getUrlGenerator();
         $data = array();
 
         /** @var User $contributor */
@@ -122,42 +147,14 @@ class APIv1ProjectController extends BaseController
             $urlParams = array('userName' => $contributor->getUsername());
             $data[] = array(
                 'id' => $contributor->getId(),
-                'displayname' => $contributor->getDisplayName(),
+                'displayName' => $contributor->getDisplayName(),
                 'username' => $contributor->getUsername(),
                 '_links' => array(
-                    'self' => $urlGenerator->generate('rest.v1.json.user.get', $urlParams),
+                    'self' => $this->urlGenerator->generate(ApiURIs::V1_USER_GET, $urlParams),
                 )
             );
         }
         return new JsonResponse($data);
-    }
-
-    /**
-     * @param $projectName
-     * @return \Symfony\Component\HttpFoundation\JsonResponse
-     */
-    public function getCategories($projectName)
-    {
-        $project = $this->projectRepository->get($projectName);
-        $categories = $project->getCategories();
-        $urlGenerator = $this->getUrlGenerator();
-        $data = array();
-
-        foreach ($categories as $category) {
-            $urlParams = array('id' => $category->getId());
-            $data[] = array(
-                'id' => $category->getId(),
-                'name' => $category->getName(),
-                'description' => $category->getDescription(),
-                '_links' => array(
-                    'self' => $urlGenerator->generate('rest.v1.json.category.get', $urlParams),
-                    'project' => $urlGenerator->generate('rest.v1.json.project.get', array('projectName' => $project->getName())),
-                    'dataSets' => $urlGenerator->generate('rest.v1.json.category.dataSet.list', $urlParams)
-                )
-            );
-        }
-
-        return new JsonResponse();
     }
 
     /**
@@ -181,23 +178,30 @@ class APIv1ProjectController extends BaseController
     public function post(Request $request)
     {
         $this->authenticationService->ensureSession();
-        $attributes = $request->request->all();
-        $attributes['owner'] = $this->authenticationService->getCurrentUser();
         try {
-            $project = $this->projectRepository->create($attributes);
-            $this->projectRepository->flush();
+            $project = new Project();
+
+            $project->setName($request->get('name'));
+            $project->setDescription($request->get('description'));
+            $project->setPrivate(false);// TODO not implemented
+            $project->setUrl($request->get('blog'));
+            $project->setOwner($this->authenticationService->getCurrentUser());
+//            $project->setContributors($value); // TODO extract as own api endpoint (add/remove)
+            $project->setDefaultLanguage($this->languageRepository->get($request->get('defaultLanguage')));
+
+            $this->entityManager->persist($project);
+            $this->entityManager->flush();
         } catch (\Exception $e) {
             throw new Exception($e->getMessage(), 400);
         };
 
         $urlParams = array('projectName' => $project->getName());
-        $urlGenerator = $this->getUrlGenerator();
 
         return new JsonResponse(array(
             'id' => $project->getId(),
             'name' => $project->getName(),
             '_links' => array(
-                'self' => $urlGenerator->generate('rest.v1.json.project.get', $urlParams),
+                'self' => $this->urlGenerator->generate(ApiURIs::V1_PROJECT_GET, $urlParams),
             )
         ));
     }
@@ -218,9 +222,23 @@ class APIv1ProjectController extends BaseController
             throw new Exception('Invalid ID ' . $id, 400);
         }
 
-        $attributes = $request->request->all();
         try {
-            $project = $this->projectRepository->update($id, $attributes);
+            $project = $this->projectRepository->get($id);
+
+//            $project->setName($request->get('name'));
+            if ($request->request->has('description')) {
+                $project->setDescription($request->get('description'));
+            }
+            if ($request->request->has('private')) {
+                $project->setPrivate(false);// TODO not implemented
+            }
+            if ($request->request->has('blog')) {
+                $project->setUrl($request->get('blog'));
+            }
+            if ($request->request->has('defaultLanguage')) {
+                $project->setDefaultLanguage($this->languageRepository->get($request->request->get('defaultLanguage')));
+            }
+
             $this->projectRepository->flush();
         } catch (PodbException $e) {
             // TODO
@@ -228,13 +246,12 @@ class APIv1ProjectController extends BaseController
         }
 
         $urlParams = array('projectName' => $project->getName());
-        $urlGenerator = $this->getUrlGenerator();
 
         return new JsonResponse(array(
             'id' => $project->getId(),
             'name' => $project->getName(),
             '_links' => array(
-                'self' => $urlGenerator->generate('rest.v1.json.project.get', $urlParams),
+                'self' => $this->urlGenerator->generate(ApiURIs::V1_PROJECT_GET, $urlParams),
             )
         ));
     }
@@ -260,5 +277,16 @@ class APIv1ProjectController extends BaseController
         return new JsonResponse(array(
             'success' => true
         ));
+    }
+
+    /**
+     * Returns true, if $value is an integer
+     *
+     * @param $value
+     * @return bool
+     */
+    protected function isId($value)
+    {
+        return isset($value) && intval($value) != 0;
     }
 } 
