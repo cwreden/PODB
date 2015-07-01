@@ -7,6 +7,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 /**
  * Class Domain
  * @package OpenCoders\Podb\Persistence\Entity
+ *
+ * @Table(name="Domain", uniqueConstraints={@UniqueConstraint(name="domain_unique", columns={"name", "project_id"})})
  * @Entity(repositoryClass="OpenCoders\Podb\Persistence\Repository\DomainRepository")
  */
 class Domain

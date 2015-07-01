@@ -29,4 +29,9 @@ class ApiURIs
     const V1_LANGUAGE_CREATE = 'rest.v1.json.language.create';
     const V1_LANGUAGE_UPDATE = 'rest.v1.json.language.update';
     const V1_LANGUAGE_DELETE = 'rest.v1.json.language.delete';
+    const V1_PROJECT_DOMAIN_GET = 'rest.v1.json.project.domain.get';
+    const V1_PROJECT_DOMAIN_LIST = 'rest.v1.json.project.domain.list';
+    const V1_PROJECT_DOMAIN_CREATE = 'rest.v1.json.project.domain.create';
+    const V1_PROJECT_DOMAIN_UPDATE = 'rest.v1.json.project.domain.update';
+    const V1_PROJECT_DOMAIN_DELETE = 'rest.v1.json.project.domain.delete';
 }

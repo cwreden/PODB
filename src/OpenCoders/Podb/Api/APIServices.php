@@ -12,4 +12,5 @@ class APIServices
     const V1_TRANSLATION_CONTROLLER = 'rest.v1.json.translation_controller';
     const V1_AUDIT_CONTROLLER = 'rest.v1.json.audit_controller';
     const V1_AUTHENTICATION_CONTROLLER = 'rest.v1.json.authentication_controller';
+    const V1_DOMAIN_CONTROLLER = 'rest.v1.json.domain_controller';
 }
