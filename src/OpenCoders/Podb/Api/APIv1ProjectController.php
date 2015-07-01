@@ -1,6 +1,6 @@
 <?php
 
-namespace OpenCoders\Podb\REST\v1\json;
+namespace OpenCoders\Podb\Api;
 
 
 use Exception;
@@ -14,7 +14,7 @@ use Silex\Application;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
-class ProjectController extends BaseController
+class APIv1ProjectController extends BaseController
 {
     /**
      * @var ProjectRepository
