@@ -29,7 +29,7 @@ class Message
     protected $msgId;
 
     /**
-     * @var Domain
+     * @var Project
      * @ManyToOne(targetEntity="Project", inversedBy="messages")
      * @JoinColumn(name="project_id", referencedColumnName="id")
      */
@@ -38,7 +38,7 @@ class Message
     /**
      * @var Domain
      * @ManyToOne(targetEntity="Domain", inversedBy="messages")
-     * @JoinColumn(name="message_id", referencedColumnName="id")
+     * @JoinColumn(name="domain_id", referencedColumnName="id")
      */
     protected $domain;
 
@@ -119,6 +119,22 @@ class Message
     public function setTranslations($translations)
     {
         $this->translations = $translations;
+    }
+
+    /**
+     * @return Domain
+     */
+    public function getProject()
+    {
+        return $this->project;
+    }
+
+    /**
+     * @param Project $project
+     */
+    public function setProject($project)
+    {
+        $this->project = $project;
     }
 
     // endregion

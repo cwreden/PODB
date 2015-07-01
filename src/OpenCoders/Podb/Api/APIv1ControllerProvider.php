@@ -64,6 +64,17 @@ class APIv1ControllerProvider implements ControllerProviderInterface
             );
         });
 
+        $app[APIServices::V1_MESSAGE_CONTROLLER] = $app->share(function ($pimple) {
+            return new APIv1MessageController(
+                $pimple[PODBServices::MESSAGE_REPOSITORY],
+                $pimple['authentication'],
+                $pimple['url_generator'],
+                $pimple['orm'],
+                $pimple[PODBServices::PROJECT_REPOSITORY],
+                $pimple[PODBServices::DOMAIN_REPOSITORY]
+            );
+        });
+
         $app[APIServices::V1_TRANSLATION_CONTROLLER] = $app->share(function ($app) {
             return new TranslationController($app, $app[PODBServices::TRANSLATION_REPOSITORY], $app['authentication']);
         });
@@ -146,6 +157,16 @@ class APIv1ControllerProvider implements ControllerProviderInterface
             ->bind(ApiURIs::V1_PROJECT_DOMAIN_UPDATE);
         $collection->delete('/project/{projectName}/domain/{domainName}', APIServices::V1_DOMAIN_CONTROLLER . ':delete')
             ->bind(ApiURIs::V1_PROJECT_DOMAIN_DELETE);
+
+
+        $collection->get('/project/{projectName}/message', APIServices::V1_MESSAGE_CONTROLLER . ':getList')
+            ->bind(ApiURIs::V1_PROJECT_MESSAGE_LIST);
+        $collection->post('/project/{projectName}/message', APIServices::V1_MESSAGE_CONTROLLER . ':post')
+            ->bind(ApiURIs::V1_PROJECT_MESSAGE_CREATE);
+        $collection->put('/project/{projectName}/message/{id}', APIServices::V1_MESSAGE_CONTROLLER . ':put')
+            ->bind(ApiURIs::V1_PROJECT_MESSAGE_UPDATE);
+        $collection->delete('/project/{projectName}/message/{id}', APIServices::V1_MESSAGE_CONTROLLER . ':delete')
+            ->bind(ApiURIs::V1_PROJECT_MESSAGE_DELETE);
 
 //        $collection->get('/translation', APIServices::V1_TRANSLATION_CONTROLLER . ':getList')->bind('rest.v1.json.translation.list');
 //        $collection->get('/translation/{id}', APIServices::V1_TRANSLATION_CONTROLLER . ':get')->bind('rest.v1.json.translation.get');

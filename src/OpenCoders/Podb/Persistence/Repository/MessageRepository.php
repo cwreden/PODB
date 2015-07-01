@@ -2,8 +2,8 @@
 
 namespace OpenCoders\Podb\Persistence\Repository;
 
-use OpenCoders\Podb\Exception\DeprecatedException;
 use OpenCoders\Podb\Persistence\Entity\Message;
+use OpenCoders\Podb\Persistence\Entity\Project;
 
 /**
  * Class MessageRepository
@@ -12,11 +12,19 @@ use OpenCoders\Podb\Persistence\Entity\Message;
 class MessageRepository extends EntityRepositoryAbstract
 {
     /**
+     * @param Project $project
+     * @param null $domainId
      * @return Message[]
      */
-    public function getAll()
+    public function getListByProject(Project $project, $domainId = null)
     {
-        return $this->findAll();
+        $criteria = array(
+            'project_id' => $project->getId()
+        );
+        if ($domainId !== null) {
+            $criteria['domain_id'] = $domainId;
+        }
+        return $this->findBy($criteria);
     }
 
     /**
@@ -26,58 +34,5 @@ class MessageRepository extends EntityRepositoryAbstract
     public function get($id)
     {
         return $this->find($id);
-    }
-
-    /**
-     * @param $attributes
-     * @return Message
-     * @throws MissingParameterException
-     */
-    public function create($attributes)
-    {
-        throw new DeprecatedException();
-        $dataSet = new DataSet();
-
-        if (!isset($attributes['category'])) {
-            throw new MissingParameterException('category');
-        } elseif (!isset($attributes['msgId'])) {
-            throw new MissingParameterException('msgId');
-        }
-
-        foreach ($attributes as $key => $value) {
-            if ($key == 'category') {
-                $dataSet->setCategory($this->categoryService->get($value));
-            } else if ($key == 'msgId') {
-                $dataSet->setMsgId($value);
-            }
-        }
-
-        $em = $this->getEntityManager();
-        $em->persist($dataSet);
-
-        return $dataSet;
-    }
-
-    /**
-     * Update a DataSet
-     *
-     * @param $id
-     * @param $attributes
-     * @return null|Message
-     */
-    public function update($id, $attributes)
-    {
-        throw new DeprecatedException();
-        $dataSet = $this->get($id);
-
-        foreach ($attributes as $key => $value) {
-            if ($key == 'category') {
-                $dataSet->setCategory($this->categoryService->get($value));
-            } else if ($key == 'msgId') {
-                $dataSet->setMsgId($value);
-            }
-        }
-
-        return $dataSet;
     }
 }
