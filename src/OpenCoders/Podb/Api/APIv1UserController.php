@@ -470,8 +470,10 @@ class APIv1UserController
             throw new Exception('Invalid ID ' . $id, 400);
         }
 
-        $this->userRepository->remove($id);
-        $this->userRepository->flush();
+        $user = $this->userRepository->get($id);
+
+        $this->entityManager->remove($id);
+        $this->entityManager->flush();
 
         return new JsonResponse(array(
             'success' => true

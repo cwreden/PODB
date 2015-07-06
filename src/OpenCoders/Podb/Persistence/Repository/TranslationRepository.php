@@ -2,14 +2,12 @@
 
 namespace OpenCoders\Podb\Persistence\Repository;
 
-use OpenCoders\Podb\Exception\DeprecatedException;
-use OpenCoders\Podb\Exception\MissingParameterException;
+use Doctrine\ORM\EntityRepository;
 use OpenCoders\Podb\Persistence\Entity\Language;
-use OpenCoders\Podb\Persistence\Entity\Message;
 use OpenCoders\Podb\Persistence\Entity\Project;
 use OpenCoders\Podb\Persistence\Entity\Translation;
 
-class TranslationRepository extends EntityRepositoryAbstract
+class TranslationRepository extends EntityRepository
 {
 
     /**

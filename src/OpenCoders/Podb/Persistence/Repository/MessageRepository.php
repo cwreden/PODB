@@ -2,6 +2,7 @@
 
 namespace OpenCoders\Podb\Persistence\Repository;
 
+use Doctrine\ORM\EntityRepository;
 use OpenCoders\Podb\Persistence\Entity\Message;
 use OpenCoders\Podb\Persistence\Entity\Project;
 
@@ -9,7 +10,7 @@ use OpenCoders\Podb\Persistence\Entity\Project;
  * Class MessageRepository
  * @package OpenCoders\Podb\Persistence\Repository
  */
-class MessageRepository extends EntityRepositoryAbstract
+class MessageRepository extends EntityRepository
 {
     /**
      * @param Project $project

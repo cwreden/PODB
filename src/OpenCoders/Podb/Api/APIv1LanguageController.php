@@ -162,7 +162,7 @@ class APIv1LanguageController
             $language->setLabel($request->get('locale'));
 
             $this->entityManager->persist($language);
-            $this->languageRepository->flush();
+            $this->entityManager->flush();
         } catch (\Exception $e) {
             throw new Exception($e->getMessage(), 400);
         };
@@ -207,7 +207,7 @@ class APIv1LanguageController
                 $language->setLocale($locale);
             }
 
-            $this->languageRepository->flush();
+            $this->entityManager->flush();
         } catch (PodbException $e) {
             // TODO
             throw new Exception($e->getMessage(), 400);
@@ -241,8 +241,10 @@ class APIv1LanguageController
             throw new Exception('Invalid ID ' . $id, 400);
         }
 
-        $this->languageRepository->remove($id);
-        $this->languageRepository->flush();
+        $language = $this->languageRepository->get($id);
+
+        $this->entityManager->remove($language);
+        $this->entityManager->flush();
 
         return new JsonResponse(array(
             'success' => true

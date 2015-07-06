@@ -3,10 +3,9 @@
 namespace OpenCoders\Podb\Persistence\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use OpenCoders\Podb\Exception\DeprecatedException;
 use OpenCoders\Podb\Persistence\Entity\Project;
 
-class ProjectRepository extends EntityRepositoryAbstract
+class ProjectRepository extends EntityRepository
 {
 
     /**

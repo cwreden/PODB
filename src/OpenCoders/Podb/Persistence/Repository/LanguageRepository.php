@@ -2,9 +2,10 @@
 
 namespace OpenCoders\Podb\Persistence\Repository;
 
+use Doctrine\ORM\EntityRepository;
 use OpenCoders\Podb\Persistence\Entity\Language;
 
-class LanguageRepository extends EntityRepositoryAbstract
+class LanguageRepository extends EntityRepository
 {
 
     /**

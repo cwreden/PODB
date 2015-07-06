@@ -246,7 +246,7 @@ class APIv1ProjectController
                 $project->setDefaultLanguage($this->languageRepository->get($request->request->get('defaultLanguage')));
             }
 
-            $this->projectRepository->flush();
+            $this->entityManager->flush();
         } catch (PodbException $e) {
             // TODO
             throw new Exception($e->getMessage(), 400);
@@ -278,8 +278,10 @@ class APIv1ProjectController
             throw new Exception('Invalid ID ' . $id, 400);
         }
 
-        $this->projectRepository->remove($id);
-        $this->projectRepository->flush();
+        $project = $this->projectRepository->get($id);
+
+        $this->entityManager->remove($project);
+        $this->entityManager->flush();
 
         return new JsonResponse(array(
             'success' => true

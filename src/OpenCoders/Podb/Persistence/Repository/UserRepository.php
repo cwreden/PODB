@@ -2,9 +2,10 @@
 
 namespace OpenCoders\Podb\Persistence\Repository;
 
+use Doctrine\ORM\EntityRepository;
 use OpenCoders\Podb\Persistence\Entity\User;
 
-class UserRepository extends EntityRepositoryAbstract
+class UserRepository extends EntityRepository
 {
 
     /**

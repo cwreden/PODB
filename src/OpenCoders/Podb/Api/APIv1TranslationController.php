@@ -267,7 +267,7 @@ class APIv1TranslationController
                 $translation->setMsgStr2($request->request->get('msgStr2'));
             }
 
-            $this->translationRepository->flush();
+            $this->entityManager->flush();
         } catch (PodbException $e) {
             // TODO
             throw new Exception($e->getMessage(), 400);
@@ -315,8 +315,8 @@ class APIv1TranslationController
 
         $translation = $this->translationRepository->get($id);
 
-        $this->translationRepository->remove($translation);
-        $this->translationRepository->flush();
+        $this->entityManager->remove($translation);
+        $this->entityManager->flush();
 
         return new JsonResponse(array(
             'success' => true
