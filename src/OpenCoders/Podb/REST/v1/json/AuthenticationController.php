@@ -6,12 +6,11 @@ namespace OpenCoders\Podb\REST\v1\json;
 use OpenCoders\Podb\AuthenticationService;
 use OpenCoders\Podb\Exception\AlreadyAuthenticatedException;
 use OpenCoders\Podb\Exception\MissingParameterException;
-use OpenCoders\Podb\REST\v1\BaseController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
-class AuthenticationController extends BaseController
+class AuthenticationController
 {
     /**
      * @var \OpenCoders\Podb\AuthenticationService
@@ -23,13 +22,11 @@ class AuthenticationController extends BaseController
     private $tokenStorage;
 
     /**
-     * @param $app
      * @param AuthenticationService $authenticationService
      * @param TokenStorageInterface $tokenStorage
      */
-    function __construct($app, AuthenticationService $authenticationService, TokenStorageInterface $tokenStorage)
+    function __construct(AuthenticationService $authenticationService, TokenStorageInterface $tokenStorage)
     {
-        parent::__construct($app);
         $this->authenticationService = $authenticationService;
         $this->tokenStorage = $tokenStorage;
     }
