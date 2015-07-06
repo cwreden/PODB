@@ -30,7 +30,7 @@ class DomainRepository extends EntityRepository
     public function getByName(Project $project, $domainName)
     {
         return $this->findOneBy(array(
-            'project_id' => $project->getId(),
+            'project' => $project->getId(),
             'name' => $domainName
         ));
     }
@@ -42,7 +42,7 @@ class DomainRepository extends EntityRepository
     public function getAllForProject(Project $project)
     {
         return $this->findBy(array(
-            'project_id' => $project->getId()
+            'project' => $project->getId()
         ));
     }
 }

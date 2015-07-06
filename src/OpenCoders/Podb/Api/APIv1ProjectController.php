@@ -7,6 +7,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use OpenCoders\Podb\AuthenticationService;
 use OpenCoders\Podb\Exception\PodbException;
+use OpenCoders\Podb\Persistence\Entity\Language;
 use OpenCoders\Podb\Persistence\Entity\Project;
 use OpenCoders\Podb\Persistence\Entity\User;
 use OpenCoders\Podb\Persistence\Repository\LanguageRepository;
@@ -104,6 +105,12 @@ class APIv1ProjectController
         }
         $urlParams = array('projectName' => $project->getName());
 
+        $defaultLanguageURI = null;
+        if ($project->getDefaultLanguage() instanceof Language) {
+            $defaultLanguageURI = $this->urlGenerator->generate(ApiURIs::V1_LANGUAGE_GET, array(
+                'locale' => $project->getDefaultLanguage()->getLocale())
+            );
+        }
         return new JsonResponse(array(
             'id' => $project->getId(),
             'name' => $project->getName(),
@@ -113,7 +120,7 @@ class APIv1ProjectController
             '_links' => array(
                 'self' => $this->urlGenerator->generate(ApiURIs::V1_PROJECT_GET, $urlParams),
                 'owner' => $this->urlGenerator->generate(ApiURIs::V1_USER_GET, array('userName' => $project->getOwner()->getUsername())),
-                'default_language' => $this->urlGenerator->generate(ApiURIs::V1_LANGUAGE_GET, array('locale' => $project->getDefaultLanguage()->getLocale())),
+                'default_language' => $defaultLanguageURI,
                 'contributors' => $this->urlGenerator->generate(ApiURIs::V1_PROJECT_CONTRIBUTOR_LIST, $urlParams),
                 'languages' => $this->urlGenerator->generate(ApiURIs::V1_PROJECT_LANGUAGE_LIST, $urlParams),
             )
