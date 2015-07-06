@@ -10,6 +10,11 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
+/**
+ * Class AuthenticationController
+ * @package OpenCoders\Podb\REST\v1\json
+ * @deprecated silex security
+ */
 class AuthenticationController
 {
     /**
