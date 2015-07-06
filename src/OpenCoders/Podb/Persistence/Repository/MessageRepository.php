@@ -19,10 +19,10 @@ class MessageRepository extends EntityRepositoryAbstract
     public function getListByProject(Project $project, $domainId = null)
     {
         $criteria = array(
-            'project_id' => $project->getId()
+            'project' => $project->getId()
         );
         if ($domainId !== null) {
-            $criteria['domain_id'] = $domainId;
+            $criteria['domain'] = $domainId;
         }
         return $this->findBy($criteria);
     }

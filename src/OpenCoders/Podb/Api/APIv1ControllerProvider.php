@@ -6,7 +6,6 @@ namespace OpenCoders\Podb\Api;
 use OpenCoders\Podb\PODBServices;
 use OpenCoders\Podb\REST\v1\json\AuditController;
 use OpenCoders\Podb\REST\v1\json\AuthenticationController;
-use OpenCoders\Podb\REST\v1\json\TranslationController;
 use OpenCoders\Podb\Security\SecurityServices;
 use Silex\Application;
 use Silex\ControllerCollection;
@@ -75,8 +74,16 @@ class APIv1ControllerProvider implements ControllerProviderInterface
             );
         });
 
-        $app[APIServices::V1_TRANSLATION_CONTROLLER] = $app->share(function ($app) {
-            return new TranslationController($app, $app[PODBServices::TRANSLATION_REPOSITORY], $app['authentication']);
+        $app[APIServices::V1_TRANSLATION_CONTROLLER] = $app->share(function ($pimple) {
+            return new APIv1TranslationController(
+                $pimple[PODBServices::TRANSLATION_REPOSITORY],
+                $pimple['authentication'],
+                $pimple['url_generator'],
+                $pimple['orm'],
+                $pimple[PODBServices::PROJECT_REPOSITORY],
+                $pimple[PODBServices::MESSAGE_REPOSITORY],
+                $pimple[PODBServices::LANGUAGE_REPOSITORY]
+            );
         });
 
         $app[APIServices::V1_AUDIT_CONTROLLER] = $app->share(function ($app) {
@@ -161,6 +168,8 @@ class APIv1ControllerProvider implements ControllerProviderInterface
 
         $collection->get('/project/{projectName}/message', APIServices::V1_MESSAGE_CONTROLLER . ':getList')
             ->bind(ApiURIs::V1_PROJECT_MESSAGE_LIST);
+        $collection->get('/project/{projectName}/message/{id}', APIServices::V1_MESSAGE_CONTROLLER . ':get')
+            ->bind(ApiURIs::V1_PROJECT_MESSAGE_GET);
         $collection->post('/project/{projectName}/message', APIServices::V1_MESSAGE_CONTROLLER . ':post')
             ->bind(ApiURIs::V1_PROJECT_MESSAGE_CREATE);
         $collection->put('/project/{projectName}/message/{id}', APIServices::V1_MESSAGE_CONTROLLER . ':put')
@@ -168,14 +177,18 @@ class APIv1ControllerProvider implements ControllerProviderInterface
         $collection->delete('/project/{projectName}/message/{id}', APIServices::V1_MESSAGE_CONTROLLER . ':delete')
             ->bind(ApiURIs::V1_PROJECT_MESSAGE_DELETE);
 
-//        $collection->get('/translation', APIServices::V1_TRANSLATION_CONTROLLER . ':getList')->bind('rest.v1.json.translation.list');
-//        $collection->get('/translation/{id}', APIServices::V1_TRANSLATION_CONTROLLER . ':get')->bind('rest.v1.json.translation.get');
-//
-//        $collection->post('/translation', APIServices::V1_TRANSLATION_CONTROLLER . ':post')->bind('rest.v1.json.translation.create');
-//        $collection->put('/translation/{id}', APIServices::V1_TRANSLATION_CONTROLLER . ':put')->bind('rest.v1.json.translation.update');
-//        $collection->delete('/translation/{id}', APIServices::V1_TRANSLATION_CONTROLLER . ':delete')->bind('rest.v1.json.translation.delete');
-//
-//
+        $collection->get('/project/{projectName}/translation/{locale}', APIServices::V1_TRANSLATION_CONTROLLER . ':getList')
+            ->bind(ApiURIs::V1_PROJECT_TRANSLATION_LOCALE_LIST);
+        $collection->get('/translation/{id}', APIServices::V1_TRANSLATION_CONTROLLER . ':get')
+            ->bind(ApiURIs::V1_PROJECT_MESSAGE_TRANSLATION_GET);
+
+        $collection->post('/translation', APIServices::V1_TRANSLATION_CONTROLLER . ':post')
+            ->bind(ApiURIs::V1_PROJECT_MESSAGE_TRANSLATION_CREATE);
+        $collection->put('/translation/{id}', APIServices::V1_TRANSLATION_CONTROLLER . ':put')->bind(ApiURIs::V1_PROJECT_MESSAGE_TRANSLATION_UPDATE);
+        $collection->delete('/translation/{id}', APIServices::V1_TRANSLATION_CONTROLLER . ':delete')
+            ->bind(ApiURIs::V1_PROJECT_MESSAGE_TRANSLATION_DELETE);
+
+
 //        $collection->get('/audit', APIServices::V1_AUDIT_CONTROLLER . ':getList');
 //        $collection->get('/audit/entity/{className}/{id}/revision', APIServices::V1_AUDIT_CONTROLLER . ':getEntityRevisions');
 //        $collection->get('/audit/entity/{className}/{id}/revision/first', APIServices::V1_AUDIT_CONTROLLER . ':getFirstRevision');

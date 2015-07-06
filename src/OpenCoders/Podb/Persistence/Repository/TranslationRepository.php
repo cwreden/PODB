@@ -4,17 +4,44 @@ namespace OpenCoders\Podb\Persistence\Repository;
 
 use OpenCoders\Podb\Exception\DeprecatedException;
 use OpenCoders\Podb\Exception\MissingParameterException;
+use OpenCoders\Podb\Persistence\Entity\Language;
+use OpenCoders\Podb\Persistence\Entity\Message;
+use OpenCoders\Podb\Persistence\Entity\Project;
 use OpenCoders\Podb\Persistence\Entity\Translation;
 
 class TranslationRepository extends EntityRepositoryAbstract
 {
 
     /**
-     * @return Translation[]
+     * @param Project $project
+     * @param Language $language
+     * @return \OpenCoders\Podb\Persistence\Entity\Translation[]
      */
-    public function getAll()
+    public function getListByProjectAndLanguage(Project $project, Language $language)
     {
-        return $this->findAll();
+        // TODO
+
+        $query = $this->createQueryBuilder('t');
+        $query->select('t.id')
+            ->leftJoin('t.language', 'l')
+            ->leftJoin('t.message', 'm')
+            ->leftJoin('m.project', 'p')
+            ->where('l.id = :languageId')
+            ->andWhere('p.id = :projectId')
+            ->setParameter('languageId', $language->getId())
+            ->setParameter('projectId', $project->getId());
+
+        $result = $query->getQuery()->execute();
+        $entities = array();
+        foreach ($result as $row) {
+            $entity = $this->find($row['id']);
+            if (!$entity instanceof Translation) {
+                continue;
+            }
+            $entities[] = $entity;
+        }
+
+        return $entities;
     }
 
     /**
@@ -24,78 +51,5 @@ class TranslationRepository extends EntityRepositoryAbstract
     public function get($id)
     {
         return $this->find($id);
-    }
-
-    /**
-     * @param $attributes
-     * @return Translation
-     * @throws MissingParameterException
-     * @deprecated
-     */
-    public function create($attributes)
-    {
-        throw new DeprecatedException();
-        $translation = new Translation();
-
-        if (!isset($attributes['dataSet'])) {
-            throw new MissingParameterException('dataSet');
-        } elseif (!isset($attributes['language'])) {
-            throw new MissingParameterException('language');
-        } elseif (!isset($attributes['msgStr'])) {
-            throw new MissingParameterException('msgStr');
-        }
-
-        foreach ($attributes as $key => $value) {
-            if ($key === 'dataSet') {
-                $translation->setMessage($this->dataSetService->get($value));
-            } elseif ($key === 'language') {
-                $translation->setLanguage($this->languageRepository->get($value));
-            } elseif ($key === 'fuzzy') {
-                $translation->setFuzzy($value);
-            } else if ($key === 'msgStr') {
-                $translation->setMsgStr($value);
-            } else if ($key === 'msgStr1') {
-                $translation->setMsgStr1($value);
-            } else if ($key === 'msgStr2') {
-                $translation->setMsgStr2($value);
-            }
-        }
-
-        $em = $this->getEntityManager();
-        $em->persist($translation);
-
-        return $translation;
-    }
-
-    /**
-     * Update translation
-     *
-     * @param $id
-     * @param $attributes
-     * @return null|Translation
-     * @deprecated
-     */
-    public function update($id, $attributes)
-    {
-        throw new DeprecatedException();
-        $translation = $this->get($id);
-
-        foreach ($attributes as $key => $value) {
-            if ($key === 'dataSet') {
-                $translation->setMessage($this->dataSetService->get($value));
-            } elseif ($key === 'language') {
-                $translation->setLanguage($this->languageRepository->get($value));
-            } elseif ($key === 'fuzzy') {
-                $translation->setFuzzy($value);
-            } else if ($key === 'msgStr') {
-                $translation->setMsgStr($value);
-            } else if ($key === 'msgStr1') {
-                $translation->setMsgStr1($value);
-            } else if ($key === 'msgStr2') {
-                $translation->setMsgStr2($value);
-            }
-        }
-
-        return $translation;
     }
 }

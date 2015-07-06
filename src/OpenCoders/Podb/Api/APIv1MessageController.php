@@ -83,12 +83,49 @@ class APIv1MessageController
         $data = array();
 
         foreach ($messages as $message) {
+            $urlParams = array(
+                'projectName' => $projectName,
+                'id' => $message->getId()
+            );
             $data[] = array(
                 'id' => $message->getId(),
                 'msgId' => $message->getMsgId(),
-                '_links' => array()
+                '_links' => array(
+                    'self' => $this->urlGenerator->generate(ApiURIs::V1_PROJECT_MESSAGE_GET, $urlParams),
+                )
             );
         }
+
+        return new JsonResponse($data);
+    }
+
+    /**
+     * @param $projectName
+     * @param $id
+     * @return JsonResponse
+     */
+    public function get($projectName, $id)
+    {
+        $project = $this->projectRepository->getByName($projectName);
+        $message = $this->messageRepository->get($id);
+
+        if ($message->getProject()->getId() !== $project->getId()) {
+            throw new NotFoundHttpException(sprintf('Message with ID: %d for project %s not found.', $id, $projectName));
+        }
+
+        $urlParams = array(
+            'projectName' => $projectName,
+            'id' => $message->getId()
+        );
+
+        $data = array(
+            'id' => $message->getId(),
+            'msgId' => $message->getMsgId(),
+            '_links' => array(
+                'self' => $this->urlGenerator->generate(ApiURIs::V1_PROJECT_MESSAGE_GET, $urlParams),
+            )
+        );
+
 
         return new JsonResponse($data);
     }

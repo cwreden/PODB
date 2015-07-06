@@ -35,7 +35,13 @@ class ApiURIs
     const V1_PROJECT_DOMAIN_UPDATE = 'rest.v1.json.project.domain.update';
     const V1_PROJECT_DOMAIN_DELETE = 'rest.v1.json.project.domain.delete';
     const V1_PROJECT_MESSAGE_LIST = 'rest.v1.json.project.message.list';
+    const V1_PROJECT_MESSAGE_GET = 'rest.v1.json.project.message.get';
     const V1_PROJECT_MESSAGE_CREATE = 'rest.v1.json.project.message.create';
     const V1_PROJECT_MESSAGE_UPDATE = 'rest.v1.json.project.message.update';
     const V1_PROJECT_MESSAGE_DELETE = 'rest.v1.json.project.message.delete';
+    const V1_PROJECT_TRANSLATION_LOCALE_LIST = 'rest.v1.json.project.translation.locale.list';
+    const V1_PROJECT_MESSAGE_TRANSLATION_GET = 'rest.v1.json.project.message.translation.get';
+    const V1_PROJECT_MESSAGE_TRANSLATION_CREATE = 'rest.v1.json.project.message.translation.create';
+    const V1_PROJECT_MESSAGE_TRANSLATION_UPDATE = 'rest.v1.json.project.message.translation.update';
+    const V1_PROJECT_MESSAGE_TRANSLATION_DELETE = 'rest.v1.json.project.message.translation.delete';
 }

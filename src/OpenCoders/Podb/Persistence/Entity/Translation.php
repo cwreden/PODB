@@ -185,7 +185,7 @@ class Translation
     }
 
     /**
-     * @param DataSet $message
+     * @param Message $message
      */
     public function setMessage($message)
     {
@@ -193,7 +193,7 @@ class Translation
     }
 
     /**
-     * @return DataSet
+     * @return Message
      */
     public function getMessage()
     {
