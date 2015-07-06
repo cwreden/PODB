@@ -4,7 +4,6 @@ namespace OpenCoders\Podb\Api;
 
 
 use OpenCoders\Podb\PODBServices;
-use OpenCoders\Podb\REST\v1\json\AuditController;
 use OpenCoders\Podb\REST\v1\json\AuthenticationController;
 use OpenCoders\Podb\Security\SecurityServices;
 use Silex\Application;
@@ -87,11 +86,11 @@ class APIv1ControllerProvider implements ControllerProviderInterface
         });
 
         $app[APIServices::V1_AUDIT_CONTROLLER] = $app->share(function ($app) {
-            return new AuditController($app['audit.revision.manager']);
+            return new APIv1AuditController($app['audit.revision.manager']);
         });
 
         $app[APIServices::V1_AUTHENTICATION_CONTROLLER] = $app->share(function ($app) {
-            return new AuthenticationController($app, $app['authentication'], $app['security.token_storage']);
+            return new AuthenticationController($app['authentication'], $app['security.token_storage']);
         });
 
 
@@ -189,13 +188,13 @@ class APIv1ControllerProvider implements ControllerProviderInterface
             ->bind(ApiURIs::V1_PROJECT_MESSAGE_TRANSLATION_DELETE);
 
 
-//        $collection->get('/audit', APIServices::V1_AUDIT_CONTROLLER . ':getList');
-//        $collection->get('/audit/entity/{className}/{id}/revision', APIServices::V1_AUDIT_CONTROLLER . ':getEntityRevisions');
-//        $collection->get('/audit/entity/{className}/{id}/revision/first', APIServices::V1_AUDIT_CONTROLLER . ':getFirstRevision');
-//        $collection->get('/audit/entity/{className}/{id}/revision/current', APIServices::V1_AUDIT_CONTROLLER . ':getCurrentRevision');
-//        $collection->get('/audit/entity/{className}/{id}/diff/{oldRevisionId}/{newRevisionId}', APIServices::V1_AUDIT_CONTROLLER . ':getDiff');
-//
-//
+        $collection->get('/audit', APIServices::V1_AUDIT_CONTROLLER . ':getList');
+        $collection->get('/audit/entity/{className}/{id}/revision', APIServices::V1_AUDIT_CONTROLLER . ':getEntityRevisions');
+        $collection->get('/audit/entity/{className}/{id}/revision/first', APIServices::V1_AUDIT_CONTROLLER . ':getFirstRevision');
+        $collection->get('/audit/entity/{className}/{id}/revision/current', APIServices::V1_AUDIT_CONTROLLER . ':getCurrentRevision');
+        $collection->get('/audit/entity/{className}/{id}/diff/{oldRevisionId}/{newRevisionId}', APIServices::V1_AUDIT_CONTROLLER . ':getDiff');
+
+
 //        $collection->post('/authentication/login', APIServices::V1_AUTHENTICATION_CONTROLLER . ':login')
 //            ->bind('rest.v1.json.authentication.login');
 //        $collection->post('/authentication/logout', APIServices::V1_AUTHENTICATION_CONTROLLER . ':logout')

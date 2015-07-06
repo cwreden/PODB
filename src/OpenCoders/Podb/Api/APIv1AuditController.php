@@ -1,6 +1,6 @@
 <?php
 
-namespace OpenCoders\Podb\REST\v1\json;
+namespace OpenCoders\Podb\Api;
 
 
 use OpenCoders\Podb\Persistence\AuditRevisionManager;
@@ -8,7 +8,7 @@ use SimpleThings\EntityAudit\Revision;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
-class AuditController
+class APIv1AuditController
 {
 
     /**
