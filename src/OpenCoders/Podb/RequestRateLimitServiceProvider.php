@@ -3,10 +3,14 @@
 namespace OpenCoders\Podb;
 
 
+use OpenCoders\Podb\Security\RateLimiter;
+use OpenCoders\Podb\Security\RateLimitException;
+use OpenCoders\Podb\Security\SecurityServices;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Http\FirewallMap;
 
 /**
  * Class RequestRateLimitServiceProvider
@@ -14,7 +18,6 @@ use Symfony\Component\HttpFoundation\Response;
  *
  * TODO check logged in state
  * TODO exclude routes or check only selected routes
- * TODO optimize exception
  */
 class RequestRateLimitServiceProvider implements ServiceProviderInterface
 {
@@ -29,7 +32,14 @@ class RequestRateLimitServiceProvider implements ServiceProviderInterface
      */
     public function register(Application $app)
     {
-        // TODO: Implement register() method.
+        $app[SecurityServices::RATE_LIMITER] = $app->share(function ($pimple) {
+            return new RateLimiter(
+                $pimple[SecurityServices::RATE_LIMIT_REQUEST_LIMIT],
+                $pimple[SecurityServices::RATE_LIMIT_AUTHENTICATED_REQUEST_LIMIT],
+                $pimple[SecurityServices::RATE_LIMIT_REQUEST_LIMIT_RESET_INTERVAL],
+                $pimple['session']
+            );
+        });
     }
 
     /**
@@ -43,70 +53,40 @@ class RequestRateLimitServiceProvider implements ServiceProviderInterface
     {
         // TODO only at api calls
         $app->before(function (Request $request) use ($app) {
-            $session = $request->getSession();
-
-            $limit = $app['podb.requestLimit.limit'];
-            if ($session->get('authenticated') === true) {
-                $limit = $app['podb.requestLimit.authenticatedLimit'];
-            }
-            if ($limit == 0) {
+            $pathInfo = $request->getPathInfo();
+            if (strpos($pathInfo, '/api') !== 0) {
                 return;
             }
 
-            $rate = $session->get('rateLimit');
+            /** @var RateLimiter $rateLimiter */
+            $rateLimiter = $app[SecurityServices::RATE_LIMITER];
 
-            $resetInterval = $app['podb.requestLimit.resetInterval'];
-            if (!isset($rate)) {
-                $rate = array('reset_at' => (time() + $resetInterval), 'used' => 0);
-                $session->set('rateLimit', $rate);
-            }
-
-            $actualTime = time();
-            if (isset($rate['reset_at']) && $rate['reset_at'] - $actualTime <= 0) {
-                $rate['reset_at'] = ($actualTime + $resetInterval);
-                $rate['used'] = 0;
-                $session->set('rateLimit', $rate);
-            }
-
-            $remaining = $limit - $rate['used'];
-            if ($remaining < 0) {
-                $remaining = 0;
-            }
-
-            if ($rate['used'] >= $limit) {
-                $app->abort(403, 'Max rate limit exceeded!', array(
-                    'X-RateLimit-Limit' => $limit,
-                    'X-RateLimit-Remaining' => $remaining,
-                    'X-RateLimit-Reset' => $rate['reset_at'],
+            try {
+                $rateLimiter->increaseUsed();
+            } catch (RateLimitException $e) {
+                $app->abort(403, $e->getMessage(), array(
+                    'X-RateLimit-Limit' => $rateLimiter->getLimit(),
+                    'X-RateLimit-Remaining' => $rateLimiter->getRemaining(),
+                    'X-RateLimit-Reset' => $rateLimiter->getResetAt(),
                 ));
             }
-        });
+
+        }, 128);
 
         $app->after(function (Request $request, Response $response) use ($app) {
-            $session = $request->getSession();
-            $rate = $session->get('rateLimit');
-
-            $rate['used']++;
-            $session->set('rateLimit', $rate);
-
-            $limit = $app['podb.requestLimit.limit'];
-            if ($session->get('authenticated') === true) {
-                $limit = $app['podb.requestLimit.authenticatedLimit'];
-            }
-            if ($limit == 0) {
+            $pathInfo = $request->getPathInfo();
+            if (strpos($pathInfo, '/api') === 0) {
                 return;
             }
 
-            $remaining = $limit - $rate['used'];
-            if ($remaining < 0) {
-                $remaining = 0;
-            }
+            /** @var RateLimiter $rateLimiter */
+            $rateLimiter = $app[SecurityServices::RATE_LIMITER];
 
             $response->headers->add(array(
-                'X-RateLimit-Limit' => $limit,
-                'X-RateLimit-Remaining' => $remaining,
-                'X-RateLimit-Reset' => $rate['reset_at'],
+                'X-RateLimit-Limit' => $rateLimiter->getLimit(),
+                'X-RateLimit-Remaining' => $rateLimiter->getRemaining(),
+                'X-RateLimit-Reset' => $rateLimiter->getResetAt(),
             ));
-        });
+        }, Application::LATE_EVENT);
     }
 }
