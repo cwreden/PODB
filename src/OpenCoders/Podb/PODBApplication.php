@@ -8,7 +8,7 @@ use OpenCoders\Podb\Api\ResourceControllerProvider;
 use OpenCoders\Podb\Persistence\AuditServiceProvider;
 use OpenCoders\Podb\Persistence\DoctrineORMServiceProvider;
 use OpenCoders\Podb\Security\PODBSecurityServiceProvider;
-use OpenCoders\Podb\Web\IndexControllerProvider;
+use OpenCoders\Podb\Web\ControllerProvider;
 use Silex\Provider\DoctrineServiceProvider;
 use Silex\Provider\MonologServiceProvider;
 use Silex\Provider\SecurityServiceProvider;
@@ -49,6 +49,7 @@ class PODBApplication extends \Silex\Application
 
         // Service provider
         $this->register(new PODBSecurityServiceProvider());
+        $this->register(new PODBServiceProvider());
         $this->register(new UserServiceProvider());
         $this->register(new ProjectServiceProvider());
         $this->register(new LanguageServiceProvider());
@@ -61,7 +62,7 @@ class PODBApplication extends \Silex\Application
         $this->register(new ErrorHandlerServiceProvider());
 
         // Page controller
-        $this->mount('', new IndexControllerProvider());
+        $this->mount('', new ControllerProvider());
         // TODO login page
         // TODO register page
         // TODO profile page
