@@ -25,6 +25,9 @@
         "bootstrap": "*",
         "bootstrap3-wysihtml5": "*",
         "jquery": "2.0.2",
-        "jquery-ui": "1.10.3"
+        "jquery-ui": "1.10.3",
+        "react": "~0.13.3",
+        "react-bootstrap": "~0.22.0",
+        "react-router": "~0.13.3"
     }
 }
