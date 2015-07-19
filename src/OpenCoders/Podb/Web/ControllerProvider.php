@@ -3,12 +3,13 @@
 namespace OpenCoders\Podb\Web;
 
 
+use OpenCoders\Podb\PODBServices;
 use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\ControllerProviderInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
-class IndexControllerProvider implements ControllerProviderInterface
+class ControllerProvider implements ControllerProviderInterface
 {
     /**
      * Returns routes to connect to the given application.
@@ -19,19 +20,16 @@ class IndexControllerProvider implements ControllerProviderInterface
      */
     public function connect(Application $app)
     {
-        $controllers = $app['controllers_factory'];
-
-        /**
-         * Debug
-         */
-        $controllers->get('/', function () use ($app) {
-            $app['session']->start();
-            if (isset($_SESSION['attributes']) && isset($_SESSION['attributes']['locked']) && $_SESSION['attributes']['locked'] === true || $app['session']->get('locked')) {
-                return $app['twig']->render('lockscreen.html');
-            }
-            return $app['twig']->render('base.html');
+        $app[Controllers::INDEX] = $app->share(function ($p) {
+            return new IndexController(
+                $p['twig'],
+                $p[PODBServices::MANAGER]
+            );
         });
 
+        $controllers = $app['controllers_factory'];
+
+        $controllers->get('/', Controllers::INDEX . ':index');
 
         /**
          * Debug
