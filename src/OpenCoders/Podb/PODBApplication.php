@@ -2,7 +2,6 @@
 
 namespace OpenCoders\Podb;
 
-
 use OpenCoders\Podb\Api\APIv1ControllerProvider;
 use OpenCoders\Podb\Api\ResourceControllerProvider;
 use OpenCoders\Podb\Persistence\AuditServiceProvider;
@@ -17,6 +16,7 @@ use Silex\Provider\SessionServiceProvider;
 use Silex\Provider\SwiftmailerServiceProvider;
 use Silex\Provider\TwigServiceProvider;
 use Silex\Provider\UrlGeneratorServiceProvider;
+use Symfony\Component\Console\Helper\HelperSet;
 
 class PODBApplication extends \Silex\Application
 {
@@ -77,5 +77,37 @@ class PODBApplication extends \Silex\Application
         foreach ($values as $key => $value) {
             $this[$key] = $value;
         }
+
+        $this->initCli();
+    }
+
+    private function initCli()
+    {
+        $this->register(new \Knp\Provider\ConsoleServiceProvider(), array(
+            'console.name'    => 'PODB',
+            'console.version' => '0.0.0',
+            'console.project_directory' => __DIR__
+        ));
+
+        $this->extend('console', function ($console, $this) {
+            /** @var $console \Knp\Console\Application */
+            $console->setHelperSet(new HelperSet([
+                'db' => new \Doctrine\DBAL\Tools\Console\Helper\ConnectionHelper($this['orm']->getConnection()),
+                'em' => new \Doctrine\ORM\Tools\Console\Helper\EntityManagerHelper($this['orm']),
+            ]));
+            $console->add(new \Doctrine\ORM\Tools\Console\Command\SchemaTool\CreateCommand());
+            $console->add(new \Doctrine\ORM\Tools\Console\Command\SchemaTool\DropCommand());
+            $console->add(new \Doctrine\ORM\Tools\Console\Command\SchemaTool\UpdateCommand());
+            $console->add(new \Doctrine\ORM\Tools\Console\Command\InfoCommand());
+            $console->add(new \Doctrine\ORM\Tools\Console\Command\RunDqlCommand());
+            $console->add(new \Doctrine\ORM\Tools\Console\Command\ValidateSchemaCommand());
+            $console->add(new \Doctrine\ORM\Tools\Console\Command\GenerateEntitiesCommand());
+            return $console;
+        });
+    }
+
+    public function runCli()
+    {
+        $this['console']->run();
     }
 }
