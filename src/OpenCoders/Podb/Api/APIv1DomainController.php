@@ -65,7 +65,6 @@ class APIv1DomainController
      */
     public function getList($projectName)
     {
-        $this->authenticationService->ensureSession();
         $project = $this->projectRepository->getByName($projectName);
         $domains = $this->domainRepository->getAllForProject($project);
 

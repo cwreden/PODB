@@ -103,12 +103,17 @@ class APIv1TranslationController
 
         /** @var Translation $translation */
         foreach ($translations as $translation) {
+            $message = $translation->getMessage();
             $urlParams = array(
-                'id' => $translation->getMessage()->getId(),
+                'id' => $message->getId(),
             );
             $data[] = array(
                 'id' => $translation->getId(),
                 'msgStr' => $translation->getMsgStr(),
+                'message' => array(
+                    'id' => $message->getId(),
+                    'msgId' => $message->getMsgId()
+                ),
                 '_links' => array(
                     'self' => $this->urlGenerator->generate(ApiURIs::V1_PROJECT_MESSAGE_TRANSLATION_GET, $urlParams),
                 )
