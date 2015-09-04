@@ -2,7 +2,6 @@
 
 namespace OpenCoders\Podb\Api;
 
-
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use OpenCoders\Podb\AuthenticationService;
@@ -55,15 +54,14 @@ class APIv1UserController
      * @param MessageDigestPasswordEncoder $passwordEncoder
      * @param PasswordSaltGenerator $passwordSaltGenerator
      */
-    function __construct(
+    public function __construct(
         UserRepository $userRepository,
         AuthenticationService $authenticationService,
         UrlGeneratorInterface $urlGenerator,
         EntityManagerInterface $entityManager,
         MessageDigestPasswordEncoder $passwordEncoder,
         PasswordSaltGenerator $passwordSaltGenerator
-    )
-    {
+    ) {
         $this->userRepository = $userRepository;
         $this->authenticationService = $authenticationService;
         $this->urlGenerator = $urlGenerator;
@@ -243,7 +241,7 @@ class APIv1UserController
                     'self' => $this->urlGenerator->generate(ApiURIs::V1_LANGUAGE_GET, array(
                         'locale' => $language->getLocale()
                     )),
-//                    'url_projects' => $apiBaseUrl . '/' . $apiVersion . '/languages/' . $this->getLocale() . '/projects'
+//                  'url_projects' => $apiBaseUrl . '/' . $apiVersion . '/languages/' . $this->getLocale() . '/projects'
                 )
             );
         }
@@ -369,11 +367,11 @@ class APIv1UserController
             foreach ($attributes as $key => $value) {
                 if ($key === 'company') {
                     $user->setCompany($value);
-                } else if ($key === 'publicEMail') {
+                } elseif ($key === 'publicEMail') {
                     $user->setPublicEMail($value);
-                } else if ($key === 'supportedLanguages') {
+                } elseif ($key === 'supportedLanguages') {
                     $user->setSupportedLanguages($value);
-                } else if ($key === 'emailValidated') {
+                } elseif ($key === 'emailValidated') {
                     $user->setEmailValidated($value);
                 }
             }
@@ -419,19 +417,19 @@ class APIv1UserController
             foreach ($attributes as $key => $value) {
                 if ($key === 'displayName') {
                     $user->setDisplayName($value);
-                } else if ($key === 'email') {
+                } elseif ($key === 'email') {
                     $user->setEmail($value);
-                } else if ($key === 'password') {
+                } elseif ($key === 'password') {
                     $user->setPassword(sha1($value));
-                } else if ($key === 'active') {
+                } elseif ($key === 'active') {
                     $user->setActive($value);
-                } else if ($key === 'company') {
+                } elseif ($key === 'company') {
                     $user->setCompany($value);
-                } else if ($key === 'publicEMail') {
+                } elseif ($key === 'publicEMail') {
                     $user->setPublicEMail($value);
-                } else if ($key === 'supportedLanguages') {
+                } elseif ($key === 'supportedLanguages') {
                     $user->setSupportedLanguages($value);
-                } else if ($key === 'emailValidated') {
+                } elseif ($key === 'emailValidated') {
                     $user->setEmailValidated($value);
                 }
             }

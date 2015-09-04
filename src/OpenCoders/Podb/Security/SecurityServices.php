@@ -2,10 +2,8 @@
 
 namespace OpenCoders\Podb\Security;
 
-
 class SecurityServices
 {
-
     const SALT_GENERATOR = 'security.generator.salt';
     const RATE_LIMITER = 'security.rate_limiter';
     const RATE_LIMIT_REQUEST_LIMIT = 'podb.requestLimit.limit';

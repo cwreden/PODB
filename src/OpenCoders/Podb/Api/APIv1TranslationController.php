@@ -2,7 +2,6 @@
 
 namespace OpenCoders\Podb\Api;
 
-
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use OpenCoders\Podb\AuthenticationService;
@@ -62,7 +61,7 @@ class APIv1TranslationController
      * @param MessageRepository $messageRepository
      * @param LanguageRepository $languageRepository
      */
-    function __construct(
+    public function __construct(
         TranslationRepository $translationRepository,
         AuthenticationService $authenticationService,
         UrlGeneratorInterface $urlGenerator,
@@ -70,8 +69,7 @@ class APIv1TranslationController
         ProjectRepository $projectRepository,
         MessageRepository $messageRepository,
         LanguageRepository $languageRepository
-    )
-    {
+    ) {
         $this->translationRepository = $translationRepository;
         $this->authenticationService = $authenticationService;
         $this->urlGenerator = $urlGenerator;

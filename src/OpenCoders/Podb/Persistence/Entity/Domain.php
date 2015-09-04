@@ -201,9 +201,9 @@ class Domain
             foreach ($data as $key => $value) {
                 if ($key == 'name') {
                     $this->setName($value);
-                } else if ($key == 'projectId') {
+                } elseif ($key == 'projectId') {
                     $this->setProjectId($value);
-                } else if ($key == 'description') {
+                } elseif ($key == 'description') {
                     $this->setDescription($value);
                 }
             }
@@ -211,4 +211,4 @@ class Domain
 
         return $this;
     }
-} 
+}

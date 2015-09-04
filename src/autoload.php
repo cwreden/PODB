@@ -1,7 +1,6 @@
 <?php
 
 if (!$loader = @include __DIR__ . '/../vendor/autoload.php') {
-
     $message = <<< EOF
 <p>You must set up the project dependencies by running the following commands:</p>
 <pre>

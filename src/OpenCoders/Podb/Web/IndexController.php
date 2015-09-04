@@ -2,7 +2,6 @@
 
 namespace OpenCoders\Podb\Web;
 
-
 use OpenCoders\Podb\Manager;
 use Symfony\Component\HttpFoundation\Request;
 use Twig_Environment;
@@ -22,11 +21,10 @@ class IndexController
      * @param Twig_Environment $twig
      * @param Manager $manager
      */
-    function __construct(
+    public function __construct(
         Twig_Environment $twig,
         Manager $manager
-    )
-    {
+    ) {
         $this->twig = $twig;
         $this->manager = $manager;
     }

@@ -1,8 +1,8 @@
 <?php
 
 namespace OpenCoders\Podb\Persistence\Entity;
-use Doctrine\Common\Collections\ArrayCollection;
 
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Class Role
@@ -45,7 +45,7 @@ class Role
 
     // endregion
 
-    function __construct()
+    public function __construct()
     {
         $this->users = new ArrayCollection();
     }
@@ -121,9 +121,8 @@ class Role
     /**
      * @return string
      */
-    function __toString()
+    public function __toString()
     {
         return $this->getName();
     }
-
 }

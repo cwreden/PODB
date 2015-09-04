@@ -2,7 +2,6 @@
 
 namespace OpenCoders\Podb\Api;
 
-
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use OpenCoders\Podb\AuthenticationService;
@@ -48,14 +47,13 @@ class APIv1ProjectController
      * @param EntityManagerInterface $entityManager
      * @param LanguageRepository $languageRepository
      */
-    function __construct(
+    public function __construct(
         ProjectRepository $projectRepository,
         AuthenticationService $authenticationService,
         UrlGeneratorInterface $urlGenerator,
         EntityManagerInterface $entityManager,
         LanguageRepository $languageRepository
-    )
-    {
+    ) {
         $this->projectRepository = $projectRepository;
         $this->authenticationService = $authenticationService;
         $this->urlGenerator = $urlGenerator;
@@ -107,8 +105,9 @@ class APIv1ProjectController
 
         $defaultLanguageURI = null;
         if ($project->getDefaultLanguage() instanceof Language) {
-            $defaultLanguageURI = $this->urlGenerator->generate(ApiURIs::V1_LANGUAGE_GET, array(
-                'locale' => $project->getDefaultLanguage()->getLocale())
+            $defaultLanguageURI = $this->urlGenerator->generate(
+                ApiURIs::V1_LANGUAGE_GET,
+                array('locale' => $project->getDefaultLanguage()->getLocale())
             );
         }
         return new JsonResponse(array(
@@ -119,7 +118,10 @@ class APIv1ProjectController
             'blog' => $project->getUrl(),
             '_links' => array(
                 'self' => $this->urlGenerator->generate(ApiURIs::V1_PROJECT_GET, $urlParams),
-                'owner' => $this->urlGenerator->generate(ApiURIs::V1_USER_GET, array('userName' => $project->getOwner()->getUsername())),
+                'owner' => $this->urlGenerator->generate(
+                    ApiURIs::V1_USER_GET,
+                    array('userName' => $project->getOwner()->getUsername())
+                ),
                 'default_language' => $defaultLanguageURI,
                 'contributors' => $this->urlGenerator->generate(ApiURIs::V1_PROJECT_CONTRIBUTOR_LIST, $urlParams),
                 'languages' => $this->urlGenerator->generate(ApiURIs::V1_PROJECT_LANGUAGE_LIST, $urlParams),
@@ -298,4 +300,4 @@ class APIv1ProjectController
     {
         return isset($value) && intval($value) != 0;
     }
-} 
+}
