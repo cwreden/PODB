@@ -1,6 +1,7 @@
 <?php
 
 namespace OpenCoders\Podb\Persistence\Entity;
+
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
@@ -50,7 +51,7 @@ class Message
 
     // endregion
 
-    function __construct()
+    public function __construct()
     {
         $this->translations = new ArrayCollection();
     }
@@ -138,5 +139,4 @@ class Message
     }
 
     // endregion
-
 }

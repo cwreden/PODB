@@ -2,7 +2,6 @@
 
 namespace OpenCoders\Podb\Web;
 
-
 use OpenCoders\Podb\PODBServices;
 use Silex\Application;
 use Silex\ControllerCollection;

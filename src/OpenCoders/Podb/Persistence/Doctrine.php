@@ -47,7 +47,7 @@ class Doctrine
      * @return \Doctrine\ORM\EntityManager
      * @deprecated
      */
-    static public function getEntityManager()
+    public static function getEntityManager()
     {
         if (self::$em == null) {
             $dbParams = include(__DIR__ . '/../../../../config/podb.config.php');
@@ -64,7 +64,8 @@ class Doctrine
             $driverImpl = $config->newDefaultAnnotationDriver($pathToEntities);
             $config->setMetadataDriverImpl($driverImpl);
 
-//            $cache = (self::$isDevMode ? new ArrayCache() : new ApcCache()); // @ToDo: How does the Array Cache and APC Cache works?
+//            $cache = (self::$isDevMode ? new ArrayCache() : new ApcCache());
+//            @ToDo: How does the Array Cache and APC Cache works?
 //            $config->setMetadataCacheImpl($cache);
 //            $config->setQueryCacheImpl($cache);
 
@@ -78,7 +79,7 @@ class Doctrine
      * @return AuditManager
      * @deprecated
      */
-    static public function getAuditManager ()
+    public static function getAuditManager()
     {
         if (self::$am == null) {
             $auditConfig = new AuditConfiguration();
@@ -102,7 +103,7 @@ class Doctrine
     /**
      * @return EventManager
      */
-    static private function getEventManager()
+    private static function getEventManager()
     {
         if (self::$evm == null) {
             $evm = new EventManager();
@@ -112,11 +113,12 @@ class Doctrine
     }
 
     /**
-     * Set true, if you want to run Doctrine's EntityManager in development mode (call this method before calling getEntityManager)
+     * Set true, if you want to run Doctrine's EntityManager in development mode
+     * (call this method before calling getEntityManager)
      * @param boolean $modeBoolean
      */
-    static public function setDevMode($modeBoolean)
+    public static function setDevMode($modeBoolean)
     {
         self::$isDevMode = $modeBoolean;
     }
-} 
+}

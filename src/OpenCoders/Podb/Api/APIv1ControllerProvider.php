@@ -2,7 +2,6 @@
 
 namespace OpenCoders\Podb\Api;
 
-
 use OpenCoders\Podb\PODBServices;
 use OpenCoders\Podb\REST\v1\json\AuthenticationController;
 use OpenCoders\Podb\Security\SecurityServices;
@@ -176,23 +175,38 @@ class APIv1ControllerProvider implements ControllerProviderInterface
         $collection->delete('/project/{projectName}/message/{id}', APIServices::V1_MESSAGE_CONTROLLER . ':delete')
             ->bind(ApiURIs::V1_PROJECT_MESSAGE_DELETE);
 
-        $collection->get('/project/{projectName}/translation/{locale}', APIServices::V1_TRANSLATION_CONTROLLER . ':getList')
-            ->bind(ApiURIs::V1_PROJECT_TRANSLATION_LOCALE_LIST);
+        $collection->get(
+            '/project/{projectName}/translation/{locale}',
+            APIServices::V1_TRANSLATION_CONTROLLER . ':getList'
+        )->bind(ApiURIs::V1_PROJECT_TRANSLATION_LOCALE_LIST);
         $collection->get('/translation/{id}', APIServices::V1_TRANSLATION_CONTROLLER . ':get')
             ->bind(ApiURIs::V1_PROJECT_MESSAGE_TRANSLATION_GET);
 
         $collection->post('/translation', APIServices::V1_TRANSLATION_CONTROLLER . ':post')
             ->bind(ApiURIs::V1_PROJECT_MESSAGE_TRANSLATION_CREATE);
-        $collection->put('/translation/{id}', APIServices::V1_TRANSLATION_CONTROLLER . ':put')->bind(ApiURIs::V1_PROJECT_MESSAGE_TRANSLATION_UPDATE);
+        $collection->put('/translation/{id}', APIServices::V1_TRANSLATION_CONTROLLER . ':put')
+            ->bind(ApiURIs::V1_PROJECT_MESSAGE_TRANSLATION_UPDATE);
         $collection->delete('/translation/{id}', APIServices::V1_TRANSLATION_CONTROLLER . ':delete')
             ->bind(ApiURIs::V1_PROJECT_MESSAGE_TRANSLATION_DELETE);
 
 
         $collection->get('/audit', APIServices::V1_AUDIT_CONTROLLER . ':getList');
-        $collection->get('/audit/entity/{className}/{id}/revision', APIServices::V1_AUDIT_CONTROLLER . ':getEntityRevisions');
-        $collection->get('/audit/entity/{className}/{id}/revision/first', APIServices::V1_AUDIT_CONTROLLER . ':getFirstRevision');
-        $collection->get('/audit/entity/{className}/{id}/revision/current', APIServices::V1_AUDIT_CONTROLLER . ':getCurrentRevision');
-        $collection->get('/audit/entity/{className}/{id}/diff/{oldRevisionId}/{newRevisionId}', APIServices::V1_AUDIT_CONTROLLER . ':getDiff');
+        $collection->get(
+            '/audit/entity/{className}/{id}/revision',
+            APIServices::V1_AUDIT_CONTROLLER . ':getEntityRevisions'
+        );
+        $collection->get(
+            '/audit/entity/{className}/{id}/revision/first',
+            APIServices::V1_AUDIT_CONTROLLER . ':getFirstRevision'
+        );
+        $collection->get(
+            '/audit/entity/{className}/{id}/revision/current',
+            APIServices::V1_AUDIT_CONTROLLER . ':getCurrentRevision'
+        );
+        $collection->get(
+            '/audit/entity/{className}/{id}/diff/{oldRevisionId}/{newRevisionId}',
+            APIServices::V1_AUDIT_CONTROLLER . ':getDiff'
+        );
 
 
 //        $collection->post('/authentication/login', APIServices::V1_AUTHENTICATION_CONTROLLER . ':login')

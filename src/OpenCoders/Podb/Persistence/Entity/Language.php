@@ -59,7 +59,7 @@ class Language
 
     // endregion
 
-    function __construct()
+    public function __construct()
     {
         $this->supportedBy = new ArrayCollection();
         $this->projects = new ArrayCollection();
@@ -228,9 +228,9 @@ class Language
         foreach ($data as $key => $value) {
             if ($key == 'name') {
                 $this->setLabel($value);
-            } else if ($key == 'locale') {
+            } elseif ($key == 'locale') {
                 $this->setLocale($value);
             }
         }
     }
-} 
+}

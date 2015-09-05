@@ -2,7 +2,6 @@
 
 namespace OpenCoders\Podb\Security;
 
-
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class RateLimiter
@@ -30,13 +29,12 @@ class RateLimiter
      * @param $resetInterval
      * @param SessionInterface $session
      */
-    function __construct(
+    public function __construct(
         $limit,
         $authenticatedLimit,
         $resetInterval,
         SessionInterface $session
-    )
-    {
+    ) {
         $this->limit = $limit;
         $this->authenticatedLimit = $authenticatedLimit;
         $this->resetInterval = $resetInterval;

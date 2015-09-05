@@ -2,7 +2,6 @@
 
 namespace OpenCoders\Podb\Api;
 
-
 use OpenCoders\Podb\Persistence\AuditRevisionManager;
 use SimpleThings\EntityAudit\Revision;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -16,7 +15,7 @@ class APIv1AuditController
      */
     private $auditService;
 
-    function __construct(AuditRevisionManager $auditService)
+    public function __construct(AuditRevisionManager $auditService)
     {
         $this->auditService = $auditService;
     }

@@ -8,4 +8,4 @@ class NothingToUpdatePodbException extends PodbException
     {
         return parent::__construct($message, $code, $previous);
     }
-} 
+}

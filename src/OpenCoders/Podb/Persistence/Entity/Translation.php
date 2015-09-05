@@ -2,7 +2,6 @@
 
 namespace OpenCoders\Podb\Persistence\Entity;
 
-
 /**
  * Class Translation
  * @package OpenCoders\Podb\Persistence\Entity
@@ -244,5 +243,4 @@ class Translation
             'url' => $apiBaseUrl . '/' . $apiVersion . '/datasets/' . $this->getId()
         );
     }
-
-} 
+}

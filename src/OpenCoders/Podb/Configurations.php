@@ -2,7 +2,6 @@
 
 namespace OpenCoders\Podb;
 
-
 class Configurations
 {
     const NAME = 'podb.name';

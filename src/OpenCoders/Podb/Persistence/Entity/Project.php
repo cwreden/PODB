@@ -84,7 +84,7 @@ class Project
 
     // endregion
 
-    function __construct()
+    public function __construct()
     {
         $this->contributors = new ArrayCollection();
     }
@@ -304,7 +304,7 @@ class Project
         foreach ($data as $key => $value) {
             if ($key == 'name') {
                 $this->setName($value);
-            } else if ($key == 'users') {
+            } elseif ($key == 'users') {
             }
         }
     }

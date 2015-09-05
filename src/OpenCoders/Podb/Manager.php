@@ -2,7 +2,6 @@
 
 namespace OpenCoders\Podb;
 
-
 class Manager
 {
     /**
@@ -13,10 +12,9 @@ class Manager
     /**
      * @param $applicationName
      */
-    function __construct(
+    public function __construct(
         $applicationName
-    )
-    {
+    ) {
         $this->applicationName = $applicationName;
     }
 

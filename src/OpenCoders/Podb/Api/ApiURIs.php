@@ -2,10 +2,8 @@
 
 namespace OpenCoders\Podb\Api;
 
-
 class ApiURIs
 {
-
     const V1_PROJECT_GET = 'rest.v1.json.project.get';
     const V1_PROJECT_CONTRIBUTOR_LIST = 'rest.v1.json.project.contributor.list';
     const V1_PROJECT_LANGUAGE_LIST = 'rest.v1.json.project.language.list';

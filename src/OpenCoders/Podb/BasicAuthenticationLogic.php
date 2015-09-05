@@ -33,8 +33,7 @@ class BasicAuthenticationLogic
 
         if ($session->isAuthenticated()) {
             return true;
-        } else if ($this->hasBasicOutInformation()) {
-
+        } elseif ($this->hasBasicOutInformation()) {
             $username = $_SERVER['PHP_AUTH_USER'];
             $pass = sha1($_SERVER['PHP_AUTH_PW']);
 
