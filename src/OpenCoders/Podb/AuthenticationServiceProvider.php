@@ -30,6 +30,8 @@ class AuthenticationServiceProvider implements ServiceProviderInterface
      * This method is called after all services are registered
      * and should be used for "dynamic" configuration (whenever
      * a service must be requested).
+     * {inheritdoc}
+     * @param Application $app
      */
     public function boot(Application $app)
     {

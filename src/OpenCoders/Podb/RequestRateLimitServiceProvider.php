@@ -10,7 +10,6 @@ use Silex\Application;
 use Silex\ServiceProviderInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Security\Http\FirewallMap;
 
 /**
  * Class RequestRateLimitServiceProvider
@@ -48,6 +47,7 @@ class RequestRateLimitServiceProvider implements ServiceProviderInterface
      * This method is called after all services are registered
      * and should be used for "dynamic" configuration (whenever
      * a service must be requested).
+     * @param Application $app
      */
     public function boot(Application $app)
     {

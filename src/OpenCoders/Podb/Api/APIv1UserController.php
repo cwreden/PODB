@@ -465,14 +465,14 @@ class APIv1UserController
      */
     public function delete($id)
     {
-        $this->authenticationService->ensureSession();
+//        $this->authenticationService->ensureSession();
         if (!$this->isId($id)) {
             throw new Exception('Invalid ID ' . $id, 400);
         }
 
         $user = $this->userRepository->get($id);
 
-        $this->entityManager->remove($id);
+        $this->entityManager->remove($user);
         $this->entityManager->flush();
 
         return new JsonResponse(array(

@@ -113,6 +113,11 @@ class AuthenticationController
 
     /**
      * @url POST /unlock
+     * @param Request $request
+     * @return array
+     * @throws MissingParameterException
+     * @throws \OpenCoders\Podb\Exception\AuthenticationRequiredException
+     * @throws \OpenCoders\Podb\Exception\InvalidUsernamePasswordCombinationException
      */
     public function unlock(Request $request)
     {

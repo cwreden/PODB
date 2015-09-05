@@ -33,7 +33,7 @@ class IndexController
 
     public function index(Request $request)
     {
-        $session = $request->getSession();
+//        $session = $request->getSession();
 
         // TODO extract lock screen to separate service
 //        if ($session->has('attributes')

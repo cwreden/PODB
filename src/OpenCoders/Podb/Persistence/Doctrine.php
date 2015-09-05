@@ -2,8 +2,6 @@
 
 namespace OpenCoders\Podb\Persistence;
 
-use Doctrine\Common\Cache\ApcCache;
-use Doctrine\Common\Cache\ArrayCache;
 use Doctrine\Common\EventManager;
 use Doctrine\ORM\Configuration;
 use Doctrine\ORM\EntityManager;
@@ -16,6 +14,7 @@ use SimpleThings\EntityAudit\AuditManager;
  * Command line tool support only
  *
  * @package OpenCoders\Podb\Persistence
+ * @deprecated
  */
 class Doctrine
 {
