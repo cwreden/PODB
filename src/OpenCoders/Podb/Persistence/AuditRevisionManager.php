@@ -2,7 +2,6 @@
 
 namespace OpenCoders\Podb\Persistence;
 
-
 use SimpleThings\EntityAudit\AuditReader;
 use SimpleThings\EntityAudit\ChangedEntity;
 use SimpleThings\EntityAudit\Revision;
@@ -14,7 +13,7 @@ class AuditRevisionManager
      */
     private $auditReader;
 
-    function __construct($auditReader)
+    public function __construct($auditReader)
     {
         $this->auditReader = $auditReader;
     }

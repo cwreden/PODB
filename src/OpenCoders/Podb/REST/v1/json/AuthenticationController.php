@@ -2,7 +2,6 @@
 
 namespace OpenCoders\Podb\REST\v1\json;
 
-
 use OpenCoders\Podb\AuthenticationService;
 use OpenCoders\Podb\Exception\AlreadyAuthenticatedException;
 use OpenCoders\Podb\Exception\MissingParameterException;
@@ -30,7 +29,7 @@ class AuthenticationController
      * @param AuthenticationService $authenticationService
      * @param TokenStorageInterface $tokenStorage
      */
-    function __construct(AuthenticationService $authenticationService, TokenStorageInterface $tokenStorage)
+    public function __construct(AuthenticationService $authenticationService, TokenStorageInterface $tokenStorage)
     {
         $this->authenticationService = $authenticationService;
         $this->tokenStorage = $tokenStorage;
@@ -52,7 +51,7 @@ class AuthenticationController
 
         if (!$request->request->has('username')) {
             throw new MissingParameterException('username');
-        } else if (!$request->request->has('password')) {
+        } elseif (!$request->request->has('password')) {
             throw new MissingParameterException('password');
         }
 
@@ -132,4 +131,4 @@ class AuthenticationController
             'success' => true
         );
     }
-} 
+}

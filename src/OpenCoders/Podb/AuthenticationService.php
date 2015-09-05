@@ -2,7 +2,6 @@
 
 namespace OpenCoders\Podb;
 
-
 use OpenCoders\Podb\Exception\AuthenticationRequiredException;
 use OpenCoders\Podb\Exception\InactiveUserAccountException;
 use OpenCoders\Podb\Exception\InvalidUsernamePasswordCombinationException;
@@ -28,7 +27,7 @@ class AuthenticationService
      */
     private $userRepository;
 
-    function __construct($session, UserRepository $userRepository)
+    public function __construct($session, UserRepository $userRepository)
     {
         $this->session = $session;
         $this->userRepository = $userRepository;
@@ -68,7 +67,7 @@ class AuthenticationService
 
         if ($user == null || !$user->checkPassword($password)) {
             throw new InvalidUsernamePasswordCombinationException();
-        } else if ($user->getActive() === 0 || $user->getEmailValidated() === false) {
+        } elseif ($user->getActive() === 0 || $user->getEmailValidated() === false) {
             throw new InactiveUserAccountException();
         }
         $this->session->set('authenticated', true);
@@ -119,4 +118,4 @@ class AuthenticationService
         }
         $this->session->remove('locked');
     }
-} 
+}

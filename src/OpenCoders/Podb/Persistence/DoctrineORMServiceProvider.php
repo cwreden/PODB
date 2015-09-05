@@ -2,7 +2,6 @@
 
 namespace OpenCoders\Podb\Persistence;
 
-
 use Doctrine\ORM\Configuration;
 use Doctrine\ORM\EntityManager;
 use Silex\Application;
@@ -46,7 +45,8 @@ class DoctrineORMServiceProvider implements ServiceProviderInterface
             $driverImpl = $configuration->newDefaultAnnotationDriver($pimple['orm.entity.path']);
             $configuration->setMetadataDriverImpl($driverImpl);
 
-            //            $cache = (self::$isDevMode ? new ArrayCache() : new ApcCache()); // @ToDo: How does the Array Cache and APC Cache works?
+//            $cache = (self::$isDevMode ? new ArrayCache() : new ApcCache());
+//            @ToDo: How does the Array Cache and APC Cache works?
 //            $config->setMetadataCacheImpl($cache);
 //            $config->setQueryCacheImpl($cache);
 

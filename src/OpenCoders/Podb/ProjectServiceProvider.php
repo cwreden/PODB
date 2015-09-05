@@ -2,7 +2,6 @@
 
 namespace OpenCoders\Podb;
 
-
 use Doctrine\ORM\EntityManager;
 use OpenCoders\Podb\Persistence\Entity\Project;
 use Silex\Application;

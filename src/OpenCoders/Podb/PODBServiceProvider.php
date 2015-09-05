@@ -2,7 +2,6 @@
 
 namespace OpenCoders\Podb;
 
-
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 

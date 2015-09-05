@@ -2,7 +2,6 @@
 
 namespace OpenCoders\Podb;
 
-
 use OpenCoders\Podb\Security\RateLimiter;
 use OpenCoders\Podb\Security\RateLimitException;
 use OpenCoders\Podb\Security\SecurityServices;
@@ -20,7 +19,6 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class RequestRateLimitServiceProvider implements ServiceProviderInterface
 {
-
     /**
      * Registers services on the given app.
      *

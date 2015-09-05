@@ -2,7 +2,6 @@
 
 namespace OpenCoders\Podb\Persistence;
 
-
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 use SimpleThings\EntityAudit\AuditConfiguration;

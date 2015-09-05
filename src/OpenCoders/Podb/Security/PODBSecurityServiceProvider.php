@@ -2,7 +2,6 @@
 
 namespace OpenCoders\Podb\Security;
 
-
 use OpenCoders\Podb\PODBServices;
 use Silex\Application;
 use Silex\ServiceProviderInterface;

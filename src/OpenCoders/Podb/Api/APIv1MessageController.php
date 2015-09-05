@@ -2,7 +2,6 @@
 
 namespace OpenCoders\Podb\Api;
 
-
 use Doctrine\ORM\EntityManagerInterface;
 use OpenCoders\Podb\AuthenticationService;
 use OpenCoders\Podb\Persistence\Entity\Message;
@@ -49,15 +48,14 @@ class APIv1MessageController
      * @param ProjectRepository $projectRepository
      * @param DomainRepository $domainRepository
      */
-    function __construct(
+    public function __construct(
         MessageRepository $messageRepository,
         AuthenticationService $authenticationService,
         UrlGeneratorInterface $urlGenerator,
         EntityManagerInterface $entityManager,
         ProjectRepository $projectRepository,
         DomainRepository $domainRepository
-    )
-    {
+    ) {
         $this->messageRepository = $messageRepository;
         $this->authenticationService = $authenticationService;
         $this->urlGenerator = $urlGenerator;
@@ -110,7 +108,9 @@ class APIv1MessageController
         $message = $this->messageRepository->get($id);
 
         if ($message->getProject()->getId() !== $project->getId()) {
-            throw new NotFoundHttpException(sprintf('Message with ID: %d for project %s not found.', $id, $projectName));
+            throw new NotFoundHttpException(
+                sprintf('Message with ID: %d for project %s not found.', $id, $projectName)
+            );
         }
 
         $urlParams = array(
@@ -169,7 +169,9 @@ class APIv1MessageController
         $message = $this->messageRepository->get($id);
 
         if ($message->getProject()->getId() !== $project->getId()) {
-            throw new NotFoundHttpException(sprintf('Message with ID: %d for project %s not found.', $id, $projectName));
+            throw new NotFoundHttpException(
+                sprintf('Message with ID: %d for project %s not found.', $id, $projectName)
+            );
         }
 
         if ($request->request->has('msgId')) {
@@ -200,7 +202,9 @@ class APIv1MessageController
         $message = $this->messageRepository->get($id);
 
         if ($message->getProject()->getId() !== $project->getId()) {
-            throw new NotFoundHttpException(sprintf('Message with ID: %d for project %s not found.', $id, $projectName));
+            throw new NotFoundHttpException(
+                sprintf('Message with ID: %d for project %s not found.', $id, $projectName)
+            );
         }
 
         $this->entityManager->remove($message);

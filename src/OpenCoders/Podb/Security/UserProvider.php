@@ -2,7 +2,6 @@
 
 namespace OpenCoders\Podb\Security;
 
-
 use OpenCoders\Podb\Persistence\Entity\User;
 use OpenCoders\Podb\Persistence\Repository\UserRepository;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
@@ -20,7 +19,7 @@ class UserProvider implements UserProviderInterface
     /**
      * @param UserRepository $userRepository
      */
-    function __construct(UserRepository $userRepository)
+    public function __construct(UserRepository $userRepository)
     {
         $this->userRepository = $userRepository;
     }
