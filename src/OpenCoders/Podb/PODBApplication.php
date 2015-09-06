@@ -14,9 +14,12 @@ use Doctrine\ORM\Tools\Console\Helper\EntityManagerHelper;
 use Knp\Provider\ConsoleServiceProvider;
 use OpenCoders\Podb\Api\APIv1ControllerProvider;
 use OpenCoders\Podb\Api\ResourceControllerProvider;
+use OpenCoders\Podb\Console\CreateInitialUserCommand;
 use OpenCoders\Podb\Persistence\AuditServiceProvider;
 use OpenCoders\Podb\Persistence\DoctrineORMServiceProvider;
 use OpenCoders\Podb\Security\PODBSecurityServiceProvider;
+use OpenCoders\Podb\Security\SecurityHelper;
+use OpenCoders\Podb\Security\SecurityServices;
 use OpenCoders\Podb\Web\ControllerProvider;
 use Silex\Application;
 use Silex\Provider\DoctrineServiceProvider;
@@ -105,6 +108,10 @@ class PODBApplication extends Application
             $console->setHelperSet(new HelperSet([
                 'db' => new ConnectionHelper($this['orm']->getConnection()),
                 'em' => new EntityManagerHelper($this['orm']),
+                'security' => new SecurityHelper(
+                    $this['security.encoder.digest'],
+                    $this[SecurityServices::SALT_GENERATOR]
+                ),
             ]));
             $console->add(new CreateCommand());
             $console->add(new DropCommand());
@@ -113,6 +120,7 @@ class PODBApplication extends Application
             $console->add(new RunDqlCommand());
             $console->add(new ValidateSchemaCommand());
             $console->add(new GenerateEntitiesCommand());
+            $console->add(new CreateInitialUserCommand());
             return $console;
         });
     }

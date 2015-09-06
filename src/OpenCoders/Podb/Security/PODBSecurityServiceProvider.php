@@ -4,6 +4,7 @@ namespace OpenCoders\Podb\Security;
 
 use OpenCoders\Podb\PODBServices;
 use Silex\Application;
+use Silex\Provider\SecurityServiceProvider;
 use Silex\ServiceProviderInterface;
 
 class PODBSecurityServiceProvider implements ServiceProviderInterface
@@ -22,13 +23,19 @@ class PODBSecurityServiceProvider implements ServiceProviderInterface
         $app[SecurityServices::SALT_GENERATOR] = $app->share(function () {
             return new PasswordSaltGenerator();
         });
+
+        $app[SecurityServices::USER_PROVIDER] = $app->share(function ($pimple) {
+            return new UserProvider($pimple[PODBServices::USER_REPOSITORY]);
+        });
+
         $app['security.firewalls'] = array(
             'api' => array(
+//                'anonymous' => true,
                 'pattern' => '^/api',
-                'security' => !$app['debug'],
+                'security' => true, //!$app['debug'],
                 'http' => true,
                 'users' => $app->share(function ($pimple) {
-                    return new UserProvider($pimple[PODBServices::USER_REPOSITORY]);
+                    return $pimple[SecurityServices::USER_PROVIDER];
                 }),
             ),
         );

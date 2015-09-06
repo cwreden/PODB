@@ -26,7 +26,10 @@ class PasswordSaltGenerator implements PasswordSaltGeneratorInterface
         $this->nbBytes = $nbBytes;
     }
 
-
+    /**
+     * TODO sometimes bad salt´s be generated, optimize!
+     * @return string
+     */
     public function generate()
     {
         return $this->random->nextBytes($this->nbBytes / 8);

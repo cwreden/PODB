@@ -9,4 +9,5 @@ class SecurityServices
     const RATE_LIMIT_REQUEST_LIMIT = 'podb.requestLimit.limit';
     const RATE_LIMIT_AUTHENTICATED_REQUEST_LIMIT = 'podb.requestLimit.authenticatedLimit';
     const RATE_LIMIT_REQUEST_LIMIT_RESET_INTERVAL = 'podb.requestLimit.resetInterval';
+    const USER_PROVIDER = 'security.user_provider';
 }
