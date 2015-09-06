@@ -34,17 +34,6 @@ class AuthenticationService
     }
 
     /**
-     * @throws \OpenCoders\Podb\Exception\AuthenticationRequiredException
-     * @deprecated
-     */
-    public function ensureSession()
-    {
-        if (!$this->isAuthenticated()) {
-            throw new AuthenticationRequiredException();
-        }
-    }
-
-    /**
      * @return bool
      */
     public function isAuthenticated()
@@ -81,7 +70,6 @@ class AuthenticationService
      */
     public function logout()
     {
-        $this->ensureSession();
         $this->session->set('authenticated', false);
         $this->session->remove('userId');
     }
@@ -91,7 +79,6 @@ class AuthenticationService
      */
     public function getCurrentUser()
     {
-        $this->ensureSession();
         return $this->userRepository->get($this->session->get('userId'));
     }
 
@@ -100,7 +87,6 @@ class AuthenticationService
      */
     public function lockSession()
     {
-        $this->ensureSession();
         $this->session->set('locked', true);
     }
 
@@ -110,7 +96,6 @@ class AuthenticationService
      */
     public function unlockSession($password)
     {
-        $this->ensureSession();
         $currentUser = $this->getCurrentUser();
 
         if ($currentUser == null || !$currentUser->checkPassword($password)) {
