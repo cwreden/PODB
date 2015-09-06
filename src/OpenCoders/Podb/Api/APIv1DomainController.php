@@ -4,7 +4,6 @@ namespace OpenCoders\Podb\Api;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
-use OpenCoders\Podb\AuthenticationService;
 use OpenCoders\Podb\Persistence\Entity\Domain;
 use OpenCoders\Podb\Persistence\Repository\DomainRepository;
 use OpenCoders\Podb\Persistence\Repository\ProjectRepository;
@@ -27,24 +26,18 @@ class APIv1DomainController
      */
     private $entityManager;
     /**
-     * @var AuthenticationService
-     */
-    private $authenticationService;
-    /**
      * @var ProjectRepository
      */
     private $projectRepository;
 
     /**
      * @param DomainRepository $domainRepository
-     * @param AuthenticationService $authenticationService
      * @param UrlGeneratorInterface $urlGenerator
      * @param EntityManagerInterface $entityManager
      * @param ProjectRepository $projectRepository
      */
     public function __construct(
         DomainRepository $domainRepository,
-        AuthenticationService $authenticationService,
         UrlGeneratorInterface $urlGenerator,
         EntityManagerInterface $entityManager,
         ProjectRepository $projectRepository
@@ -52,7 +45,6 @@ class APIv1DomainController
         $this->domainRepository = $domainRepository;
         $this->urlGenerator = $urlGenerator;
         $this->entityManager = $entityManager;
-        $this->authenticationService = $authenticationService;
         $this->projectRepository = $projectRepository;
     }
 
@@ -92,7 +84,6 @@ class APIv1DomainController
      */
     public function get($projectName, $domainName)
     {
-        $this->authenticationService->ensureSession();
         $project = $this->projectRepository->getByName($projectName);
         $domain = $this->domainRepository->getByName($project, $domainName);
 
@@ -117,7 +108,6 @@ class APIv1DomainController
      */
     public function post($projectName, Request $request)
     {
-        $this->authenticationService->ensureSession();
         try {
             $domain = new Domain();
             $domain->setName($request->get('name'));
@@ -152,7 +142,6 @@ class APIv1DomainController
      */
     public function put($projectName, $domainName, Request $request)
     {
-        $this->authenticationService->ensureSession();
         try {
             $project = $this->projectRepository->getByName($projectName);
             $domain = $this->domainRepository->getByName($project, $domainName);
@@ -188,7 +177,6 @@ class APIv1DomainController
      */
     public function delete($projectName, $domainName)
     {
-        $this->authenticationService->ensureSession();
 
         $project = $this->projectRepository->getByName($projectName);
         $domain = $this->domainRepository->getByName($project, $domainName);

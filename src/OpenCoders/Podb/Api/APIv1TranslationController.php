@@ -4,7 +4,6 @@ namespace OpenCoders\Podb\Api;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
-use OpenCoders\Podb\AuthenticationService;
 use OpenCoders\Podb\Exception\MissingParameterException;
 use OpenCoders\Podb\Exception\PodbException;
 use OpenCoders\Podb\Persistence\Entity\Language;
@@ -28,10 +27,6 @@ class APIv1TranslationController
     private $translationRepository;
 
     /**
-     * @var AuthenticationService
-     */
-    private $authenticationService;
-    /**
      * @var UrlGeneratorInterface
      */
     private $urlGenerator;
@@ -54,7 +49,6 @@ class APIv1TranslationController
 
     /**
      * @param TranslationRepository $translationRepository
-     * @param AuthenticationService $authenticationService
      * @param UrlGeneratorInterface $urlGenerator
      * @param EntityManagerInterface $entityManager
      * @param ProjectRepository $projectRepository
@@ -63,7 +57,6 @@ class APIv1TranslationController
      */
     public function __construct(
         TranslationRepository $translationRepository,
-        AuthenticationService $authenticationService,
         UrlGeneratorInterface $urlGenerator,
         EntityManagerInterface $entityManager,
         ProjectRepository $projectRepository,
@@ -71,7 +64,6 @@ class APIv1TranslationController
         LanguageRepository $languageRepository
     ) {
         $this->translationRepository = $translationRepository;
-        $this->authenticationService = $authenticationService;
         $this->urlGenerator = $urlGenerator;
         $this->entityManager = $entityManager;
         $this->projectRepository = $projectRepository;
@@ -170,7 +162,6 @@ class APIv1TranslationController
      */
     public function post(Request $request)
     {
-        $this->authenticationService->ensureSession();
         try {
             $locale = '';
 
@@ -243,7 +234,6 @@ class APIv1TranslationController
      */
     public function put($id, Request $request)
     {
-        $this->authenticationService->ensureSession();
         if (!$this->isId($id)) {
             throw new Exception('Invalid ID ' . $id, 400);
         }
@@ -311,7 +301,6 @@ class APIv1TranslationController
      */
     public function delete($id)
     {
-        $this->authenticationService->ensureSession();
         if (!$this->isId($id)) {
             throw new Exception('Invalid ID ' . $id, 400);
         }

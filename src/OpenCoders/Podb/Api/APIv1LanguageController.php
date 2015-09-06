@@ -4,7 +4,6 @@ namespace OpenCoders\Podb\Api;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
-use OpenCoders\Podb\AuthenticationService;
 use OpenCoders\Podb\Exception\PodbException;
 use OpenCoders\Podb\Persistence\Entity\Language;
 use OpenCoders\Podb\Persistence\Entity\User;
@@ -22,10 +21,6 @@ class APIv1LanguageController
     private $languageRepository;
 
     /**
-     * @var \OpenCoders\Podb\AuthenticationService
-     */
-    private $authenticationService;
-    /**
      * @var UrlGeneratorInterface
      */
     private $urlGenerator;
@@ -36,18 +31,15 @@ class APIv1LanguageController
 
     /**
      * @param LanguageRepository $languageRepository
-     * @param AuthenticationService $authenticationService
      * @param UrlGeneratorInterface $urlGenerator
      * @param EntityManagerInterface $entityManager
      */
     public function __construct(
         LanguageRepository $languageRepository,
-        AuthenticationService $authenticationService,
         UrlGeneratorInterface $urlGenerator,
         EntityManagerInterface $entityManager
     ) {
         $this->languageRepository = $languageRepository;
-        $this->authenticationService = $authenticationService;
         $this->urlGenerator = $urlGenerator;
         $this->entityManager = $entityManager;
     }
@@ -153,7 +145,6 @@ class APIv1LanguageController
      */
     public function post(Request $request)
     {
-        $this->authenticationService->ensureSession();
         try {
             $language = new Language();
             $language->setLabel($request->get('name'));
@@ -189,7 +180,6 @@ class APIv1LanguageController
      */
     public function put($id, Request $request)
     {
-        $this->authenticationService->ensureSession();
         if (!$this->isId($id)) {
             throw new Exception('Invalid ID ' . $id, 400);
         }
@@ -234,7 +224,6 @@ class APIv1LanguageController
      */
     public function delete($id)
     {
-        $this->authenticationService->ensureSession();
         if (!$this->isId($id)) {
             throw new Exception('Invalid ID ' . $id, 400);
         }

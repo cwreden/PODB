@@ -3,7 +3,6 @@
 namespace OpenCoders\Podb\Api;
 
 use Doctrine\ORM\EntityManagerInterface;
-use OpenCoders\Podb\AuthenticationService;
 use OpenCoders\Podb\Persistence\Entity\Message;
 use OpenCoders\Podb\Persistence\Repository\DomainRepository;
 use OpenCoders\Podb\Persistence\Repository\MessageRepository;
@@ -19,10 +18,6 @@ class APIv1MessageController
      * @var MessageRepository
      */
     private $messageRepository;
-    /**
-     * @var AuthenticationService
-     */
-    private $authenticationService;
     /**
      * @var UrlGeneratorInterface
      */
@@ -42,7 +37,6 @@ class APIv1MessageController
 
     /**
      * @param MessageRepository $messageRepository
-     * @param AuthenticationService $authenticationService
      * @param UrlGeneratorInterface $urlGenerator
      * @param EntityManagerInterface $entityManager
      * @param ProjectRepository $projectRepository
@@ -50,14 +44,12 @@ class APIv1MessageController
      */
     public function __construct(
         MessageRepository $messageRepository,
-        AuthenticationService $authenticationService,
         UrlGeneratorInterface $urlGenerator,
         EntityManagerInterface $entityManager,
         ProjectRepository $projectRepository,
         DomainRepository $domainRepository
     ) {
         $this->messageRepository = $messageRepository;
-        $this->authenticationService = $authenticationService;
         $this->urlGenerator = $urlGenerator;
         $this->entityManager = $entityManager;
         $this->projectRepository = $projectRepository;

@@ -4,7 +4,6 @@ namespace OpenCoders\Podb\Api;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
-use OpenCoders\Podb\AuthenticationService;
 use OpenCoders\Podb\Exception\PodbException;
 use OpenCoders\Podb\Persistence\Entity\Language;
 use OpenCoders\Podb\Persistence\Entity\Project;
@@ -24,10 +23,6 @@ class APIv1ProjectController
     private $projectRepository;
 
     /**
-     * @var \OpenCoders\Podb\AuthenticationService
-     */
-    private $authenticationService;
-    /**
      * @var UrlGeneratorInterface
      */
     private $urlGenerator;
@@ -42,20 +37,17 @@ class APIv1ProjectController
 
     /**
      * @param ProjectRepository $projectRepository
-     * @param AuthenticationService $authenticationService
      * @param UrlGeneratorInterface $urlGenerator
      * @param EntityManagerInterface $entityManager
      * @param LanguageRepository $languageRepository
      */
     public function __construct(
         ProjectRepository $projectRepository,
-        AuthenticationService $authenticationService,
         UrlGeneratorInterface $urlGenerator,
         EntityManagerInterface $entityManager,
         LanguageRepository $languageRepository
     ) {
         $this->projectRepository = $projectRepository;
-        $this->authenticationService = $authenticationService;
         $this->urlGenerator = $urlGenerator;
         $this->entityManager = $entityManager;
         $this->languageRepository = $languageRepository;
@@ -186,7 +178,6 @@ class APIv1ProjectController
      */
     public function post(Request $request)
     {
-        $this->authenticationService->ensureSession();
         try {
             $project = new Project();
 
@@ -194,7 +185,7 @@ class APIv1ProjectController
             $project->setDescription($request->get('description'));
             $project->setPrivate(false);// TODO not implemented
             $project->setUrl($request->get('blog'));
-            $project->setOwner($this->authenticationService->getCurrentUser());
+            $project->setOwner(null); // TODO
 //            $project->setContributors($value); // TODO extract as own api endpoint (add/remove)
             $project->setDefaultLanguage($this->languageRepository->get($request->get('defaultLanguage')));
 
@@ -226,7 +217,6 @@ class APIv1ProjectController
      */
     public function put($id, Request $request)
     {
-        $this->authenticationService->ensureSession();
         if (!$this->isId($id)) {
             throw new Exception('Invalid ID ' . $id, 400);
         }
@@ -275,7 +265,6 @@ class APIv1ProjectController
      */
     public function delete($id)
     {
-        $this->authenticationService->ensureSession();
         if (!$this->isId($id)) {
             throw new Exception('Invalid ID ' . $id, 400);
         }

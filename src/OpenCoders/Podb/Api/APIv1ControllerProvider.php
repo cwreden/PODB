@@ -24,7 +24,6 @@ class APIv1ControllerProvider implements ControllerProviderInterface
         $app[APIServices::V1_USER_CONTROLLER] = $app->share(function ($pimple) {
             return new APIv1UserController(
                 $pimple[PODBServices::USER_REPOSITORY],
-                $pimple['authentication'],
                 $pimple['url_generator'],
                 $pimple['orm'],
                 $pimple['security.encoder.digest'],
@@ -35,7 +34,6 @@ class APIv1ControllerProvider implements ControllerProviderInterface
         $app[APIServices::V1_PROJECT_CONTROLLER] = $app->share(function ($app) {
             return new APIv1ProjectController(
                 $app[PODBServices::PROJECT_REPOSITORY],
-                $app['authentication'],
                 $app['url_generator'],
                 $app['orm'],
                 $app[PODBServices::LANGUAGE_REPOSITORY]
@@ -45,7 +43,6 @@ class APIv1ControllerProvider implements ControllerProviderInterface
         $app[APIServices::V1_LANGUAGE_CONTROLLER] = $app->share(function ($pimple) {
             return new APIv1LanguageController(
                 $pimple[PODBServices::LANGUAGE_REPOSITORY],
-                $pimple['authentication'],
                 $pimple['url_generator'],
                 $pimple['orm']
             );
@@ -54,7 +51,6 @@ class APIv1ControllerProvider implements ControllerProviderInterface
         $app[APIServices::V1_DOMAIN_CONTROLLER] = $app->share(function ($pimple) {
             return new APIv1DomainController(
                 $pimple[PODBServices::DOMAIN_REPOSITORY],
-                $pimple['authentication'],
                 $pimple['url_generator'],
                 $pimple['orm'],
                 $pimple[PODBServices::PROJECT_REPOSITORY]
@@ -64,7 +60,6 @@ class APIv1ControllerProvider implements ControllerProviderInterface
         $app[APIServices::V1_MESSAGE_CONTROLLER] = $app->share(function ($pimple) {
             return new APIv1MessageController(
                 $pimple[PODBServices::MESSAGE_REPOSITORY],
-                $pimple['authentication'],
                 $pimple['url_generator'],
                 $pimple['orm'],
                 $pimple[PODBServices::PROJECT_REPOSITORY],
@@ -75,7 +70,6 @@ class APIv1ControllerProvider implements ControllerProviderInterface
         $app[APIServices::V1_TRANSLATION_CONTROLLER] = $app->share(function ($pimple) {
             return new APIv1TranslationController(
                 $pimple[PODBServices::TRANSLATION_REPOSITORY],
-                $pimple['authentication'],
                 $pimple['url_generator'],
                 $pimple['orm'],
                 $pimple[PODBServices::PROJECT_REPOSITORY],

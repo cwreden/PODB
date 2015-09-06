@@ -4,7 +4,6 @@ namespace OpenCoders\Podb\Api;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
-use OpenCoders\Podb\AuthenticationService;
 use OpenCoders\Podb\Exception\MissingParameterException;
 use OpenCoders\Podb\Exception\PodbException;
 use OpenCoders\Podb\Persistence\Entity\Language;
@@ -26,10 +25,6 @@ class APIv1UserController
     private $userRepository;
 
     /**
-     * @var \OpenCoders\Podb\AuthenticationService
-     */
-    private $authenticationService;
-    /**
      * @var UrlGeneratorInterface
      */
     private $urlGenerator;
@@ -48,7 +43,6 @@ class APIv1UserController
 
     /**
      * @param UserRepository $userRepository
-     * @param AuthenticationService $authenticationService
      * @param UrlGeneratorInterface $urlGenerator
      * @param EntityManagerInterface $entityManager
      * @param MessageDigestPasswordEncoder $passwordEncoder
@@ -56,14 +50,12 @@ class APIv1UserController
      */
     public function __construct(
         UserRepository $userRepository,
-        AuthenticationService $authenticationService,
         UrlGeneratorInterface $urlGenerator,
         EntityManagerInterface $entityManager,
         MessageDigestPasswordEncoder $passwordEncoder,
         PasswordSaltGenerator $passwordSaltGenerator
     ) {
         $this->userRepository = $userRepository;
-        $this->authenticationService = $authenticationService;
         $this->urlGenerator = $urlGenerator;
         $this->entityManager = $entityManager;
         $this->passwordEncoder = $passwordEncoder;
@@ -329,7 +321,6 @@ class APIv1UserController
      */
     public function post(Request $request)
     {
-        $this->authenticationService->ensureSession();
 
         $userName = $request->get('userName');
         if (!isset($userName)) {
@@ -405,7 +396,6 @@ class APIv1UserController
      */
     public function put($id, Request $request)
     {
-        $this->authenticationService->ensureSession();
         if (!$this->isId($id)) {
             throw new Exception('Invalid ID ' . $id, 400);
         }
@@ -463,7 +453,6 @@ class APIv1UserController
      */
     public function delete($id)
     {
-//        $this->authenticationService->ensureSession();
         if (!$this->isId($id)) {
             throw new Exception('Invalid ID ' . $id, 400);
         }
