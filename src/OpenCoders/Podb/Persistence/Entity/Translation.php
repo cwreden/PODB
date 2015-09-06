@@ -200,47 +200,4 @@ class Translation
     }
 
     // endregion
-
-    /**
-     * @return array
-     */
-    public function asArray()
-    {
-        return array(
-            'id' => $this->getId(),
-//            'dateSetId' => $this->getDataSet(),
-//            'languageId' => $this->getLanguage(),
-            'msgStr' => $this->getMsgStr(),
-            'msgStr1' => $this->getMsgStr1(),
-            'msgStr2' => $this->getMsgStr2(),
-            'fuzzy' => $this->getFuzzy(),
-//            'lastUpdatedDate' => $this->getLastUpdateDate(),
-//            'lastUpdatedBy' => $this->getLastUpdateBy(),
-//            'createdDate' => $this->getCreateDate(),
-//            'createdBy' => $this->getCreatedBy(),
-        );
-    }
-
-    /**
-     * @return array
-     */
-    public function asShortArray()
-    {
-        return array(
-            'id' => $this->getId(),
-            'msgStr' => $this->getMsgStr(),
-        );
-    }
-
-    /**
-     * @param string $apiVersion
-     * @return array
-     */
-    public function getApiInformation($apiVersion)
-    {
-        $apiBaseUrl = $this->getBaseApiUrl();
-        return array(
-            'url' => $apiBaseUrl . '/' . $apiVersion . '/datasets/' . $this->getId()
-        );
-    }
 }
