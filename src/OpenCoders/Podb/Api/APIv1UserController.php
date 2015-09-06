@@ -261,7 +261,7 @@ class APIv1UserController
     {
 
         throw new Exception(501);
-        $baseUrl = ApiUrl::getBaseApiUrl();
+        $baseUrl = '';
 
         return array(
             array(
