@@ -120,8 +120,6 @@ class AuthenticationController
      */
     public function unlock(Request $request)
     {
-        $this->authenticationService->ensureSession();
-
         if (!$request->request->has('password')) {
             throw new MissingParameterException('password');
         }
