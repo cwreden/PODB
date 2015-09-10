@@ -10,7 +10,10 @@ use Doctrine\ORM\Tools\Console\Command\SchemaTool\CreateCommand;
 use Doctrine\ORM\Tools\Console\Command\SchemaTool\DropCommand;
 use Doctrine\ORM\Tools\Console\Command\SchemaTool\UpdateCommand;
 use Doctrine\ORM\Tools\Console\Command\ValidateSchemaCommand;
+use Doctrine\ORM\Tools\Console\ConsoleRunner;
 use Doctrine\ORM\Tools\Console\Helper\EntityManagerHelper;
+use Knp\Console\ConsoleEvent;
+use Knp\Console\ConsoleEvents;
 use Knp\Provider\ConsoleServiceProvider;
 use OpenCoders\Podb\Api\APIv1ControllerProvider;
 use OpenCoders\Podb\Api\ResourceControllerProvider;
@@ -94,26 +97,11 @@ class PODBApplication extends Application
 
     private function initCli()
     {
-        $this->register(new ConsoleServiceProvider(), array(
-            'console.name'    => 'PODB',
-            'console.version' => '0.0.0',
-            'console.project_directory' => __DIR__
-        ));
-
-        $this->extend('console', function ($console, $this) {
-            /** @var $console \Knp\Console\Application */
-            $console->setHelperSet(new HelperSet([
-                'db' => new ConnectionHelper($this['orm']->getConnection()),
-                'em' => new EntityManagerHelper($this['orm']),
-            ]));
-            $console->add(new CreateCommand());
-            $console->add(new DropCommand());
-            $console->add(new UpdateCommand());
-            $console->add(new InfoCommand());
-            $console->add(new RunDqlCommand());
-            $console->add(new ValidateSchemaCommand());
-            $console->add(new GenerateEntitiesCommand());
-            return $console;
+        $this->register(new ConsoleServiceProvider());
+        $this['dispatcher']->addListener(ConsoleEvents::INIT, function (ConsoleEvent $event) {
+            $console = $event->getApplication();
+            $console->setHelperSet(ConsoleRunner::createHelperSet($console->getSilexApplication()->offsetGet('orm')));
+            ConsoleRunner::addCommands($console);
         });
     }
 
