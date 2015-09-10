@@ -2,16 +2,7 @@
 
 namespace OpenCoders\Podb;
 
-use Doctrine\DBAL\Tools\Console\Helper\ConnectionHelper;
-use Doctrine\ORM\Tools\Console\Command\GenerateEntitiesCommand;
-use Doctrine\ORM\Tools\Console\Command\InfoCommand;
-use Doctrine\ORM\Tools\Console\Command\RunDqlCommand;
-use Doctrine\ORM\Tools\Console\Command\SchemaTool\CreateCommand;
-use Doctrine\ORM\Tools\Console\Command\SchemaTool\DropCommand;
-use Doctrine\ORM\Tools\Console\Command\SchemaTool\UpdateCommand;
-use Doctrine\ORM\Tools\Console\Command\ValidateSchemaCommand;
 use Doctrine\ORM\Tools\Console\ConsoleRunner;
-use Doctrine\ORM\Tools\Console\Helper\EntityManagerHelper;
 use Knp\Console\ConsoleEvent;
 use Knp\Console\ConsoleEvents;
 use Knp\Provider\ConsoleServiceProvider;
