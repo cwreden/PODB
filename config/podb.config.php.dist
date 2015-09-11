@@ -40,5 +40,9 @@ return array(
     'podb.registration.email_validation' => false,
     'podb.registration.account_validation' => false,
 
-    'podb.password.salt' => 'what you want'
+    'podb.password.salt' => 'what you want',
+
+    'console.name'    => 'PODB-Console',
+    'console.version' => '0.0.0',
+    'console.project_directory' => __DIR__.'/..',
 );
