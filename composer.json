@@ -44,9 +44,6 @@
     "autoload": {
         "psr-0": {
             "OpenCoders": "src/"
-        },
-        "files": [
-            "Bootstrapper.php"
-        ]
+        }
     }
 }
