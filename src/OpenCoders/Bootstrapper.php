@@ -1,11 +1,13 @@
 <?php
 
+namespace OpenCoders;
+
 final class Bootstrapper
 {
 
     private static $isBootstrapped = false;
 
-    const ROOT_PATH = __DIR__;
+    const ROOT_PATH = __DIR__.'/../..';
 
     /**
      * set global constants and prepares the environment
@@ -23,7 +25,7 @@ final class Bootstrapper
      */
     public static function getConfig()
     {
-        return include(__DIR__ . '/config/podb.config.php');
+        return include(self::ROOT_PATH. '/config/podb.config.php');
     }
 
     /**
