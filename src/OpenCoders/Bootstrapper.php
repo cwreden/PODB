@@ -7,15 +7,13 @@ final class Bootstrapper
 
     private static $isBootstrapped = false;
 
-    const ROOT_PATH = __DIR__.'/../..';
-
     /**
      * set global constants and prepares the environment
      */
     public static function bootstrap()
     {
         if (!self::$isBootstrapped) {
-            define('APPLICATION_ROOT', realpath(self::ROOT_PATH));
+            define('APPLICATION_ROOT', self::getRootPath());
             self::$isBootstrapped = true;
         }
     }
@@ -25,7 +23,7 @@ final class Bootstrapper
      */
     public static function getConfig()
     {
-        return include(self::ROOT_PATH. '/config/podb.config.php');
+        return include(self::getRootPath() . '/config/podb.config.php');
     }
 
     /**
@@ -35,5 +33,10 @@ final class Bootstrapper
     {
         self::bootstrap();
         return new \OpenCoders\Podb\PODBApplication(self::getConfig());
+    }
+
+    public static function getRootPath()
+    {
+        return realpath(__DIR__ . '/../..');
     }
 }

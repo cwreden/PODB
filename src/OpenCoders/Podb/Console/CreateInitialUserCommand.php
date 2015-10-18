@@ -4,18 +4,29 @@ namespace OpenCoders\Podb\Console;
 
 
 use Doctrine\ORM\Tools\Console\Helper\EntityManagerHelper;
+use Knp\Command\Command;
 use OpenCoders\Podb\Persistence\Entity\User;
-use OpenCoders\Podb\Security\SecurityHelper;
-use Symfony\Component\Console\Command\Command;
+use OpenCoders\Podb\Security\PasswordSaltGenerator;
+use OpenCoders\Podb\Security\SecurityServices;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Security\Core\Encoder\MessageDigestPasswordEncoder;
 
 class CreateInitialUserCommand extends Command
 {
     const INITIAL_USER_PASSWORD = 'admin';
 
     const INITIAL_USER_NAME = 'admin';
+    /**
+     * @var PasswordSaltGenerator
+     */
+    private $passwordSaltGenerator;
+
+    /**
+     * @var MessageDigestPasswordEncoder
+     */
+    private $passwordEncoder;
 
     public function __construct()
     {
@@ -27,6 +38,15 @@ EOT
         );
         $this->addOption('force', 'f', InputOption::VALUE_NONE, 'Reset inital user if exists.');
     }
+
+    protected function initialize(InputInterface $input, OutputInterface $output)
+    {
+        parent::initialize($input, $output);
+        $silexApp = $this->getSilexApplication();
+        $this->passwordSaltGenerator = $silexApp[SecurityServices::SALT_GENERATOR];
+        $this->passwordEncoder = $silexApp['security.encoder.digest'];
+    }
+
 
     /**
      * @param InputInterface $input
@@ -59,13 +79,10 @@ EOT
         $user->setValidated(true);
         $user->setEmail('admin@localhost');
 
-        /** @var SecurityHelper $securityHelper */
-        $securityHelper = $this->getHelper('security');
-
         try {
-            $salt = $securityHelper->getPasswordSaltGenerator()->generate();
+            $salt = $this->passwordSaltGenerator->generate();
             $user->setSalt($salt);
-            $password = $securityHelper->getPasswordEncoder()->encodePassword(self::INITIAL_USER_PASSWORD, $salt);
+            $password = $this->passwordEncoder->encodePassword(self::INITIAL_USER_PASSWORD, $salt);
             $user->setPassword($password);
         } catch (\Exception $e) {
             $output->writeln('Can´t generate password');

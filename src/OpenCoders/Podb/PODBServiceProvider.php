@@ -18,6 +18,7 @@ class PODBServiceProvider implements ServiceProviderInterface
      */
     public function register(Application $app)
     {
+        $app[Configurations::ROOT_PATH] = APPLICATION_ROOT;
         $app[Configurations::NAME] = 'PODB';
 
         $app[PODBServices::MANAGER] = $app->share(function ($p) {

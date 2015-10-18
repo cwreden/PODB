@@ -5,6 +5,7 @@ namespace OpenCoders\Podb;
 class Configurations
 {
     const NAME = 'podb.name';
+    const ROOT_PATH = 'podb.root_path';
 
     const REQUEST_LIMIT_RESET_INTERVAL = 'podb.requestLimit.resetInterval';
     const REQUEST_LIMIT = 'podb.requestLimit.limit';

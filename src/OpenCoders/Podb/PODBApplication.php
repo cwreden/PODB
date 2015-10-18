@@ -8,6 +8,7 @@ use Knp\Console\ConsoleEvents;
 use Knp\Provider\ConsoleServiceProvider;
 use OpenCoders\Podb\Api\APIv1ControllerProvider;
 use OpenCoders\Podb\Api\ResourceControllerProvider;
+use OpenCoders\Podb\Console\CreateInitialUserCommand;
 use OpenCoders\Podb\Persistence\AuditServiceProvider;
 use OpenCoders\Podb\Persistence\DoctrineORMServiceProvider;
 use OpenCoders\Podb\Security\PODBSecurityServiceProvider;
@@ -94,18 +95,7 @@ class PODBApplication extends Application
             $console->setHelperSet(ConsoleRunner::createHelperSet($console->getSilexApplication()->offsetGet('orm')));
             ConsoleRunner::addCommands($console);
             
-            /*
-             * 
-            $console->setHelperSet(new HelperSet([
-                'db' => new ConnectionHelper($this['orm']->getConnection()),
-                'em' => new EntityManagerHelper($this['orm']),
-                'security' => new SecurityHelper(
-                    $this['security.encoder.digest'],
-                    $this[SecurityServices::SALT_GENERATOR]
-                ),
-            ]));
             $console->add(new CreateInitialUserCommand());
-             */
         });
     }
 
