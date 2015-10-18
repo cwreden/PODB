@@ -30,30 +30,6 @@ class ControllerProvider implements ControllerProviderInterface
 
         $controllers->get('/', Controllers::INDEX . ':index');
 
-        /**
-         * Debug
-         */
-        $controllers->get('/menu', function () use ($app) {
-            return new JsonResponse(array(
-                array(
-                    'title' => 'Dashboard',
-                    'fa' => 'fa-dashboard',
-                    'route' => '#/dashboard'
-                ),
-                array(
-                    'title' => 'Dashboard',
-                    'fa' => 'fa-dashboard',
-                    'sub-menu' => array(
-                        array(
-                            'title' => 'Dashboard',
-                            'fa' => 'fa-dashboard',
-                            'route' => '#/dashboard'
-                        )
-                    )
-                )
-            ));
-        });
-
         return $controllers;
     }
 }
