@@ -32,7 +32,7 @@ class PODBSecurityServiceProvider implements ServiceProviderInterface
             'api' => array(
 //                'anonymous' => true,
                 'pattern' => '^/api',
-                'security' => true, //!$app['debug'],
+                'security' => false, //!$app['debug'],
                 'http' => true,
                 'users' => $app->share(function ($pimple) {
                     return $pimple[SecurityServices::USER_PROVIDER];

@@ -1,6 +1,6 @@
 <?php
 
-namespace OpenCoders\Podb\Api;
+namespace OpenCoders\Podb\Api\v1;
 
 class APIServices
 {
