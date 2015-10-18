@@ -2,24 +2,15 @@
 
 namespace OpenCoders\Podb;
 
-use Doctrine\DBAL\Tools\Console\Helper\ConnectionHelper;
-use Doctrine\ORM\Tools\Console\Command\GenerateEntitiesCommand;
-use Doctrine\ORM\Tools\Console\Command\InfoCommand;
-use Doctrine\ORM\Tools\Console\Command\RunDqlCommand;
-use Doctrine\ORM\Tools\Console\Command\SchemaTool\CreateCommand;
-use Doctrine\ORM\Tools\Console\Command\SchemaTool\DropCommand;
-use Doctrine\ORM\Tools\Console\Command\SchemaTool\UpdateCommand;
-use Doctrine\ORM\Tools\Console\Command\ValidateSchemaCommand;
-use Doctrine\ORM\Tools\Console\Helper\EntityManagerHelper;
+use Doctrine\ORM\Tools\Console\ConsoleRunner;
+use Knp\Console\ConsoleEvent;
+use Knp\Console\ConsoleEvents;
 use Knp\Provider\ConsoleServiceProvider;
 use OpenCoders\Podb\Api\APIv1ControllerProvider;
 use OpenCoders\Podb\Api\ResourceControllerProvider;
-use OpenCoders\Podb\Console\CreateInitialUserCommand;
 use OpenCoders\Podb\Persistence\AuditServiceProvider;
 use OpenCoders\Podb\Persistence\DoctrineORMServiceProvider;
 use OpenCoders\Podb\Security\PODBSecurityServiceProvider;
-use OpenCoders\Podb\Security\SecurityHelper;
-use OpenCoders\Podb\Security\SecurityServices;
 use OpenCoders\Podb\Web\ControllerProvider;
 use Silex\Application;
 use Silex\Provider\DoctrineServiceProvider;
@@ -97,14 +88,14 @@ class PODBApplication extends Application
 
     private function initCli()
     {
-        $this->register(new ConsoleServiceProvider(), array(
-            'console.name'    => 'PODB',
-            'console.version' => '0.0.0',
-            'console.project_directory' => __DIR__
-        ));
-
-        $this->extend('console', function ($console, $this) {
-            /** @var $console \Knp\Console\Application */
+        $this->register(new ConsoleServiceProvider());
+        $this['dispatcher']->addListener(ConsoleEvents::INIT, function (ConsoleEvent $event) {
+            $console = $event->getApplication();
+            $console->setHelperSet(ConsoleRunner::createHelperSet($console->getSilexApplication()->offsetGet('orm')));
+            ConsoleRunner::addCommands($console);
+            
+            /*
+             * 
             $console->setHelperSet(new HelperSet([
                 'db' => new ConnectionHelper($this['orm']->getConnection()),
                 'em' => new EntityManagerHelper($this['orm']),
@@ -113,15 +104,8 @@ class PODBApplication extends Application
                     $this[SecurityServices::SALT_GENERATOR]
                 ),
             ]));
-            $console->add(new CreateCommand());
-            $console->add(new DropCommand());
-            $console->add(new UpdateCommand());
-            $console->add(new InfoCommand());
-            $console->add(new RunDqlCommand());
-            $console->add(new ValidateSchemaCommand());
-            $console->add(new GenerateEntitiesCommand());
             $console->add(new CreateInitialUserCommand());
-            return $console;
+             */
         });
     }
 
