@@ -12,13 +12,13 @@ return array(
     ),
 
     'session.storage.options' => array(
-        'cookie_lifetime' => 43200 // TODO default??
+        'cookie_lifetime' => 60*60*12
     ),
 
     'twig.path' => __DIR__ . '/../src/Views',
-    'twig.options' => array('cache' => __DIR__ . '/../data/twig'),// TODO tmp folder
+    'twig.options' => array('cache' => __DIR__ . '/../tmp/twig'),
 
-    'monolog.logfile' => __DIR__ . '/../data/application.log',// TODO tmp folder
+    'monolog.logfile' => __DIR__ . '/../data/application.log',
 
     // TODO
     'swiftmailer.options' => array(
@@ -32,6 +32,7 @@ return array(
 
     'debug' => true,
 
+    'orm.proxy.dir' => __DIR__ . '/../tmp/doctrine/proxy',
 
     'podb.requestLimit.resetInterval' => 3600,
     'podb.requestLimit.limit' => 60,
