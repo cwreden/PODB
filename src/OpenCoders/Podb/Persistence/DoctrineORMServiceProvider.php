@@ -31,7 +31,7 @@ class DoctrineORMServiceProvider implements ServiceProviderInterface
         });
 
         // TODO
-        $app['orm.proxy.dir'] = __DIR__ . '/tmp/proxy';
+        $app['orm.proxy.dir'] = sys_get_temp_dir() . '/doctrine/proxy';
         $app['orm.proxy.namespace'] = 'Doctrine\Entity\Proxies';
         $app['orm.entity.path'] = array(__DIR__ . '/Entity');
 
