@@ -33,11 +33,14 @@
 #### v3.0.0
 
 - Revision
-- Command Line Tool
-- OAuth (GitHub)
-- Mail
+- Notifications
 
-#### v4.0.0
+#### v3.1.0
 
+- Change request / Submit translation that someone confirmed
 - Statistics
+
+#### v3.2.0
+
+- OAuth (GitHub)
 - LDAP
