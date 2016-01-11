@@ -3,6 +3,7 @@
 namespace OpenCoders\Podb\Web;
 
 use OpenCoders\Podb\PODBServices;
+use OpenCoders\Podb\Security\SecurityServices;
 use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\ControllerProviderInterface;
@@ -26,9 +27,18 @@ class ControllerProvider implements ControllerProviderInterface
             );
         });
 
+        $app[Controllers::INSTALL] = $app->share(function ($p) {
+            return new InstallController(
+                $p['orm'],
+                $p['security.encoder.digest'],
+                $p[SecurityServices::SALT_GENERATOR]
+            );
+        });
+
         $controllers = $app['controllers_factory'];
 
         $controllers->get('/', Controllers::INDEX . ':index');
+        $controllers->get('/install', Controllers::INSTALL . ':installAction');
 
         return $controllers;
     }
